@@ -306,7 +306,7 @@ const FALLBACK_KATEGORI_JELAJAH = [
 ];
 
 function loadKategoriJelajah() {
-  fetch(`${BASE}/app/kategori?token=${TOKEN}&_t=${Date.now()}`, { cache: 'no-store' })
+  fetch(`${BASE}/app/kategori?token=${TOKEN}&_t=${Date.now()}&_r=${Math.random().toString(36).substring(2)}`, { cache: 'no-store' })
     .then(r => r.json())
     .then(d => {
       if (d && d.code === 200 && d.data && d.data.length) {
@@ -318,14 +318,29 @@ function loadKategoriJelajah() {
     .catch(() => renderKategoriJelajah(FALLBACK_KATEGORI_JELAJAH));
 }
 
+function getKatImg(k) {
+  if (!k || typeof k !== 'object') return null;
+  let img = k.url_gambar || k.gambar || k.url_icon || k.icon_url || k.url_icon_kategori || k.icon_kategori || k.foto || k.url_foto || k.gambar_kategori || k.url_gambar_kategori || k.foto_kategori || k.gambar_utama || k.image || k.img || k.url_image;
+  if (!img && typeof k.icon === 'string') {
+    if (k.icon.startsWith('http') || k.icon.startsWith('//') || k.icon.includes('/') || (k.icon.includes('.') && !k.icon.includes(' '))) {
+      img = k.icon;
+    }
+  }
+  if (img && typeof img === 'string') {
+    if (img.startsWith('//')) img = 'https:' + img;
+    else if (!img.startsWith('http') && (img.includes('/') || img.includes('.'))) img = 'https://' + img;
+    return img;
+  }
+  return null;
+}
+
 function renderKategoriJelajah(data) {
   const container = document.getElementById('kategoriContainer');
   if (!container) return;
   container.innerHTML = data.map((k, i) => {
     const col = COLORS[i % COLORS.length];
-    let katImg = k.url_gambar || k.gambar || k.url_icon || k.icon_url || k.foto || k.url_foto || k.gambar_kategori || (k.icon && typeof k.icon === 'string' && (k.icon.startsWith('http') || k.icon.startsWith('//')) ? k.icon : null);
-    if (katImg && katImg.startsWith('//')) katImg = 'https:' + katImg;
-    const iconName = (!katImg && typeof k.icon === 'string' && !k.icon.startsWith('http') && !k.icon.startsWith('//')) ? k.icon : ICONS[i % ICONS.length];
+    let katImg = getKatImg(k);
+    const iconName = (!katImg && typeof k.icon === 'string' && !k.icon.includes('/') && !k.icon.includes('.')) ? k.icon : ICONS[i % ICONS.length];
 
     return `
       <div class="kat-card" onclick="window.location.href='/'">
