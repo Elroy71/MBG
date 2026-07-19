@@ -508,12 +508,63 @@ function rp(n) {
 
 function parseCheckoutData() {
   try {
-    const raw = '{{json_checkout}}';
+    const raw = `{{json_checkout}}`;
     if (raw.startsWith('{')) {
-      checkoutData = JSON.parse(raw);
+      const data = JSON.parse(raw);
+      if (data.status === 'ok') {
+        let produkList = [];
+        let totalOngkir = 0;
+        
+        if (data.list_data_transaksi) {
+          data.list_data_transaksi.forEach(trx => {
+            if (trx.list_data_produk) {
+              trx.list_data_produk.forEach(p => {
+                produkList.push({
+                  id_produk: p.id_barang || '',
+                  nama_produk: p.nama_barang || 'Produk MBG',
+                  gambar_utama: p.url_gambar_barang || '',
+                  harga: p.harga_barang || 0,
+                  qty: p.jumlah_barang || 1,
+                  stok: 99 // Default stok aman saat checkout
+                });
+              });
+            }
+          });
+        }
+        
+        let alamatArr = [];
+        if (data.alamat_user) {
+          const a = data.alamat_user;
+          alamatArr.push({
+            id: 'a1',
+            label: `${a.nama_penerima} - ${a.alamat_lengkap}, ${a.kecamatan}, ${a.kota}, ${a.provinsi}`,
+            default: true
+          });
+        }
+        
+        let subtotal = 0, ongkir = 0, diskon = 0, total = 0;
+        if (data.perhitungan_transaksi) {
+          subtotal = data.perhitungan_transaksi.total_harga_produk || 0;
+          ongkir = data.perhitungan_transaksi.total_ongkir || 0;
+          diskon = data.perhitungan_transaksi.total_potongan_voucher || 0;
+          total = data.perhitungan_transaksi.total_transaksi || 0;
+        }
+
+        checkoutData = {
+          produk: produkList,
+          alamat: alamatArr,
+          ongkir: ongkir,
+          diskon: diskon,
+          subtotal: subtotal,
+          total: total,
+          saldo: data.saldo || 0
+        };
+        return;
+      }
     }
   } catch(e) {}
 
+  // Fallback demo data jika tidak di dalam aplikasi
   if (!checkoutData || typeof checkoutData !== 'object') {
     checkoutData = {
       produk: [
@@ -572,11 +623,13 @@ function renderAddress() {
 
 function calcSummary() {
   const produk = checkoutData.produk || [];
-  let subtotal = 0;
-  produk.forEach(p => { subtotal += (p.harga || 0) * (p.qty || 1); });
+  let calculatedSubtotal = 0;
+  produk.forEach(p => { calculatedSubtotal += (p.harga || 0) * (p.qty || 1); });
+  
+  const subtotal = checkoutData.subtotal !== undefined ? checkoutData.subtotal : calculatedSubtotal;
   const ongkir = checkoutData.ongkir || 0;
   const diskon = checkoutData.diskon || 0;
-  const total = subtotal + ongkir - diskon;
+  const total = checkoutData.total !== undefined ? checkoutData.total : (subtotal + ongkir - diskon);
 
   document.getElementById('subtotalVal').textContent = rp(subtotal);
   document.getElementById('ongkirVal').textContent = rp(ongkir);
@@ -610,8 +663,13 @@ function renderSplit(subtotal) {
 }
 
 function checkWallet() {
-  const saldoRaw = '{{saldo_user}}';
-  let saldo = parseFloat(saldoRaw.replace(/[^0-9.]/g, '')) || 0;
+  let saldo = 0;
+  if (checkoutData && checkoutData.saldo !== undefined) {
+    saldo = checkoutData.saldo;
+  } else {
+    const saldoRaw = '{{saldo_user}}';
+    saldo = parseFloat(saldoRaw.replace(/[^0-9.]/g, '')) || 0;
+  }
 
   const walletEl = document.getElementById('walletDisplay');
   const badgeEl = document.getElementById('walletStatusBadge');

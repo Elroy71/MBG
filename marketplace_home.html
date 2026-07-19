@@ -311,10 +311,10 @@
   <div class="header-top">
     <div class="brand-title"><i class="ph-bold ph-storefront"></i> My MBG</div>
     <div class="header-icons">
-      <button class="icon-btn" title="Keranjang Belanja" onclick="showToast('Keranjang Anda aktif')">
+      <button class="icon-btn" title="Keranjang Belanja" onclick="window.location.href='/akun/?page=transaksi'">
         <i class="ph-bold ph-shopping-bag"></i>
       </button>
-      <button class="icon-btn" title="Notifikasi" onclick="showToast('Tidak ada notifikasi baru')">
+      <button class="icon-btn" title="Notifikasi" onclick="window.location.href='/akun/?page=notifikasi'">
         <i class="ph-bold ph-bell"></i>
       </button>
     </div>
@@ -330,7 +330,7 @@
       <div class="wallet-label"><i class="ph-bold ph-wallet"></i> Saldo Dompet Anda:</div>
       <div class="wallet-amount" id="saldoDisplay">Rp {{saldo_user}}</div>
     </div>
-    <button class="btn-topup" onclick="showToast('Mengalihkan ke menu Top Up...')">
+    <button class="btn-topup" onclick="window.location.href='/akun/?page=topup'">
       <i class="ph-bold ph-plus-circle"></i> Isi Ulang
     </button>
   </div>
@@ -361,9 +361,9 @@
 <!-- BOTTOM NAV -->
 <div class="bottom-nav">
   <div class="nav-item active"><i class="ph-bold ph-house"></i><span>Beranda</span></div>
-  <div class="nav-item" onclick="showToast('Membuka Riwayat Pesanan...')"><i class="ph-bold ph-receipt"></i><span>Pesanan</span></div>
-  <div class="nav-item" onclick="showToast('Membuka Riwayat Saldo...')"><i class="ph-bold ph-wallet"></i><span>Dompet</span></div>
-  <div class="nav-item" onclick="showToast('Membuka Profil Anda...')"><i class="ph-bold ph-user"></i><span>Akun</span></div>
+  <div class="nav-item" onclick="window.location.href='/akun/?page=transaksi'"><i class="ph-bold ph-receipt"></i><span>Pesanan</span></div>
+  <div class="nav-item" onclick="window.location.href='/pages?riwayat-saldo'"><i class="ph-bold ph-wallet"></i><span>Dompet</span></div>
+  <div class="nav-item" onclick="window.location.href='/akun/?page=profil'"><i class="ph-bold ph-user"></i><span>Akun</span></div>
 </div>
 
 <script>
