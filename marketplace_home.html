@@ -311,7 +311,7 @@
   <div class="header-top">
     <div class="brand-title"><i class="ph-bold ph-storefront"></i> My MBG</div>
     <div class="header-icons">
-      <button class="icon-btn" title="Keranjang Belanja" onclick="window.location.href='/akun/?page=transaksi'">
+      <button class="icon-btn" title="Keranjang Belanja" onclick="window.location.href='/cart/'">
         <i class="ph-bold ph-shopping-bag"></i>
       </button>
       <button class="icon-btn" title="Notifikasi" onclick="window.location.href='/akun/?page=notifikasi'">
@@ -363,7 +363,7 @@
   <div class="nav-item active"><i class="ph-bold ph-house"></i><span>Beranda</span></div>
   <div class="nav-item" onclick="window.location.href='/akun/?page=transaksi'"><i class="ph-bold ph-receipt"></i><span>Pesanan</span></div>
   <div class="nav-item" onclick="window.location.href='/pages?riwayat-saldo'"><i class="ph-bold ph-wallet"></i><span>Dompet</span></div>
-  <div class="nav-item" onclick="window.location.href='/akun/?page=profil'"><i class="ph-bold ph-user"></i><span>Akun</span></div>
+  <div class="nav-item" onclick="window.location.href='/akun/'"><i class="ph-bold ph-user"></i><span>Akun</span></div>
 </div>
 
 <script>
@@ -467,8 +467,9 @@ function renderProdukGrid() {
     const habis = stok === 0;
     const menipis = !habis && stok < 5;
     const diskon = p.harga_produk_asli && p.harga_produk_asli > p.harga_produk;
+    const urlProduk = p.url_produk || p.url_barang || '/cart/';
     return `
-      <div class="produk-card">
+      <div class="produk-card" onclick="window.location.href='${urlProduk}'">
         <div class="produk-img-box">
           ${p.gambar_utama ? `<img src="${p.gambar_utama}" onerror="this.style.display='none'">` : `<i class="ph-duotone ph-${p.icon || 'package'}"></i>`}
           <span class="badge-stok ${habis ? 'habis' : menipis ? 'menipis' : 'ready'}">
@@ -480,7 +481,7 @@ function renderProdukGrid() {
           <div class="produk-name">${p.nama_produk || 'Produk MBG'}</div>
           ${diskon ? `<div class="produk-price-old">${rp(p.harga_produk_asli)}</div>` : ''}
           <div class="produk-price">${rp(p.harga_produk || 0)}</div>
-          <button class="btn-add" ${habis ? 'disabled' : ''} onclick="addToCart('${(p.nama_produk || '').replace(/'/g, '')}')">
+          <button class="btn-add" ${habis ? 'disabled' : ''} onclick="event.stopPropagation(); addToCart('${urlProduk}', '${(p.nama_produk || '').replace(/'/g, '')}')">
             <i class="ph-bold ph-${habis ? 'prohibit' : 'shopping-cart-plus'}"></i>
             <span>${habis ? 'Stok Habis' : '+ Tambah Pesanan'}</span>
           </button>
@@ -489,8 +490,13 @@ function renderProdukGrid() {
   }).join('');
 }
 
-function addToCart(nama) {
-  showToast(`"${nama}" berhasil dimasukkan ke keranjang`);
+function addToCart(urlProduk, nama) {
+  if (urlProduk && urlProduk !== '/cart/') {
+    window.location.href = urlProduk;
+  } else {
+    showToast(`"${nama}" siap dimasukkan ke keranjang`);
+    setTimeout(() => { window.location.href = '/cart/'; }, 800);
+  }
 }
 
 let timer = null;
