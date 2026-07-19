@@ -199,7 +199,7 @@
       </button>
       <button class="icon-btn cart-btn" title="Keranjang Belanja" onclick="window.location.href='/cart/'">
         <i class="ph-bold ph-shopping-cart"></i>
-        <span class="cart-badge">{{total_cart}}</span>
+        <span class="cart-badge" id="cartBadgeDisplay">{{total_cart}}</span>
       </button>
     </div>
   </div>
@@ -320,7 +320,33 @@ function renderMutasi() {
   container.innerHTML = html;
 }
 
-window.addEventListener('DOMContentLoaded', () => { loadMutasi(); });
+function syncCartBadge() {
+  const badge = document.getElementById('cartBadgeDisplay');
+  if (!badge) return;
+  const val = badge.textContent.trim();
+  const cached = parseInt(localStorage.getItem('mbg_cart_count') || '0', 10);
+  const parsed = parseInt(val, 10);
+  
+  if (!isNaN(parsed) && parsed > 0) {
+    localStorage.setItem('mbg_cart_count', parsed);
+  } else if (isNaN(parsed) || parsed === 0) {
+    if (cached > 0) badge.textContent = cached;
+    else badge.textContent = '0';
+  }
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+  syncCartBadge();
+  loadMutasi();
+});
+
+window.addEventListener('pageshow', () => {
+  const badge = document.getElementById('cartBadgeDisplay');
+  const cached = localStorage.getItem('mbg_cart_count');
+  if (badge && cached && !isNaN(parseInt(cached))) {
+    badge.textContent = cached;
+  }
+});
 </script>
 </body>
 </html>

@@ -304,7 +304,7 @@
       </button>
       <button class="icon-btn cart-btn" title="Keranjang Belanja" onclick="window.location.href='/cart/'">
         <i class="ph-bold ph-shopping-cart"></i>
-        <span class="cart-badge">{{total_cart}}</span>
+        <span class="cart-badge" id="cartBadgeDisplay">{{total_cart}}</span>
       </button>
     </div>
   </div>
@@ -372,6 +372,7 @@ function showToast(msg) {
   setTimeout(() => t.classList.remove('show'), 2800);
 }
 
+let allKategoriList = [];
 const FALLBACK_KATEGORI = [
   { id_kategori: '0', nama_kategori: 'Semua', icon: 'squares-four' },
   { id_kategori: '1', nama_kategori: 'Beras & Padi', icon: 'plant' },
@@ -390,12 +391,17 @@ function loadKategori() {
       if (d.code === 200 && d.data && d.data.length) {
         // Tambahkan item "Semua" di depan data dari API
         const all = [{ id_kategori: '0', nama_kategori: 'Semua', icon: 'squares-four' }, ...d.data];
+        allKategoriList = all;
         renderKategori(all);
       } else {
+        allKategoriList = FALLBACK_KATEGORI;
         renderKategori(FALLBACK_KATEGORI);
       }
     })
-    .catch(() => renderKategori(FALLBACK_KATEGORI));
+    .catch(() => {
+      allKategoriList = FALLBACK_KATEGORI;
+      renderKategori(FALLBACK_KATEGORI);
+    });
 }
 
 const ICONS = ['squares-four', 'plant', 'carrot', 'apple', 'fish-simple', 'fish', 'pepper', 'drop'];
@@ -411,7 +417,7 @@ function renderKategori(data) {
 function filterKat(id, el) {
   document.querySelectorAll('.kat-item').forEach(e => e.classList.remove('active'));
   el.classList.add('active');
-  activeKatId = (id === '1') ? null : id;
+  activeKatId = (id === '0' || id === 'all') ? null : id;
   document.getElementById('produkTitle').innerHTML = activeKatId ? '<i class="ph-bold ph-tag"></i> Produk Kategori Pilihan' : '<i class="ph-bold ph-package"></i> Semua Produk Berkualitas';
   renderProdukGrid();
 }
@@ -425,12 +431,12 @@ function loadProduk() {
 
 function renderProdukFallback() {
   allProduk = [
-    { id_produk: 'p1', nama_produk: 'Beras Putih Premium 5 Kg', harga_produk: 85000, harga_produk_asli: 95000, stok: 25, icon: 'plant', lokasi: 'Jakarta Selatan', gambar_utama: 'https://images.unsplash.com/photo-1586201375761-83865001e31c?auto=format&fit=crop&w=400&q=80' },
-    { id_produk: 'p2', nama_produk: 'Minyak Goreng Sawit 2 Liter', harga_produk: 34000, harga_produk_asli: 0, stok: 18, icon: 'drop', lokasi: 'Surabaya, Jatim', gambar_utama: 'https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?auto=format&fit=crop&w=400&q=80' },
-    { id_produk: 'p3', nama_produk: 'Daging Sapi Segar 500 Gram', harga_produk: 75000, harga_produk_asli: 80000, stok: 3, icon: 'fish-simple', lokasi: 'Bogor, Jabar', gambar_utama: 'https://images.unsplash.com/photo-1607623814075-e51df1bdc82f?auto=format&fit=crop&w=400&q=80' },
-    { id_produk: 'p4', nama_produk: 'Telur Ayam Pilihan 1 Tray (30 Butir)', harga_produk: 55000, harga_produk_asli: 0, stok: 0, icon: 'egg', lokasi: 'Tangerang, Banten', gambar_utama: 'https://images.unsplash.com/photo-1518568814500-bf0f8d125f46?auto=format&fit=crop&w=400&q=80' },
-    { id_produk: 'p5', nama_produk: 'Sayur Bayam Segar 200 Gram', harga_produk: 8000, harga_produk_asli: 0, stok: 30, icon: 'carrot', lokasi: 'Lembang, Bandung', gambar_utama: 'https://images.unsplash.com/photo-1576045057995-568f588f82fb?auto=format&fit=crop&w=400&q=80' },
-    { id_produk: 'p6', nama_produk: 'Ikan Lele Segar 1 Kg', harga_produk: 28000, harga_produk_asli: 0, stok: 12, icon: 'fish', lokasi: 'Bekasi, Jabar', gambar_utama: 'https://images.unsplash.com/photo-1534948216015-843149f72be3?auto=format&fit=crop&w=400&q=80' },
+    { id_produk: 'p1', id_kategori: '1', nama_produk: 'Beras Putih Premium 5 Kg', harga_produk: 85000, harga_produk_asli: 95000, stok: 25, icon: 'plant', lokasi: 'Jakarta Selatan', gambar_utama: 'https://images.unsplash.com/photo-1586201375761-83865001e31c?auto=format&fit=crop&w=400&q=80' },
+    { id_produk: 'p2', id_kategori: '7', nama_produk: 'Minyak Goreng Sawit 2 Liter', harga_produk: 34000, harga_produk_asli: 0, stok: 18, icon: 'drop', lokasi: 'Surabaya, Jatim', gambar_utama: 'https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?auto=format&fit=crop&w=400&q=80' },
+    { id_produk: 'p3', id_kategori: '4', nama_produk: 'Daging Sapi Segar 500 Gram', harga_produk: 75000, harga_produk_asli: 80000, stok: 3, icon: 'fish-simple', lokasi: 'Bogor, Jabar', gambar_utama: 'https://images.unsplash.com/photo-1607623814075-e51df1bdc82f?auto=format&fit=crop&w=400&q=80' },
+    { id_produk: 'p4', id_kategori: '4', nama_produk: 'Telur Ayam Pilihan 1 Tray (30 Butir)', harga_produk: 55000, harga_produk_asli: 0, stok: 0, icon: 'egg', lokasi: 'Tangerang, Banten', gambar_utama: 'https://images.unsplash.com/photo-1518568814500-bf0f8d125f46?auto=format&fit=crop&w=400&q=80' },
+    { id_produk: 'p5', id_kategori: '2', nama_produk: 'Sayur Bayam Segar 200 Gram', harga_produk: 8000, harga_produk_asli: 0, stok: 30, icon: 'carrot', lokasi: 'Lembang, Bandung', gambar_utama: 'https://images.unsplash.com/photo-1576045057995-568f588f82fb?auto=format&fit=crop&w=400&q=80' },
+    { id_produk: 'p6', id_kategori: '5', nama_produk: 'Ikan Lele Segar 1 Kg', harga_produk: 28000, harga_produk_asli: 0, stok: 12, icon: 'fish', lokasi: 'Bekasi, Jabar', gambar_utama: 'https://images.unsplash.com/photo-1534948216015-843149f72be3?auto=format&fit=crop&w=400&q=80' },
   ];
   renderProdukGrid();
 }
@@ -440,8 +446,19 @@ function renderProdukGrid() {
   let filtered = allProduk;
   if (searchQuery) filtered = filtered.filter(p => (p.nama_produk || '').toLowerCase().includes(searchQuery));
   
+  if (activeKatId) {
+    const activeKatObj = allKategoriList.find(k => String(k.id_kategori) === String(activeKatId));
+    filtered = filtered.filter(p => {
+      const pKatId = String(p.id_kategori || p.kategori_id || p.id_cat || '');
+      const pKatName = String(p.kategori || p.nama_kategori || '').toLowerCase();
+      if (pKatId && pKatId === String(activeKatId)) return true;
+      if (activeKatObj && pKatName && (pKatName.includes(activeKatObj.nama_kategori.toLowerCase()) || activeKatObj.nama_kategori.toLowerCase().includes(pKatName))) return true;
+      return false;
+    });
+  }
+  
   if (!filtered.length) {
-    grid.innerHTML = '<div style="grid-column:1/-1;padding:40px;text-align:center;color:var(--text-muted);font-size:17px;"><i class="ph-duotone ph-folder-open" style="font-size:48px;display:block;margin:0 auto 12px;"></i> Produk yang Anda cari tidak ditemukan</div>';
+    grid.innerHTML = '<div style="grid-column:1/-1;padding:40px;text-align:center;color:var(--text-muted);font-size:17px;"><i class="ph-duotone ph-folder-open" style="font-size:48px;display:block;margin:0 auto 12px;"></i> Produk untuk kategori ini belum tersedia</div>';
     return;
   }
 
@@ -477,6 +494,15 @@ function renderProdukGrid() {
 }
 
 function addToCart(urlProduk, nama) {
+  // Update badge UI secara live & simpan ke localStorage
+  const badge = document.getElementById('cartBadgeDisplay');
+  if (badge) {
+    let curr = parseInt(badge.textContent.replace(/[^0-9]/g, ''), 10) || 0;
+    curr += 1;
+    badge.textContent = curr;
+    localStorage.setItem('mbg_cart_count', curr);
+  }
+
   if (urlProduk && urlProduk !== '/cart/') {
     window.location.href = urlProduk;
   } else {
@@ -492,9 +518,33 @@ function onSearch(val) {
   timer = setTimeout(renderProdukGrid, 300);
 }
 
+function syncCartBadge() {
+  const badge = document.getElementById('cartBadgeDisplay');
+  if (!badge) return;
+  const val = badge.textContent.trim();
+  const cached = parseInt(localStorage.getItem('mbg_cart_count') || '0', 10);
+  const parsed = parseInt(val, 10);
+  
+  if (!isNaN(parsed) && parsed > 0) {
+    localStorage.setItem('mbg_cart_count', parsed);
+  } else if (isNaN(parsed) || parsed === 0) {
+    if (cached > 0) badge.textContent = cached;
+    else badge.textContent = '0';
+  }
+}
+
 window.addEventListener('DOMContentLoaded', () => {
+  syncCartBadge();
   loadKategori();
   loadProduk();
+});
+
+window.addEventListener('pageshow', () => {
+  const badge = document.getElementById('cartBadgeDisplay');
+  const cached = localStorage.getItem('mbg_cart_count');
+  if (badge && cached && !isNaN(parseInt(cached))) {
+    badge.textContent = cached;
+  }
 });
 </script>
 </body>

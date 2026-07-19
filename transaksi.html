@@ -160,7 +160,7 @@
       </button>
       <button class="icon-btn cart-btn" title="Keranjang Belanja" onclick="window.location.href='/cart/'">
         <i class="ph-bold ph-shopping-cart"></i>
-        <span class="cart-badge">{{total_cart}}</span>
+        <span class="cart-badge" id="cartBadgeDisplay">{{total_cart}}</span>
       </button>
     </div>
   </div>
@@ -200,7 +200,7 @@
         </div>
         <div class="tx-price">Rp 483.000</div>
       </div>
-      <div style="font-size: 12px; color: var(--text-muted); border-top: 1px dashed var(--border-color); pt-2; padding-top: 8px;">
+      <div style="font-size: 12px; color: var(--text-muted); border-top: 1px dashed var(--border-color); padding-top: 8px;">
         <i class="ph-bold ph-calendar"></i> 19 Juli 2026 • SPPG SMPN 1 Belanja Pagi
       </div>
     </div>
@@ -217,7 +217,7 @@
         </div>
         <div class="tx-price">Rp 750.000</div>
       </div>
-      <div style="font-size: 12px; color: var(--text-muted); border-top: 1px dashed var(--border-color); pt-2; padding-top: 8px;">
+      <div style="font-size: 12px; color: var(--text-muted); border-top: 1px dashed var(--border-color); padding-top: 8px;">
         <i class="ph-bold ph-calendar"></i> 18 Juli 2026 • Pembayaran Split 80/5/5/5/5 Sukses
       </div>
     </div>
@@ -228,11 +228,35 @@
 <script>
 function rp(n) { return 'Rp ' + Math.round(n || 0).toLocaleString('id-ID'); }
 
+function syncCartBadge() {
+  const badge = document.getElementById('cartBadgeDisplay');
+  if (!badge) return;
+  const val = badge.textContent.trim();
+  const cached = parseInt(localStorage.getItem('mbg_cart_count') || '0', 10);
+  const parsed = parseInt(val, 10);
+  
+  if (!isNaN(parsed) && parsed > 0) {
+    localStorage.setItem('mbg_cart_count', parsed);
+  } else if (isNaN(parsed) || parsed === 0) {
+    if (cached > 0) badge.textContent = cached;
+    else badge.textContent = '0';
+  }
+}
+
 (function() {
+  syncCartBadge();
   const el = document.getElementById('saldoDisplay');
   const n = parseFloat(el.textContent.replace(/[^0-9]/g, ''));
   if (!isNaN(n) && n > 0) el.textContent = rp(n);
 })();
+
+window.addEventListener('pageshow', () => {
+  const badge = document.getElementById('cartBadgeDisplay');
+  const cached = localStorage.getItem('mbg_cart_count');
+  if (badge && cached && !isNaN(parseInt(cached))) {
+    badge.textContent = cached;
+  }
+});
 
 function switchTab(el, type) {
   document.querySelectorAll('.tx-tab').forEach(t => t.classList.remove('active'));
