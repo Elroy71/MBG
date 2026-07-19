@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dompet & Isi Ulang Saldo — My MBG</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<!-- PHOSPHOR ICONS (PROFESSIONAL VECTOR ICONS) -->
+<script src="https://unpkg.com/@phosphor-icons/web@2.1.1"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  :root {
+    --primary-navy: #1E3A8A;
+    --primary-blue: #2563EB;
+    --primary-light: #EFF6FF;
+    --bg-main: #F8FAFC;
+    --card-bg: #FFFFFF;
+    --border-color: #E2E8F0;
+    --text-main: #0F172A;
+    --text-sec: #475569;
+    --text-muted: #64748B;
+    --success: #16A34A;
+    --success-bg: #DCFCE7;
+    --danger: #DC2626;
+    --danger-bg: #FEE2E2;
+    --radius-lg: 18px;
+    --radius-md: 12px;
+    --shadow-sm: 0 2px 8px rgba(15, 23, 42, 0.04);
+    --shadow-md: 0 8px 24px rgba(15, 23, 42, 0.06);
+  }
+
+  body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    background: var(--bg-main);
+    color: var(--text-main);
+    min-height: 100vh;
+    padding-bottom: 120px;
+    line-height: 1.5;
+    font-size: 16px;
+  }
+
+  /* TOP HEADER */
+  .header {
+    background: linear-gradient(135deg, var(--primary-navy) 0%, #1D4ED8 100%);
+    color: #FFFFFF;
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 4px 16px rgba(30, 58, 138, 0.2);
+  }
+  .header-back {
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    color: #FFFFFF;
+    width: 44px;
+    height: 44px;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+  }
+  .header-back:active { transform: scale(0.92); }
+  .header h1 { font-size: 19px; font-weight: 800; letter-spacing: -0.3px; }
+
+  /* HERO SALDO */
+  .wallet-hero {
+    background: linear-gradient(135deg, #0F172A 0%, var(--primary-navy) 100%);
+    color: #FFFFFF;
+    padding: 28px 20px 48px;
+    position: relative;
+    overflow: hidden;
+  }
+  .wallet-hero-bg {
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 96px;
+    color: rgba(255, 255, 255, 0.08);
+    pointer-events: none;
+  }
+  .hero-label { font-size: 13px; opacity: 0.85; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; display: flex; align-items: center; gap: 6px; }
+  .hero-balance { font-size: 34px; font-weight: 800; color: #60A5FA; margin: 6px 0; letter-spacing: -0.5px; }
+  .hero-user { font-size: 14px; opacity: 0.9; font-weight: 500; display: flex; align-items: center; gap: 6px; }
+
+  /* MAIN CONTAINER */
+  .main-container { max-width: 640px; margin: -28px auto 0; padding: 0 16px; display: flex; flex-direction: column; gap: 16px; position: relative; z-index: 10; }
+
+  .card {
+    background: var(--card-bg);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow-sm);
+    padding: 24px 20px;
+  }
+
+  .section-title { font-size: 17px; font-weight: 800; color: var(--text-main); margin-bottom: 4px; display: flex; align-items: center; gap: 10px; }
+  .section-title i { font-size: 22px; color: var(--primary-blue); }
+  .section-desc { font-size: 13px; color: var(--text-sec); margin-bottom: 18px; font-weight: 500; }
+
+  /* QUICK PICK BUTTONS */
+  .quick-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+  .quick-btn {
+    padding: 16px 14px;
+    border: 2px solid var(--border-color);
+    border-radius: var(--radius-md);
+    background: #FFFFFF;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 16px;
+    font-weight: 800;
+    color: var(--text-main);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .quick-btn span { font-size: 12px; font-weight: 600; color: var(--text-muted); }
+  .quick-btn:hover, .quick-btn.active {
+    border-color: var(--primary-blue);
+    background: var(--primary-light);
+    color: var(--primary-blue);
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.12);
+  }
+  .quick-btn.active span { color: var(--primary-blue); }
+
+  /* CUSTOM INPUT */
+  .input-label { font-size: 15px; font-weight: 700; color: var(--text-main); margin-bottom: 8px; display: block; }
+  .input-wrapper { position: relative; display: flex; align-items: center; }
+  .input-prefix { position: absolute; left: 16px; font-size: 17px; font-weight: 800; color: var(--text-muted); }
+  .input-field {
+    width: 100%;
+    padding: 15px 16px 15px 50px;
+    border: 1.5px solid var(--border-color);
+    border-radius: var(--radius-md);
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--text-main);
+    transition: all 0.2s ease;
+  }
+  .input-field:focus { outline: none; border-color: var(--primary-blue); box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.12); }
+  .input-hint { font-size: 13px; color: var(--text-muted); margin-top: 8px; font-weight: 600; display: flex; align-items: center; gap: 6px; }
+  .input-hint.error { color: var(--danger); }
+
+  .info-banner {
+    background: #F0FDF4;
+    border: 1px solid #BBF7D0;
+    border-radius: var(--radius-md);
+    padding: 16px;
+    font-size: 14px;
+    color: #166534;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    margin: 20px 0;
+    line-height: 1.5;
+  }
+  .info-banner i { font-size: 24px; color: #16A34A; flex-shrink: 0; }
+
+  .btn-submit {
+    width: 100%;
+    min-height: 54px;
+    padding: 15px;
+    background: linear-gradient(135deg, var(--primary-blue) 0%, #1D4ED8 100%);
+    color: #FFFFFF;
+    border: none;
+    border-radius: var(--radius-md);
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 16px;
+    font-weight: 800;
+    cursor: pointer;
+    box-shadow: 0 4px 14px rgba(37, 99, 235, 0.3);
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+  }
+  .btn-submit:hover { background: #1D4ED8; }
+  .btn-submit:active { transform: scale(0.98); }
+  .btn-submit:disabled { background: #94A3B8; box-shadow: none; cursor: not-allowed; transform: none; }
+
+  /* MUTATIONS LIST */
+  .filter-tabs { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 8px; margin-bottom: 16px; scrollbar-width: none; }
+  .filter-tabs::-webkit-scrollbar { display: none; }
+  .filter-tab {
+    padding: 10px 16px;
+    border-radius: 30px;
+    font-size: 14px;
+    font-weight: 700;
+    border: none;
+    cursor: pointer;
+    background: #F1F5F9;
+    color: var(--text-sec);
+    white-space: nowrap;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .filter-tab.active { background: var(--primary-blue); color: #FFFFFF; box-shadow: 0 4px 10px rgba(37, 99, 235, 0.2); }
+
+  .mutation-item {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 16px 0;
+    border-bottom: 1px solid var(--border-color);
+  }
+  .mutation-item:last-child { border-bottom: none; }
+  .mutation-icon {
+    width: 46px;
+    height: 46px;
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    flex-shrink: 0;
+  }
+  .mutation-icon.topup { background: var(--success-bg); color: var(--success); }
+  .mutation-icon.beli { background: var(--danger-bg); color: var(--danger); }
+  .mutation-icon.cashback { background: #FEF9C3; color: #D97706; }
+  
+  .mutation-info { flex: 1; }
+  .mutation-title { font-size: 15px; font-weight: 700; color: var(--text-main); margin-bottom: 4px; line-height: 1.35; }
+  .mutation-date { font-size: 13px; color: var(--text-muted); font-weight: 500; display: flex; align-items: center; gap: 4px; }
+  
+  .mutation-amount { font-size: 16px; font-weight: 800; text-align: right; }
+  .mutation-amount.plus { color: var(--success); }
+  .mutation-amount.minus { color: var(--danger); }
+  .mutation-balance { font-size: 12px; color: var(--text-muted); text-align: right; margin-top: 2px; font-weight: 600; }
+
+  /* MODAL */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.6);
+    backdrop-filter: blur(4px);
+    z-index: 300;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+  }
+  .modal-overlay.active { opacity: 1; pointer-events: all; }
+  .modal-box {
+    background: var(--card-bg);
+    border-radius: 22px;
+    padding: 28px 24px;
+    width: 100%;
+    max-width: 420px;
+    box-shadow: var(--shadow-md);
+    transform: scale(0.95);
+    transition: transform 0.3s ease;
+    text-align: center;
+  }
+  .modal-overlay.active .modal-box { transform: scale(1); }
+  .modal-icon { width: 56px; height: 56px; border-radius: 16px; background: var(--primary-light); color: var(--primary-blue); display: flex; align-items: center; justify-content: center; font-size: 28px; margin: 0 auto 16px; }
+  .modal-title { font-size: 19px; font-weight: 800; color: var(--text-main); margin-bottom: 16px; }
+  .modal-row { display: flex; justify-content: space-between; font-size: 15px; padding: 10px 0; border-bottom: 1px solid var(--border-color); font-weight: 600; color: var(--text-sec); }
+  .modal-row.total { border: none; font-size: 18px; font-weight: 800; color: var(--primary-blue); padding-top: 14px; }
+  
+  .modal-actions { display: flex; flex-direction: column; gap: 10px; margin-top: 20px; }
+  .btn-modal-yes { padding: 15px; border-radius: var(--radius-md); background: var(--primary-blue); color: #fff; font-size: 16px; font-weight: 800; border: none; cursor: pointer; transition: 0.2s; }
+  .btn-modal-yes:hover { background: var(--primary-navy); }
+  .btn-modal-no { padding: 14px; border-radius: var(--radius-md); background: #F1F5F9; color: var(--text-sec); font-size: 15px; font-weight: 700; border: none; cursor: pointer; transition: 0.2s; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <button class="header-back" onclick="history.back()">
+    <i class="ph-bold ph-arrow-left"></i>
+  </button>
+  <h1>Dompet & Isi Ulang Saldo</h1>
+</div>
+
+<!-- HERO SALDO -->
+<div class="wallet-hero">
+  <div class="wallet-hero-bg"><i class="ph-duotone ph-wallet"></i></div>
+  <div class="hero-label"><i class="ph-bold ph-shield-check"></i> Saldo Dompet Saat Ini</div>
+  <div class="hero-balance" id="heroSaldo">Rp {{saldo_user}}</div>
+  <div class="hero-user"><i class="ph-bold ph-user"></i> Pemilik Akun: {{nama_user}}</div>
+</div>
+
+<div class="main-container">
+
+  <!-- TOP UP CARD -->
+  <div class="card">
+    <div class="section-title"><i class="ph-bold ph-plus-circle"></i> Pilih Nominal Isi Ulang</div>
+    <div class="section-desc">Pilih jumlah cepat atau ketik sendiri angka di kotak bawah</div>
+
+    <div class="quick-grid">
+      <button class="quick-btn" onclick="setNominal(100000)">Rp 100.000 <span>(100 Ribu)</span></button>
+      <button class="quick-btn" onclick="setNominal(250000)">Rp 250.000 <span>(250 Ribu)</span></button>
+      <button class="quick-btn" onclick="setNominal(500000)">Rp 500.000 <span>(500 Ribu)</span></button>
+      <button class="quick-btn" onclick="setNominal(1000000)">Rp 1.000.000 <span>(1 Juta)</span></button>
+    </div>
+
+    <div style="margin-bottom: 16px;">
+      <label class="input-label" for="nominalInput">Atau Ketik Nominal Lain (Kelipatan Rp 1.000):</label>
+      <div class="input-wrapper">
+        <span class="input-prefix">Rp</span>
+        <input type="number" id="nominalInput" class="input-field" placeholder="Contoh: 150000"
+          min="50000" max="50000000" step="1000" oninput="onNominalChange(this.value)">
+      </div>
+      <div class="input-hint" id="nominalHint">
+        <i class="ph-bold ph-info"></i> Minimal Isi Ulang: Rp 50.000 | Maksimal: Rp 50.000.000
+      </div>
+    </div>
+
+    <div class="info-banner">
+      <i class="ph-bold ph-shield-check"></i>
+      <div>
+        <strong>Keamanan & Penjelasan:</strong> Saldo dijamin aman dan khusus digunakan untuk pembayaran bahan mentah program MBG. Saldo tidak dapat ditarik tunai ke rekening.
+      </div>
+    </div>
+
+    <button class="btn-submit" id="btnLanjut" onclick="openModal()" disabled>
+      <i class="ph-bold ph-credit-card"></i>
+      <span>LANJUT KE PEMBAYARAN</span>
+    </button>
+  </div>
+
+  <!-- RIWAYAT MUTASI -->
+  <div class="card">
+    <div class="section-title"><i class="ph-bold ph-receipt"></i> Catatan Riwayat Saldo</div>
+    <div class="section-desc">Semua riwayat uang masuk & uang keluar Anda</div>
+
+    <div class="filter-tabs">
+      <button class="filter-tab active" onclick="filterMutasi('semua', this)">Semua Riwayat</button>
+      <button class="filter-tab" onclick="filterMutasi('topup', this)"><i class="ph-bold ph-arrow-down-left"></i> Isi Ulang</button>
+      <button class="filter-tab" onclick="filterMutasi('beli', this)"><i class="ph-bold ph-shopping-bag"></i> Pembelian</button>
+      <button class="filter-tab" onclick="filterMutasi('cashback', this)"><i class="ph-bold ph-gift"></i> Cashback</button>
+    </div>
+
+    <div id="mutasiList">
+      <div style="padding: 24px; text-align: center; color: var(--text-muted);">Memuat riwayat...</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- MODAL KONFIRMASI TOP UP -->
+<div class="modal-overlay" id="confirmModal">
+  <div class="modal-box">
+    <div class="modal-icon"><i class="ph-bold ph-wallet"></i></div>
+    <h3 class="modal-title">Konfirmasi Isi Ulang</h3>
+    <div class="modal-row"><span>Nominal Isi Ulang:</span> <span id="modalNominal" style="color:var(--text-main); font-weight:800;">Rp 0</span></div>
+    <div class="modal-row"><span>Kode Unik Keamanan:</span> <span id="modalUnik" style="color:var(--warn); font-weight:800;">+ Rp 0</span></div>
+    <div class="modal-row total"><span>Total Bayar:</span> <span id="modalTotal">Rp 0</span></div>
+    
+    <p style="font-size:13px; color:var(--text-muted); margin-top:16px;">Anda akan diarahkan langsung ke halaman pembayaran resmi dari sistem bukaOlshop.</p>
+    
+    <div class="modal-actions">
+      <button class="btn-modal-yes" onclick="confirmTopup()">Lanjutkan Bayar Sekarang</button>
+      <button class="btn-modal-no" onclick="closeModal()">Batal</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const TOKEN = 'ZUFzR2Q2U1Z1Z0R3RzZzc3RUOG1DK1RweEx6c3paVnRkNUVDa0pyTXErUFgvbDUvY3REbWo4NTFVMHI0dWVRUjFaY2pKYllsODZFamhpSXRRUDZ3RSsrZ2c3TXYvcXFOSHERQndWUi9SZnd3QjdnMGtUblVyWGtXeWpSaGR4M1ZFUGFIY3FVNFU4dG9iSmFoRUhZWGZFamsrd0d6ZDJJUEdiSVIxUGE3TmZlczJGeXI3Z01rOVRyRjJuMVp5ZWZI';
+const TOKEN_USER = '{{token_user}}';
+const ID_USER = '{{id_user}}';
+const MIN_TOPUP = 50000;
+const MAX_TOPUP = 50000000;
+
+let nominalSelected = 0;
+let currentFilter = 'semua';
+let allMutasi = [];
+
+function rp(n) { return 'Rp ' + Math.round(n || 0).toLocaleString('id-ID'); }
+
+(function() {
+  const el = document.getElementById('heroSaldo');
+  const raw = el.textContent.replace(/[^0-9]/g, '');
+  const n = parseFloat(raw);
+  if (!isNaN(n) && n > 0) el.textContent = rp(n);
+})();
+
+function setNominal(val) {
+  document.querySelectorAll('.quick-btn').forEach(b => b.classList.remove('active'));
+  if (event && event.currentTarget) event.currentTarget.classList.add('active');
+  document.getElementById('nominalInput').value = val;
+  onNominalChange(val);
+}
+
+function onNominalChange(val) {
+  document.querySelectorAll('.quick-btn').forEach(b => b.classList.remove('active'));
+  const n = parseInt(val) || 0;
+  nominalSelected = n;
+  const hint = document.getElementById('nominalHint');
+  const btn = document.getElementById('btnLanjut');
+
+  if (n < MIN_TOPUP) {
+    hint.innerHTML = '<i class="ph-bold ph-warning-circle"></i> Minimal Isi Ulang Adalah Rp 50.000';
+    hint.className = 'input-hint error';
+    btn.disabled = true;
+  } else if (n > MAX_TOPUP) {
+    hint.innerHTML = '<i class="ph-bold ph-warning-circle"></i> Maksimal Isi Ulang Adalah Rp 50.000.000';
+    hint.className = 'input-hint error';
+    btn.disabled = true;
+  } else {
+    hint.innerHTML = '<i class="ph-bold ph-check-circle"></i> Nominal sesuai (Minimal: Rp 50.000 | Maksimal: Rp 50.000.000)';
+    hint.className = 'input-hint';
+    hint.style.color = 'var(--success)';
+    btn.disabled = false;
+  }
+
+  [100000, 250000, 500000, 1000000].forEach((v, i) => {
+    if (v === n) document.querySelectorAll('.quick-btn')[i].classList.add('active');
+  });
+}
+
+function openModal() {
+  if (nominalSelected < MIN_TOPUP || nominalSelected > MAX_TOPUP) return;
+  const unik = Math.floor(Math.random() * 899) + 100;
+  document.getElementById('modalNominal').textContent = rp(nominalSelected);
+  document.getElementById('modalUnik').textContent = '+ ' + rp(unik) + ' (Kode Unik)';
+  document.getElementById('modalTotal').textContent = rp(nominalSelected + unik);
+  document.getElementById('confirmModal').classList.add('active');
+}
+
+function closeModal() {
+  document.getElementById('confirmModal').classList.remove('active');
+}
+
+function confirmTopup() {
+  closeModal();
+  alert('Mengalihkan ke halaman pembayaran resmi sistem bukaOlshop...');
+}
+
+function loadMutasi() {
+  const url = `https://openapi.bukaolshop.net/v1/user/catatan?token=${TOKEN}&token_user=${TOKEN_USER}&id_user=${ID_USER}&tipe=saldo&page=1&total_data=20`;
+  fetch(url)
+    .then(r => r.json())
+    .then(data => {
+      if (data.code === 200 && data.data) {
+        allMutasi = data.data;
+        renderMutasi();
+      } else { renderFallback(); }
+    })
+    .catch(() => renderFallback());
+}
+
+function renderFallback() {
+  allMutasi = [
+    { informasi_catatan: 'Isi Ulang (Top Up) Saldo Berhasil via Transfer Bank', tipe_jumlah: 'tambah', jumlah_dana: '500000', tanggal: '2026-07-17 10:30:00', saldo_terakhir: '550000', tipe_mutasi: 'topup' },
+    { informasi_catatan: 'Pembelian #TRX001 — Beras Putih Premium 5 Kg', tipe_jumlah: 'kurang', jumlah_dana: '170000', tanggal: '2026-07-16 14:22:00', saldo_terakhir: '50000', tipe_mutasi: 'transaksi' },
+    { informasi_catatan: 'Bonus Cashback Transaksi Selesai', tipe_jumlah: 'tambah', jumlah_dana: '8500', tanggal: '2026-07-15 08:00:00', saldo_terakhir: '220000', tipe_mutasi: 'cashback' },
+    { informasi_catatan: 'Isi Ulang (Top Up) Saldo Berhasil', tipe_jumlah: 'tambah', jumlah_dana: '250000', tanggal: '2026-07-14 09:15:00', saldo_terakhir: '211500', tipe_mutasi: 'topup' },
+  ];
+  renderMutasi();
+}
+
+function filterMutasi(type, el) {
+  currentFilter = type;
+  document.querySelectorAll('.filter-tab').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+  renderMutasi();
+}
+
+function renderMutasi() {
+  const list = document.getElementById('mutasiList');
+  let filtered = allMutasi;
+  if (currentFilter === 'topup') filtered = allMutasi.filter(m => m.informasi_catatan?.toLowerCase().includes('top up') || m.tipe_mutasi === 'topup' || m.informasi_catatan?.toLowerCase().includes('isi ulang'));
+  if (currentFilter === 'beli') filtered = allMutasi.filter(m => m.tipe_jumlah === 'kurang' && m.tipe_mutasi !== 'cashback');
+  if (currentFilter === 'cashback') filtered = allMutasi.filter(m => m.informasi_catatan?.toLowerCase().includes('cashback') || m.tipe_mutasi === 'cashback');
+
+  if (!filtered.length) {
+    list.innerHTML = '<div style="padding: 32px; text-align: center; color: var(--text-muted);"><i class="ph-duotone ph-folder-open" style="font-size:36px;margin-bottom:8px;display:block;"></i> Tidak ada data riwayat untuk kategori ini</div>';
+    return;
+  }
+
+  list.innerHTML = filtered.map(m => {
+    const plus = m.tipe_jumlah === 'tambah';
+    const isTopup = m.informasi_catatan?.toLowerCase().includes('top up') || m.tipe_mutasi === 'topup' || m.informasi_catatan?.toLowerCase().includes('isi ulang');
+    const isCashback = m.informasi_catatan?.toLowerCase().includes('cashback') || m.tipe_mutasi === 'cashback';
+    const icon = isTopup ? 'arrow-down-left' : isCashback ? 'gift' : 'shopping-bag';
+    const iconClass = isTopup ? 'topup' : isCashback ? 'cashback' : 'beli';
+    const date = m.tanggal ? m.tanggal.split(' ')[0] : '—';
+    return `
+      <div class="mutation-item">
+        <div class="mutation-icon ${iconClass}"><i class="ph-bold ph-${icon}"></i></div>
+        <div class="mutation-info">
+          <div class="mutation-title">${m.informasi_catatan || '—'}</div>
+          <div class="mutation-date"><i class="ph-bold ph-calendar"></i> Tanggal: ${date}</div>
+        </div>
+        <div>
+          <div class="mutation-amount ${plus ? 'plus' : 'minus'}">${plus ? '+' : '-'}${rp(parseFloat(m.jumlah_dana || 0))}</div>
+          <div class="mutation-balance">Sisa: ${rp(parseFloat(m.saldo_terakhir || 0))}</div>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+window.addEventListener('DOMContentLoaded', () => { loadMutasi(); });
+</script>
+</body>
+</html>

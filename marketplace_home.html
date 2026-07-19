@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My MBG — Marketplace Bahan Mentah</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<!-- PHOSPHOR ICONS (PROFESSIONAL VECTOR ICONS) -->
+<script src="https://unpkg.com/@phosphor-icons/web@2.1.1"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  :root {
+    --primary-navy: #1E3A8A;
+    --primary-blue: #2563EB;
+    --primary-light: #EFF6FF;
+    --bg-main: #F8FAFC;
+    --card-bg: #FFFFFF;
+    --border-color: #E2E8F0;
+    --text-main: #0F172A;
+    --text-sec: #475569;
+    --text-muted: #64748B;
+    --success: #16A34A;
+    --success-bg: #DCFCE7;
+    --danger: #DC2626;
+    --danger-bg: #FEE2E2;
+    --warn: #D97706;
+    --warn-bg: #FEF3C7;
+    --radius-lg: 18px;
+    --radius-md: 12px;
+    --shadow-sm: 0 2px 8px rgba(15, 23, 42, 0.04);
+    --shadow-md: 0 8px 24px rgba(15, 23, 42, 0.06);
+  }
+
+  body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    background: var(--bg-main);
+    color: var(--text-main);
+    min-height: 100vh;
+    padding-bottom: 110px;
+    line-height: 1.5;
+    font-size: 16px;
+  }
+
+  /* TOP HEADER */
+  .header {
+    background: linear-gradient(135deg, var(--primary-navy) 0%, #1D4ED8 100%);
+    color: #FFFFFF;
+    padding: 16px 20px 20px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 4px 16px rgba(30, 58, 138, 0.2);
+  }
+  .header-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+  .brand-title { font-size: 21px; font-weight: 800; letter-spacing: -0.4px; display: flex; align-items: center; gap: 8px; }
+  .brand-title i { font-size: 26px; color: #93C5FD; }
+  .header-icons { display: flex; gap: 12px; }
+  .icon-btn {
+    width: 44px;
+    height: 44px;
+    border-radius: var(--radius-md);
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    color: #FFFFFF;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .icon-btn:active { transform: scale(0.92); }
+
+  /* SEARCH & SALDO BAR */
+  .search-box {
+    display: flex;
+    align-items: center;
+    background: #FFFFFF;
+    border-radius: var(--radius-md);
+    padding: 6px 16px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+    margin-bottom: 14px;
+  }
+  .search-box input {
+    flex: 1;
+    border: none;
+    outline: none;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-main);
+    padding: 10px 8px;
+  }
+  .search-box i { font-size: 20px; color: var(--primary-blue); }
+
+  .wallet-strip {
+    background: rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    border-radius: var(--radius-md);
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .wallet-label { font-size: 13px; opacity: 0.85; font-weight: 600; display: flex; align-items: center; gap: 6px; }
+  .wallet-amount { font-size: 19px; font-weight: 800; color: #60A5FA; margin-top: 2px; }
+  .btn-topup {
+    background: #FFFFFF;
+    color: var(--primary-navy);
+    border: none;
+    padding: 10px 18px;
+    border-radius: 30px;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 800;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+    transition: 0.2s;
+  }
+  .btn-topup:active { transform: scale(0.95); }
+
+  /* MAIN CONTAINER */
+  .main-container { max-width: 640px; margin: 0 auto; padding: 20px 16px; display: flex; flex-direction: column; gap: 24px; }
+
+  /* KATEGORI SCROLL */
+  .section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
+  .section-title { font-size: 18px; font-weight: 800; color: var(--text-main); display: flex; align-items: center; gap: 8px; }
+  .section-title i { font-size: 22px; color: var(--primary-blue); }
+  
+  .kategori-scroll { display: flex; gap: 12px; overflow-x: auto; padding-bottom: 8px; scrollbar-width: none; }
+  .kategori-scroll::-webkit-scrollbar { display: none; }
+  .kat-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+    cursor: pointer;
+    background: #FFFFFF;
+    border: 1.5px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: 14px 16px;
+    min-width: 96px;
+    transition: all 0.2s ease;
+  }
+  .kat-icon-box {
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+    background: #F1F5F9;
+    color: var(--text-sec);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    transition: all 0.2s ease;
+  }
+  .kat-label { font-size: 14px; font-weight: 700; color: var(--text-sec); text-align: center; }
+  .kat-item.active {
+    border-color: var(--primary-blue);
+    background: var(--primary-light);
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.12);
+  }
+  .kat-item.active .kat-icon-box { background: var(--primary-blue); color: #FFFFFF; }
+  .kat-item.active .kat-label { color: var(--primary-blue); font-weight: 800; }
+
+  /* PRODUK GRID */
+  .produk-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+  @media (max-width: 360px) { .produk-grid { grid-template-columns: 1fr; } }
+
+  .produk-card {
+    background: #FFFFFF;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: all 0.2s ease;
+  }
+  .produk-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
+  
+  .produk-img-box {
+    width: 100%;
+    height: 150px;
+    background: #F1F5F9;
+    border-bottom: 1px solid var(--border-color);
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #94A3B8;
+    font-size: 48px;
+  }
+  .produk-img-box img { width: 100%; height: 100%; object-fit: cover; }
+  .badge-stok {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 800;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .badge-stok.ready { background: var(--success); color: #fff; }
+  .badge-stok.menipis { background: var(--warn); color: #fff; }
+  .badge-stok.habis { background: var(--danger); color: #fff; }
+
+  .produk-body { padding: 14px 14px 16px; display: flex; flex-direction: column; flex: 1; }
+  .produk-name { font-size: 16px; font-weight: 800; color: var(--text-main); line-height: 1.35; margin-bottom: 8px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; flex: 1; }
+  .produk-price-old { font-size: 13px; color: var(--text-muted); text-decoration: line-through; font-weight: 600; }
+  .produk-price { font-size: 18px; font-weight: 800; color: var(--primary-blue); margin-bottom: 14px; }
+
+  .btn-add {
+    width: 100%;
+    padding: 12px;
+    background: var(--primary-light);
+    color: var(--primary-blue);
+    border: 1.5px solid var(--primary-blue);
+    border-radius: var(--radius-md);
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 15px;
+    font-weight: 800;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+  .btn-add:hover { background: var(--primary-blue); color: #fff; }
+  .btn-add:active { transform: scale(0.96); }
+  .btn-add:disabled { border-color: #CBD5E1; background: #F1F5F9; color: #94A3B8; cursor: not-allowed; }
+
+  /* BOTTOM NAVIGATION BAR */
+  .bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: #FFFFFF;
+    border-top: 1px solid var(--border-color);
+    display: flex;
+    justify-content: space-around;
+    padding: 10px 0;
+    box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.06);
+    z-index: 150;
+  }
+  .nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-muted);
+    cursor: pointer;
+    min-width: 68px;
+    padding: 4px 8px;
+    border-radius: 12px;
+    transition: all 0.2s;
+  }
+  .nav-item i { font-size: 24px; }
+  .nav-item.active { color: var(--primary-blue); }
+  .nav-item.active i { transform: scale(1.1); }
+
+  /* TOAST */
+  .toast {
+    position: fixed;
+    top: 130px;
+    left: 50%;
+    transform: translateX(-50%) translateY(-10px);
+    background: #0F172A;
+    color: #FFFFFF;
+    padding: 14px 24px;
+    border-radius: 30px;
+    font-size: 15px;
+    font-weight: 700;
+    opacity: 0;
+    pointer-events: none;
+    transition: 0.3s;
+    z-index: 300;
+    white-space: nowrap;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+</style>
+</head>
+<body>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-top">
+    <div class="brand-title"><i class="ph-bold ph-storefront"></i> My MBG</div>
+    <div class="header-icons">
+      <button class="icon-btn" title="Keranjang Belanja" onclick="showToast('Keranjang Anda aktif')">
+        <i class="ph-bold ph-shopping-bag"></i>
+      </button>
+      <button class="icon-btn" title="Notifikasi" onclick="showToast('Tidak ada notifikasi baru')">
+        <i class="ph-bold ph-bell"></i>
+      </button>
+    </div>
+  </div>
+  
+  <div class="search-box">
+    <i class="ph-bold ph-magnifying-glass"></i>
+    <input type="text" id="searchInput" placeholder="Cari beras, minyak, sayuran..." oninput="onSearch(this.value)">
+  </div>
+
+  <div class="wallet-strip">
+    <div>
+      <div class="wallet-label"><i class="ph-bold ph-wallet"></i> Saldo Dompet Anda:</div>
+      <div class="wallet-amount" id="saldoDisplay">Rp {{saldo_user}}</div>
+    </div>
+    <button class="btn-topup" onclick="showToast('Mengalihkan ke menu Top Up...')">
+      <i class="ph-bold ph-plus-circle"></i> Isi Ulang
+    </button>
+  </div>
+</div>
+
+<div class="main-container">
+
+  <!-- KATEGORI -->
+  <div>
+    <div class="section-header">
+      <div class="section-title"><i class="ph-bold ph-grid-four"></i> Pilih Kategori Bahan</div>
+    </div>
+    <div class="kategori-scroll" id="kategoriScroll"></div>
+  </div>
+
+  <!-- PRODUK UNGGULAN -->
+  <div>
+    <div class="section-header">
+      <div class="section-title" id="produkTitle"><i class="ph-bold ph-package"></i> Semua Produk Berkualitas</div>
+    </div>
+    <div class="produk-grid" id="produkGrid">
+      <div style="grid-column: 1/-1; padding: 40px; text-align: center; color: var(--text-muted);">Memuat daftar produk...</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- BOTTOM NAV -->
+<div class="bottom-nav">
+  <div class="nav-item active"><i class="ph-bold ph-house"></i><span>Beranda</span></div>
+  <div class="nav-item" onclick="showToast('Membuka Riwayat Pesanan...')"><i class="ph-bold ph-receipt"></i><span>Pesanan</span></div>
+  <div class="nav-item" onclick="showToast('Membuka Riwayat Saldo...')"><i class="ph-bold ph-wallet"></i><span>Dompet</span></div>
+  <div class="nav-item" onclick="showToast('Membuka Profil Anda...')"><i class="ph-bold ph-user"></i><span>Akun</span></div>
+</div>
+
+<script>
+const TOKEN = 'ZUFzR2Q2U1Z1Z0R3RzZzc3RUOG1DK1RweEx6c3paVnRkNUVDa0pyTXErUFgvbDUvY3REbWo4NTFVMHI0dWVRUjFaY2pKYllsODZFamhpSXRRUDZ3RSsrZ2c3TXYvcXFOSHERQndWUi9SZnd3QjdnMGtUblVyWGtXeWpSaGR4M1ZFUGFIY3FVNFU4dG9iSmFoRUhZWGZFamsrd0d6ZDJJUEdiSVIxUGE3TmZlczJGeXI3Z01rOVRyRjJuMVp5ZWZI';
+const BASE = 'https://openapi.bukaolshop.net/v1';
+
+let allProduk = [];
+let activeKatId = null;
+let searchQuery = '';
+
+function rp(n) { return 'Rp ' + Math.round(n || 0).toLocaleString('id-ID'); }
+
+(function() {
+  const el = document.getElementById('saldoDisplay');
+  const n = parseFloat(el.textContent.replace(/[^0-9]/g, ''));
+  if (!isNaN(n) && n > 0) el.textContent = rp(n);
+})();
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.innerHTML = `<i class="ph-bold ph-info"></i> <span>${msg}</span>`;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2800);
+}
+
+function renderKategoriFallback() {
+  const data = [
+    { id_kategori: '1', nama_kategori: 'Semua', icon: 'squares-four' },
+    { id_kategori: '2', nama_kategori: 'Beras & Padi', icon: 'plant' },
+    { id_kategori: '3', nama_kategori: 'Sayur Segar', icon: 'carrot' },
+    { id_kategori: '4', nama_kategori: 'Buah-buahan', icon: 'apple' },
+    { id_kategori: '5', nama_kategori: 'Daging Segar', icon: 'fish-simple' },
+    { id_kategori: '6', nama_kategori: 'Ikan & Laut', icon: 'fish' },
+    { id_kategori: '7', nama_kategori: 'Bumbu Dapur', icon: 'pepper' },
+    { id_kategori: '8', nama_kategori: 'Minyak & Gula', icon: 'drop' },
+  ];
+  renderKategori(data);
+}
+
+const ICONS = ['squares-four', 'plant', 'carrot', 'apple', 'fish-simple', 'fish', 'pepper', 'drop'];
+function renderKategori(data) {
+  const container = document.getElementById('kategoriScroll');
+  container.innerHTML = data.map((k, i) => `
+    <div class="kat-item${i === 0 ? ' active' : ''}" onclick="filterKat('${k.id_kategori}', this)">
+      <div class="kat-icon-box"><i class="ph-bold ph-${k.icon || ICONS[i % ICONS.length]}"></i></div>
+      <div class="kat-label">${k.nama_kategori}</div>
+    </div>`).join('');
+}
+
+function filterKat(id, el) {
+  document.querySelectorAll('.kat-item').forEach(e => e.classList.remove('active'));
+  el.classList.add('active');
+  activeKatId = (id === '1') ? null : id;
+  document.getElementById('produkTitle').innerHTML = activeKatId ? '<i class="ph-bold ph-tag"></i> Produk Kategori Pilihan' : '<i class="ph-bold ph-package"></i> Semua Produk Berkualitas';
+  renderProdukGrid();
+}
+
+function loadProduk() {
+  fetch(`${BASE}/app/produk?token=${TOKEN}&page=1&total_data=20`)
+    .then(r => r.json())
+    .then(d => { if (d.code === 200 && d.data) { allProduk = d.data; renderProdukGrid(); } else renderProdukFallback(); })
+    .catch(() => renderProdukFallback());
+}
+
+function renderProdukFallback() {
+  allProduk = [
+    { id_produk: 'p1', nama_produk: 'Beras Putih Premium 5 Kg', harga_produk: 85000, harga_produk_asli: 95000, stok: 25, icon: 'plant' },
+    { id_produk: 'p2', nama_produk: 'Minyak Goreng Sawit 2 Liter', harga_produk: 34000, harga_produk_asli: 0, stok: 18, icon: 'drop' },
+    { id_produk: 'p3', nama_produk: 'Daging Sapi Segar 500 Gram', harga_produk: 75000, harga_produk_asli: 80000, stok: 3, icon: 'fish-simple' },
+    { id_produk: 'p4', nama_produk: 'Telur Ayam Pilihan 1 Tray (30 Butir)', harga_produk: 55000, harga_produk_asli: 0, stok: 0, icon: 'egg' },
+    { id_produk: 'p5', nama_produk: 'Sayur Bayam Segar 200 Gram', harga_produk: 8000, harga_produk_asli: 0, stok: 30, icon: 'carrot' },
+    { id_produk: 'p6', nama_produk: 'Ikan Lele Segar 1 Kg', harga_produk: 28000, harga_produk_asli: 0, stok: 12, icon: 'fish' },
+  ];
+  renderProdukGrid();
+}
+
+function renderProdukGrid() {
+  const grid = document.getElementById('produkGrid');
+  let filtered = allProduk;
+  if (searchQuery) filtered = filtered.filter(p => (p.nama_produk || '').toLowerCase().includes(searchQuery));
+  
+  if (!filtered.length) {
+    grid.innerHTML = '<div style="grid-column:1/-1;padding:40px;text-align:center;color:var(--text-muted);font-size:17px;"><i class="ph-duotone ph-folder-open" style="font-size:48px;display:block;margin:0 auto 12px;"></i> Produk yang Anda cari tidak ditemukan</div>';
+    return;
+  }
+
+  grid.innerHTML = filtered.map(p => {
+    const stok = p.stok || 0;
+    const habis = stok === 0;
+    const menipis = !habis && stok < 5;
+    const diskon = p.harga_produk_asli && p.harga_produk_asli > p.harga_produk;
+    return `
+      <div class="produk-card">
+        <div class="produk-img-box">
+          ${p.gambar_utama ? `<img src="${p.gambar_utama}" onerror="this.style.display='none'">` : `<i class="ph-duotone ph-${p.icon || 'package'}"></i>`}
+          <span class="badge-stok ${habis ? 'habis' : menipis ? 'menipis' : 'ready'}">
+            <i class="ph-bold ph-${habis ? 'warning-circle' : menipis ? 'info' : 'check'}"></i>
+            ${habis ? 'Stok Habis' : menipis ? `Sisa ${stok}` : 'Ready Stock'}
+          </span>
+        </div>
+        <div class="produk-body">
+          <div class="produk-name">${p.nama_produk || 'Produk MBG'}</div>
+          ${diskon ? `<div class="produk-price-old">${rp(p.harga_produk_asli)}</div>` : ''}
+          <div class="produk-price">${rp(p.harga_produk || 0)}</div>
+          <button class="btn-add" ${habis ? 'disabled' : ''} onclick="addToCart('${(p.nama_produk || '').replace(/'/g, '')}')">
+            <i class="ph-bold ph-${habis ? 'prohibit' : 'shopping-cart-plus'}"></i>
+            <span>${habis ? 'Stok Habis' : '+ Tambah Pesanan'}</span>
+          </button>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+function addToCart(nama) {
+  showToast(`"${nama}" berhasil dimasukkan ke keranjang`);
+}
+
+let timer = null;
+function onSearch(val) {
+  clearTimeout(timer);
+  searchQuery = val.trim().toLowerCase();
+  timer = setTimeout(renderProdukGrid, 300);
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+  renderKategoriFallback();
+  loadProduk();
+});
+</script>
+</body>
+</html>

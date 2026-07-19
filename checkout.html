@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Konfirmasi Pesanan — My MBG</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<!-- PHOSPHOR ICONS (PROFESSIONAL VECTOR ICONS) -->
+<script src="https://unpkg.com/@phosphor-icons/web@2.1.1"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  :root {
+    --primary-navy: #1E3A8A;
+    --primary-blue: #2563EB;
+    --primary-light: #EFF6FF;
+    --bg-main: #F8FAFC;
+    --card-bg: #FFFFFF;
+    --border-color: #E2E8F0;
+    --text-main: #0F172A;
+    --text-sec: #475569;
+    --text-muted: #64748B;
+    --success: #16A34A;
+    --success-bg: #DCFCE7;
+    --danger: #DC2626;
+    --danger-bg: #FEE2E2;
+    --warn: #D97706;
+    --warn-bg: #FEF3C7;
+    --radius-lg: 18px;
+    --radius-md: 12px;
+    --shadow-sm: 0 2px 8px rgba(15, 23, 42, 0.04);
+    --shadow-md: 0 8px 24px rgba(15, 23, 42, 0.06);
+    --shadow-lg: 0 20px 32px rgba(15, 23, 42, 0.12);
+  }
+  
+  body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    background: var(--bg-main);
+    color: var(--text-main);
+    min-height: 100vh;
+    padding-bottom: 140px;
+    line-height: 1.5;
+    font-size: 16px;
+  }
+
+  /* TOP HEADER */
+  .header {
+    background: linear-gradient(135deg, var(--primary-navy) 0%, #1D4ED8 100%);
+    color: #FFFFFF;
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 4px 16px rgba(30, 58, 138, 0.2);
+  }
+  .header-back {
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    color: #FFFFFF;
+    width: 44px;
+    height: 44px;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+  }
+  .header-back:active { transform: scale(0.92); background: rgba(255, 255, 255, 0.25); }
+  .header-title-group { flex: 1; }
+  .header h1 { font-size: 19px; font-weight: 800; letter-spacing: -0.3px; }
+  .header-subtitle { font-size: 13px; opacity: 0.85; margin-top: 2px; font-weight: 500; }
+  
+  .countdown-badge {
+    background: rgba(255, 255, 255, 0.18);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 30px;
+    padding: 6px 14px;
+    font-size: 14px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .countdown-badge i { font-size: 18px; color: #93C5FD; }
+  .countdown-badge.urgent { background: var(--danger); border-color: #EF4444; animation: pulse 1s infinite; }
+  @keyframes pulse { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.04); opacity: 0.85; } }
+
+  /* MAIN CONTAINER */
+  .main-container { max-width: 640px; margin: 0 auto; padding: 16px; display: flex; flex-direction: column; gap: 16px; }
+  
+  .section-card {
+    background: var(--card-bg);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+  }
+  
+  .section-header {
+    padding: 16px 20px;
+    background: #F8FAFC;
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .section-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    background: var(--primary-light);
+    color: var(--primary-blue);
+  }
+  .section-title { font-size: 16px; font-weight: 800; color: var(--text-main); }
+  .section-desc { font-size: 13px; color: var(--text-muted); font-weight: 500; }
+
+  /* PRODUCT ITEMS */
+  .product-item {
+    display: flex;
+    gap: 16px;
+    padding: 18px 20px;
+    align-items: center;
+    border-bottom: 1px solid var(--border-color);
+  }
+  .product-item:last-child { border-bottom: none; }
+  .product-img {
+    width: 72px;
+    height: 72px;
+    border-radius: var(--radius-md);
+    background: #F1F5F9;
+    border: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #94A3B8;
+    font-size: 32px;
+    flex-shrink: 0;
+    overflow: hidden;
+  }
+  .product-img img { width: 100%; height: 100%; object-fit: cover; }
+  .product-info { flex: 1; }
+  .product-name { font-size: 16px; font-weight: 700; color: var(--text-main); line-height: 1.35; margin-bottom: 6px; }
+  .product-meta { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; }
+  .product-qty-pill {
+    background: #F1F5F9;
+    color: var(--text-sec);
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 600;
+  }
+  .product-price { font-size: 17px; font-weight: 800; color: var(--primary-blue); }
+
+  /* SENIOR FRIENDLY FORM INPUTS */
+  .form-padding { padding: 20px; }
+  .input-label { font-size: 15px; font-weight: 700; color: var(--text-main); margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
+  .input-label i { font-size: 18px; color: var(--primary-blue); }
+  
+  .select-box, .date-box {
+    width: 100%;
+    padding: 15px 18px;
+    border: 1.5px solid var(--border-color);
+    border-radius: var(--radius-md);
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-main);
+    background: #FFFFFF;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    min-height: 52px;
+  }
+  .select-box:focus, .date-box:focus {
+    outline: none;
+    border-color: var(--primary-blue);
+    box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.12);
+  }
+  .schedule-grid { display: grid; grid-template-columns: 1fr; gap: 14px; }
+  @media (min-width: 480px) { .schedule-grid { grid-template-columns: 1.1fr 1fr; } }
+
+  /* SUMMARY & SPLIT PAYMENT */
+  .summary-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 20px;
+    font-size: 15px;
+  }
+  .summary-row.total {
+    background: #F8FAFC;
+    border-top: 1px solid var(--border-color);
+    padding: 16px 20px;
+    margin-top: 4px;
+  }
+  .summary-row.total .lbl { font-size: 16px; font-weight: 800; color: var(--text-main); }
+  .summary-row.total .val { font-size: 21px; font-weight: 800; color: var(--primary-blue); }
+  .lbl { color: var(--text-sec); font-weight: 500; }
+  .val { font-weight: 700; color: var(--text-main); }
+
+  .split-container { padding: 16px 20px; display: flex; flex-direction: column; gap: 14px; }
+  .split-row { display: flex; align-items: center; gap: 12px; }
+  .split-info { width: 140px; flex-shrink: 0; }
+  .split-title { font-size: 14px; font-weight: 700; color: var(--text-main); }
+  .split-pct { font-size: 12px; color: var(--text-muted); font-weight: 600; }
+  .split-bar-bg { flex: 1; height: 8px; background: #F1F5F9; border-radius: 4px; overflow: hidden; }
+  .split-bar-fill { height: 100%; border-radius: 4px; transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
+  .split-amount { font-size: 14px; font-weight: 700; color: var(--text-main); width: 100px; text-align: right; flex-shrink: 0; }
+
+  /* WALLET & FLOATING PAY BAR */
+  .bottom-action-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(255, 255, 255, 0.98);
+    backdrop-filter: blur(16px);
+    border-top: 1px solid var(--border-color);
+    padding: 16px 20px;
+    box-shadow: 0 -8px 24px rgba(15, 23, 42, 0.06);
+    z-index: 150;
+  }
+  .bottom-content {
+    max-width: 640px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .wallet-card-mini {
+    background: #0F172A;
+    border-radius: var(--radius-md);
+    padding: 12px 16px;
+    color: #FFFFFF;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .wallet-left { display: flex; align-items: center; gap: 12px; }
+  .wallet-icon { width: 38px; height: 38px; border-radius: 10px; background: rgba(255, 255, 255, 0.12); color: #60A5FA; display: flex; align-items: center; justify-content: center; font-size: 20px; }
+  .wallet-label { font-size: 12px; opacity: 0.8; font-weight: 500; }
+  .wallet-balance { font-size: 17px; font-weight: 800; color: #60A5FA; }
+  .wallet-status { font-size: 13px; font-weight: 700; display: flex; align-items: center; gap: 6px; padding: 6px 12px; border-radius: 20px; }
+  .wallet-status.ok { background: rgba(22, 163, 74, 0.2); color: #86EFAC; }
+  .wallet-status.low { background: rgba(220, 38, 38, 0.2); color: #FCA5A5; }
+
+  .btn-submit {
+    width: 100%;
+    min-height: 54px;
+    padding: 15px;
+    background: linear-gradient(135deg, var(--primary-blue) 0%, #1D4ED8 100%);
+    color: #FFFFFF;
+    border: none;
+    border-radius: var(--radius-md);
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 16px;
+    font-weight: 800;
+    cursor: pointer;
+    box-shadow: 0 4px 14px rgba(37, 99, 235, 0.3);
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+  }
+  .btn-submit:hover { background: #1D4ED8; }
+  .btn-submit:active { transform: scale(0.98); }
+  .btn-submit:disabled { background: #94A3B8; box-shadow: none; cursor: not-allowed; transform: none; }
+
+  /* ALERTS */
+  .alert-box {
+    padding: 16px;
+    border-radius: var(--radius-md);
+    font-size: 15px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    line-height: 1.4;
+  }
+  .alert-box i { font-size: 24px; flex-shrink: 0; }
+  .alert-box.error { background: var(--danger-bg); color: var(--danger); border: 1px solid #FECACA; }
+  .alert-box.warn { background: var(--warn-bg); color: var(--warn); border: 1px solid #FDE68A; }
+  .alert-box.success { background: var(--success-bg); color: var(--success); border: 1px solid #BBF7D0; }
+
+  /* MODAL */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.6);
+    backdrop-filter: blur(4px);
+    z-index: 300;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+  }
+  .modal-overlay.active { opacity: 1; pointer-events: all; }
+  .modal-box {
+    background: var(--card-bg);
+    border-radius: 22px;
+    padding: 28px 24px;
+    width: 100%;
+    max-width: 420px;
+    box-shadow: var(--shadow-lg);
+    transform: scale(0.95);
+    transition: transform 0.3s ease;
+    text-align: center;
+  }
+  .modal-overlay.active .modal-box { transform: scale(1); }
+  .modal-icon { width: 56px; height: 56px; border-radius: 16px; background: var(--primary-light); color: var(--primary-blue); display: flex; align-items: center; justify-content: center; font-size: 28px; margin: 0 auto 16px; }
+  .modal-title { font-size: 19px; font-weight: 800; color: var(--text-main); margin-bottom: 8px; }
+  .modal-desc { font-size: 14px; color: var(--text-sec); margin-bottom: 20px; line-height: 1.5; }
+  .modal-price-highlight { font-size: 26px; font-weight: 800; color: var(--primary-blue); background: var(--primary-light); padding: 12px; border-radius: 14px; margin: 16px 0; }
+  
+  .modal-actions { display: flex; flex-direction: column; gap: 10px; }
+  .btn-modal-yes { padding: 15px; border-radius: var(--radius-md); background: var(--primary-blue); color: #fff; font-size: 16px; font-weight: 800; border: none; cursor: pointer; transition: 0.2s; }
+  .btn-modal-yes:hover { background: var(--primary-navy); }
+  .btn-modal-no { padding: 14px; border-radius: var(--radius-md); background: #F1F5F9; color: var(--text-sec); font-size: 15px; font-weight: 700; border: none; cursor: pointer; transition: 0.2s; }
+  .btn-modal-no:hover { background: #E2E8F0; color: var(--text-main); }
+
+  .spinner { width: 22px; height: 22px; border: 3px solid rgba(255,255,255,0.3); border-top-color: #fff; border-radius: 50%; animation: spin 0.8s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .badge-stok { padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: 700; display: inline-flex; align-items: center; gap: 4px; }
+  .badge-stok.habis { background: var(--danger-bg); color: var(--danger); }
+  .badge-stok.menipis { background: var(--warn-bg); color: var(--warn); }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <button class="header-back" onclick="history.back()" title="Kembali">
+    <i class="ph-bold ph-arrow-left"></i>
+  </button>
+  <div class="header-title-group">
+    <h1>Konfirmasi Pesanan</h1>
+    <div class="header-subtitle">Periksa pesanan & jadwal sebelum bayar</div>
+  </div>
+  <div class="countdown-badge" id="countdownBadge">
+    <i class="ph-bold ph-timer"></i> <span id="countdownDisplay">30:00</span>
+  </div>
+</div>
+
+<!-- MAIN CONTENT -->
+<div class="main-container">
+
+  <!-- ALERT NOTIFIKASI -->
+  <div id="alertBox" style="display:none" class="alert-box"></div>
+
+  <!-- 1. DAFTAR PRODUK -->
+  <div class="section-card">
+    <div class="section-header">
+      <div class="section-icon"><i class="ph-bold ph-shopping-bag"></i></div>
+      <div>
+        <div class="section-title">Daftar Belanja Anda</div>
+        <div class="section-desc">Bahan mentah pilihan berkualitas</div>
+      </div>
+    </div>
+    <div id="productList">
+      <div style="padding: 32px; text-align: center; color: var(--text-muted);">Memuat produk...</div>
+    </div>
+  </div>
+
+  <!-- 2. ALAMAT PENGIRIMAN -->
+  <div class="section-card">
+    <div class="section-header">
+      <div class="section-icon"><i class="ph-bold ph-map-pin"></i></div>
+      <div>
+        <div class="section-title">Alamat Pengiriman</div>
+        <div class="section-desc">Pilih lokasi pengiriman dapur/rumah</div>
+      </div>
+    </div>
+    <div class="form-padding">
+      <label class="input-label" for="addressSelect"><i class="ph-bold ph-buildings"></i> Alamat Tujuan:</label>
+      <select id="addressSelect" class="select-box">
+        <option value="">— Tekan untuk Pilih Alamat —</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- 3. JADWAL PENGIRIMAN -->
+  <div class="section-card">
+    <div class="section-header">
+      <div class="section-icon"><i class="ph-bold ph-calendar-check"></i></div>
+      <div>
+        <div class="section-title">Jadwal Pengiriman</div>
+        <div class="section-desc">Tentukan hari dan jam penerimaan bahan</div>
+      </div>
+    </div>
+    <div class="form-padding">
+      <div class="schedule-grid">
+        <div>
+          <label class="input-label" for="deliveryDate"><i class="ph-bold ph-calendar"></i> Pilih Tanggal:</label>
+          <input type="date" id="deliveryDate" class="date-box">
+        </div>
+        <div>
+          <label class="input-label" for="deliverySession"><i class="ph-bold ph-clock"></i> Pilih Waktu (Sesi):</label>
+          <select id="deliverySession" class="select-box">
+            <option value="">— Pilih Jam —</option>
+            <option value="pagi">Pagi (08.00 – 12.00 WIB)</option>
+            <option value="siang">Siang (12.00 – 16.00 WIB)</option>
+            <option value="sore">Sore (16.00 – 20.00 WIB)</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. RINGKASAN BIAYA -->
+  <div class="section-card">
+    <div class="section-header">
+      <div class="section-icon"><i class="ph-bold ph-receipt"></i></div>
+      <div>
+        <div class="section-title">Ringkasan Pembayaran</div>
+        <div class="section-desc">Perincian total belanja & ongkir</div>
+      </div>
+    </div>
+    <div class="summary-row"><span class="lbl">Subtotal Harga Produk</span><span class="val" id="subtotalVal">Rp 0</span></div>
+    <div class="summary-row"><span class="lbl">Ongkos Kirim Ekspedisi</span><span class="val" id="ongkirVal">Rp 0</span></div>
+    <div class="summary-row" id="rowDiskon" style="display:none;"><span class="lbl" style="color:var(--success)">Potongan Diskon</span><span class="val" style="color:var(--success)" id="discountVal">- Rp 0</span></div>
+    <div class="summary-row total"><span class="lbl">Total Bayar</span><span class="val" id="totalVal">Rp 0</span></div>
+  </div>
+
+  <!-- 5. DISTRIBUSI DANA -->
+  <div class="section-card">
+    <div class="section-header">
+      <div class="section-icon"><i class="ph-bold ph-chart-pie-slice"></i></div>
+      <div>
+        <div class="section-title">Transparansi Distribusi Dana</div>
+        <div class="section-desc">Sesuai aturan program MBG & Cashback</div>
+      </div>
+    </div>
+    <div class="split-container" id="splitRows"></div>
+  </div>
+
+</div>
+
+<!-- FLOATING WALLET & PAY BAR -->
+<div class="bottom-action-bar">
+  <div class="bottom-content">
+    <div class="wallet-card-mini">
+      <div class="wallet-left">
+        <div class="wallet-icon"><i class="ph-bold ph-wallet"></i></div>
+        <div>
+          <div class="wallet-label">Saldo Dompet (Wallet) Anda:</div>
+          <div class="wallet-balance" id="walletDisplay">Rp {{saldo_user}}</div>
+        </div>
+      </div>
+      <div id="walletStatusBadge" class="wallet-status ok">
+        <i class="ph-bold ph-check-circle"></i> <span>Saldo Cukup</span>
+      </div>
+    </div>
+    
+    <button class="btn-submit" id="btnPay" onclick="handlePayment()">
+      <i class="ph-bold ph-credit-card"></i>
+      <span id="btnPayLabel">BAYAR PESANAN SEKARANG</span>
+    </button>
+  </div>
+</div>
+
+<!-- MODAL KONFIRMASI -->
+<div class="modal-overlay" id="confirmModal">
+  <div class="modal-box">
+    <div class="modal-icon"><i class="ph-bold ph-shopping-bag"></i></div>
+    <h3 class="modal-title">Sudah Yakin dengan Pesanan?</h3>
+    <p class="modal-desc">Saldo dompet Anda akan terpotong secara otomatis sebesar:</p>
+    <div class="modal-price-highlight" id="confirmTotal">Rp 0</div>
+    <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 24px;">Pastikan alamat & jadwal pengiriman sudah benar.</p>
+    <div class="modal-actions">
+      <button class="btn-modal-yes" onclick="confirmPayment()">Ya, Bayar Sekarang</button>
+      <button class="btn-modal-no" onclick="closeModal()">Batal Periksa Lagi</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// KONFIGURASI SPLIT DANA
+const SPLIT_CONFIG = {
+  supplier:  { label: 'Supplier Produk',    pct: 80, color: '#2563EB' },
+  pe1:       { label: 'PE1 (Pendamping)',   pct: 5,  color: '#3B82F6' },
+  pe2:       { label: 'PE2 (Pengawas)',     pct: 5,  color: '#60A5FA' },
+  platform:  { label: 'Biaya Platform',     pct: 5,  color: '#93C5FD' },
+  cashback:  { label: 'Cashback Principal', pct: 5,  color: '#16A34A' },
+};
+
+let checkoutData = null;
+let countdownSec = 30 * 60;
+let countdownTimer = null;
+let isProcessing = false;
+
+function rp(n) {
+  return 'Rp ' + Math.round(n || 0).toLocaleString('id-ID');
+}
+
+function parseCheckoutData() {
+  try {
+    const raw = '{{json_checkout}}';
+    if (raw.startsWith('{')) {
+      checkoutData = JSON.parse(raw);
+    }
+  } catch(e) {}
+
+  if (!checkoutData || typeof checkoutData !== 'object') {
+    checkoutData = {
+      produk: [
+        { id_produk: '001', nama_produk: 'Beras Putih Premium 5 Kg', gambar_utama: '', harga: 85000, qty: 2, stok: 20 },
+        { id_produk: '002', nama_produk: 'Minyak Goreng Sawit 2 Liter', gambar_utama: '', harga: 34000, qty: 1, stok: 8 },
+      ],
+      alamat: [
+        { id: 'a1', label: 'Dapur Utama — Jl. Merdeka Raya No. 10, Jakarta Pusat', default: true },
+        { id: 'a2', label: 'Dapur Cabang — Jl. Sudirman Kav. 52, Jakarta Selatan' },
+      ],
+      ongkir: 15000,
+      diskon: 0,
+    };
+  }
+}
+
+function renderProducts() {
+  const list = document.getElementById('productList');
+  const produk = checkoutData.produk || [];
+  if (!produk.length) {
+    list.innerHTML = '<div style="padding: 32px; text-align: center; color: var(--text-muted); font-size: 16px;">Tidak ada produk dalam pesanan</div>';
+    return;
+  }
+  let html = '';
+  produk.forEach((p, i) => {
+    const subtotal = (p.harga || 0) * (p.qty || 1);
+    const habis = (p.stok || 99) === 0;
+    const menipis = !habis && (p.stok || 99) < 5;
+    html += `
+      <div class="product-item">
+        <div class="product-img">${p.gambar_utama ? `<img src="${p.gambar_utama}">` : '<i class="ph-duotone ph-package"></i>'}</div>
+        <div class="product-info">
+          <div class="product-name">${p.nama_produk || p.nama_barang || 'Produk MBG'}</div>
+          ${habis ? '<span class="badge-stok habis"><i class="ph-bold ph-warning-circle"></i> Stok Habis</span>' : menipis ? `<span class="badge-stok menipis"><i class="ph-bold ph-info"></i> Sisa ${p.stok} unit</span>` : ''}
+          <div class="product-meta" style="margin-top: 8px;">
+            <span class="product-qty-pill">${p.qty || 1} x ${rp(p.harga || 0)}</span>
+            <span class="product-price">${rp(subtotal)}</span>
+          </div>
+        </div>
+      </div>`;
+  });
+  list.innerHTML = html;
+}
+
+function renderAddress() {
+  const sel = document.getElementById('addressSelect');
+  const alamat = checkoutData.alamat || [];
+  alamat.forEach(a => {
+    const opt = document.createElement('option');
+    opt.value = a.id;
+    opt.textContent = a.label;
+    if (a.default) opt.selected = true;
+    sel.appendChild(opt);
+  });
+}
+
+function calcSummary() {
+  const produk = checkoutData.produk || [];
+  let subtotal = 0;
+  produk.forEach(p => { subtotal += (p.harga || 0) * (p.qty || 1); });
+  const ongkir = checkoutData.ongkir || 0;
+  const diskon = checkoutData.diskon || 0;
+  const total = subtotal + ongkir - diskon;
+
+  document.getElementById('subtotalVal').textContent = rp(subtotal);
+  document.getElementById('ongkirVal').textContent = rp(ongkir);
+  if (diskon > 0) {
+    document.getElementById('rowDiskon').style.display = 'flex';
+    document.getElementById('discountVal').textContent = '- ' + rp(diskon);
+  }
+  document.getElementById('totalVal').textContent = rp(total);
+  document.getElementById('confirmTotal').textContent = rp(total);
+
+  renderSplit(subtotal);
+  return { subtotal, ongkir, diskon, total };
+}
+
+function renderSplit(subtotal) {
+  const container = document.getElementById('splitRows');
+  let html = '';
+  Object.values(SPLIT_CONFIG).forEach(s => {
+    const amount = subtotal * s.pct / 100;
+    html += `
+      <div class="split-row">
+        <div class="split-info">
+          <div class="split-title">${s.label}</div>
+          <div class="split-pct">${s.pct}% Bagian</div>
+        </div>
+        <div class="split-bar-bg"><div class="split-bar-fill" style="width:${s.pct}%;background:${s.color}"></div></div>
+        <div class="split-amount">${rp(amount)}</div>
+      </div>`;
+  });
+  container.innerHTML = html;
+}
+
+function checkWallet() {
+  const saldoRaw = '{{saldo_user}}';
+  let saldo = parseFloat(saldoRaw.replace(/[^0-9.]/g, '')) || 0;
+
+  const walletEl = document.getElementById('walletDisplay');
+  const badgeEl = document.getElementById('walletStatusBadge');
+  const btnPay = document.getElementById('btnPay');
+  const { total } = calcSummary();
+
+  if (!isNaN(saldo) && saldo > 0) walletEl.textContent = rp(saldo);
+
+  if (saldo > 0 && saldo >= total) {
+    badgeEl.className = 'wallet-status ok';
+    badgeEl.innerHTML = '<i class="ph-bold ph-check-circle"></i> <span>Saldo Cukup</span>';
+    btnPay.disabled = false;
+  } else if (saldo > 0 && saldo < total) {
+    badgeEl.className = 'wallet-status low';
+    badgeEl.innerHTML = '<i class="ph-bold ph-warning"></i> <span>Saldo Kurang</span>';
+    btnPay.disabled = true;
+    showAlert('error', `Saldo dompet tidak cukup (Kurang ${rp(total - saldo)}). Silakan Top Up terlebih dahulu.`);
+  } else {
+    badgeEl.className = 'wallet-status ok';
+    badgeEl.innerHTML = '<i class="ph-bold ph-shield-check"></i> <span>Mode Demo</span>';
+    btnPay.disabled = false;
+  }
+
+  const habis = (checkoutData.produk || []).some(p => (p.stok || 99) === 0);
+  if (habis) {
+    btnPay.disabled = true;
+    showAlert('error', 'Terdapat produk yang stoknya habis. Silakan periksa kembali keranjang Anda.');
+  }
+}
+
+function startCountdown() {
+  countdownTimer = setInterval(() => {
+    countdownSec--;
+    const m = String(Math.floor(countdownSec / 60)).padStart(2, '0');
+    const s = String(countdownSec % 60).padStart(2, '0');
+    document.getElementById('countdownDisplay').textContent = `${m}:${s}`;
+    if (countdownSec <= 300) {
+      document.getElementById('countdownBadge').classList.add('urgent');
+    }
+    if (countdownSec <= 0) {
+      clearInterval(countdownTimer);
+      document.getElementById('btnPay').disabled = true;
+      showAlert('error', 'Waktu pembayaran telah habis. Silakan ulangi pesanan.');
+    }
+  }, 1000);
+}
+
+function showAlert(type, msg) {
+  const el = document.getElementById('alertBox');
+  const icon = type === 'error' ? 'warning-circle' : type === 'warn' ? 'info' : 'check-circle';
+  el.className = `alert-box ${type}`;
+  el.innerHTML = `<i class="ph-bold ph-${icon}"></i> <div>${msg}</div>`;
+  el.style.display = 'flex';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function handlePayment() {
+  if (isProcessing) return;
+  const addr = document.getElementById('addressSelect').value;
+  if (!addr) { showAlert('warn', 'Silakan pilih Alamat Pengiriman terlebih dahulu.'); return; }
+  const date = document.getElementById('deliveryDate').value;
+  if (!date) { showAlert('warn', 'Silakan pilih Tanggal Pengiriman.'); return; }
+  const session = document.getElementById('deliverySession').value;
+  if (!session) { showAlert('warn', 'Silakan pilih Waktu / Jam Pengiriman.'); return; }
+  document.getElementById('confirmModal').classList.add('active');
+}
+
+function closeModal() {
+  document.getElementById('confirmModal').classList.remove('active');
+}
+
+function confirmPayment() {
+  if (isProcessing) return;
+  isProcessing = true;
+  closeModal();
+  clearInterval(countdownTimer);
+  const btn = document.getElementById('btnPay');
+  btn.disabled = true;
+  document.getElementById('btnPayLabel').innerHTML = '<div class="spinner"></div> Memproses Pembayaran...';
+  setTimeout(() => {
+    showAlert('success', 'Pembayaran Berhasil! Pesanan Anda telah diterima dan segera diproses oleh supplier.');
+    btn.innerHTML = 'PEMBAYARAN BERHASIL';
+    btn.style.background = 'linear-gradient(135deg, #16A34A, #15803D)';
+  }, 1800);
+}
+
+function setMinDate() {
+  const today = new Date();
+  today.setDate(today.getDate() + 1);
+  document.getElementById('deliveryDate').min = today.toISOString().split('T')[0];
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+  parseCheckoutData();
+  renderProducts();
+  renderAddress();
+  calcSummary();
+  checkWallet();
+  startCountdown();
+  setMinDate();
+});
+</script>
+</body>
+</html>

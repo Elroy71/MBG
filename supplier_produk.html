@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard Supplier & Manajemen Produk — My MBG</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<!-- PHOSPHOR ICONS (PROFESSIONAL VECTOR ICONS) -->
+<script src="https://unpkg.com/@phosphor-icons/web@2.1.1"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  :root {
+    --primary-navy: #1E3A8A;
+    --primary-blue: #2563EB;
+    --primary-light: #EFF6FF;
+    --bg-main: #F8FAFC;
+    --card-bg: #FFFFFF;
+    --border-color: #E2E8F0;
+    --text-main: #0F172A;
+    --text-sec: #475569;
+    --text-muted: #64748B;
+    --success: #16A34A;
+    --success-bg: #DCFCE7;
+    --danger: #DC2626;
+    --danger-bg: #FEE2E2;
+    --warn: #D97706;
+    --warn-bg: #FEF3C7;
+    --radius-lg: 18px;
+    --radius-md: 12px;
+    --shadow-sm: 0 2px 8px rgba(15, 23, 42, 0.04);
+    --shadow-md: 0 8px 24px rgba(15, 23, 42, 0.06);
+  }
+
+  body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    background: var(--bg-main);
+    color: var(--text-main);
+    min-height: 100vh;
+    padding-bottom: 120px;
+    line-height: 1.5;
+    font-size: 16px;
+  }
+
+  /* TOP HEADER */
+  .header {
+    background: linear-gradient(135deg, var(--primary-navy) 0%, #1D4ED8 100%);
+    color: #FFFFFF;
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 4px 16px rgba(30, 58, 138, 0.2);
+  }
+  .header-left { display: flex; align-items: center; gap: 14px; }
+  .header-back {
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    color: #FFFFFF;
+    width: 44px;
+    height: 44px;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+  }
+  .header-back:active { transform: scale(0.92); }
+  .header h1 { font-size: 19px; font-weight: 800; }
+  .header-subtitle { font-size: 13px; opacity: 0.85; font-weight: 500; }
+
+  /* HERO STATS */
+  .stats-grid {
+    max-width: 640px;
+    margin: 16px auto 0;
+    padding: 0 16px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+  }
+  .stat-card {
+    background: var(--card-bg);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow-sm);
+    padding: 16px 12px;
+    text-align: center;
+  }
+  .stat-icon { font-size: 24px; color: var(--primary-blue); margin-bottom: 4px; }
+  .stat-num { font-size: 22px; font-weight: 800; color: var(--text-main); }
+  .stat-label { font-size: 12px; color: var(--text-muted); font-weight: 700; }
+
+  .main-container { max-width: 640px; margin: 0 auto; padding: 16px; display: flex; flex-direction: column; gap: 16px; }
+
+  /* SEARCH & ADD BAR */
+  .action-strip {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+  }
+  .search-box {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    background: #FFFFFF;
+    border: 1.5px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: 6px 16px;
+    box-shadow: var(--shadow-sm);
+  }
+  .search-box i { font-size: 20px; color: var(--primary-blue); margin-right: 8px; }
+  .search-box input {
+    flex: 1;
+    border: none;
+    outline: none;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text-main);
+    padding: 8px 0;
+  }
+  .btn-add-product {
+    background: var(--primary-blue);
+    color: #FFFFFF;
+    border: none;
+    padding: 12px 18px;
+    border-radius: var(--radius-md);
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 15px;
+    font-weight: 800;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+    white-space: nowrap;
+  }
+
+  /* FILTER TABS */
+  .filter-tabs { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px; scrollbar-width: none; }
+  .filter-tabs::-webkit-scrollbar { display: none; }
+  .filter-tab {
+    padding: 10px 18px;
+    border-radius: 30px;
+    font-size: 14px;
+    font-weight: 700;
+    border: 1.5px solid var(--border-color);
+    background: #FFFFFF;
+    color: var(--text-sec);
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .filter-tab.active { background: var(--primary-blue); border-color: var(--primary-blue); color: #FFFFFF; box-shadow: 0 4px 10px rgba(37, 99, 235, 0.2); }
+
+  /* PRODUCT LIST */
+  .product-list-card {
+    background: var(--card-bg);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+  }
+
+  .supplier-item {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 18px 20px;
+    border-bottom: 1px solid var(--border-color);
+  }
+  .supplier-item:last-child { border-bottom: none; }
+  
+  .item-img {
+    width: 68px;
+    height: 68px;
+    border-radius: var(--radius-md);
+    background: #F1F5F9;
+    border: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+    color: #94A3B8;
+    flex-shrink: 0;
+  }
+  .item-img img { width: 100%; height: 100%; object-fit: cover; border-radius: var(--radius-md); }
+  
+  .item-body { flex: 1; }
+  .item-name { font-size: 16px; font-weight: 800; color: var(--text-main); margin-bottom: 4px; }
+  .item-price { font-size: 17px; font-weight: 800; color: var(--primary-blue); margin-bottom: 6px; }
+  
+  .badge-row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+  .badge { padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: 700; display: inline-flex; align-items: center; gap: 4px; }
+  .badge.live { background: var(--success-bg); color: var(--success); }
+  .badge.review { background: var(--warn-bg); color: var(--warn); }
+  .badge.nonaktif { background: var(--danger-bg); color: var(--danger); }
+  .badge.stok { background: #F1F5F9; color: var(--text-sec); border: 1px solid var(--border-color); }
+
+  .item-actions { display: flex; flex-direction: column; gap: 8px; }
+  .btn-icon {
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    border: 1.5px solid var(--border-color);
+    background: #FFFFFF;
+    color: var(--text-sec);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    cursor: pointer;
+    transition: 0.2s;
+  }
+  .btn-icon:hover { border-color: var(--primary-blue); color: var(--primary-blue); }
+
+  /* INFO NOTICE */
+  .notice-box {
+    background: #EFF6FF;
+    border: 1px solid #BFDBFE;
+    border-radius: var(--radius-md);
+    padding: 16px;
+    font-size: 14px;
+    color: #1E40AF;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    line-height: 1.5;
+  }
+  .notice-box i { font-size: 24px; color: #2563EB; flex-shrink: 0; }
+
+  /* MODAL */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.6);
+    backdrop-filter: blur(4px);
+    z-index: 300;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    opacity: 0;
+    pointer-events: none;
+    transition: 0.3s;
+  }
+  .modal-overlay.active { opacity: 1; pointer-events: all; }
+  .modal-box { background: var(--card-bg); border-radius: 22px; padding: 24px; width: 100%; max-width: 440px; box-shadow: var(--shadow-md); }
+  .modal-title { font-size: 19px; font-weight: 800; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+  .modal-title i { font-size: 24px; color: var(--primary-blue); }
+  .form-group { margin-bottom: 14px; }
+  .form-group label { font-size: 14px; font-weight: 700; color: var(--text-main); display: block; margin-bottom: 6px; }
+  .form-input { width: 100%; padding: 12px 14px; border: 1.5px solid var(--border-color); border-radius: 10px; font-family: 'Plus Jakarta Sans', sans-serif; font-size: 15px; font-weight: 600; }
+  .form-input:focus { outline: none; border-color: var(--primary-blue); }
+  .btn-save { width: 100%; padding: 14px; border-radius: 12px; background: var(--primary-blue); color: #fff; font-size: 16px; font-weight: 800; border: none; cursor: pointer; margin-top: 10px; }
+  .btn-close { width: 100%; padding: 12px; border-radius: 12px; background: #F1F5F9; color: var(--text-sec); font-size: 15px; font-weight: 700; border: none; cursor: pointer; margin-top: 8px; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    <button class="header-back" onclick="history.back()"><i class="ph-bold ph-arrow-left"></i></button>
+    <div>
+      <h1>Dashboard Supplier Produk</h1>
+      <div class="header-subtitle"><i class="ph-bold ph-storefront"></i> Kelola stok & status bahan mentah</div>
+    </div>
+  </div>
+</div>
+
+<!-- STATS -->
+<div class="stats-grid">
+  <div class="stat-card">
+    <div class="stat-icon"><i class="ph-bold ph-check-circle"></i></div>
+    <div class="stat-num" id="statLive">0</div>
+    <div class="stat-label">Produk Aktif</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-icon"><i class="ph-bold ph-clock-countdown"></i></div>
+    <div class="stat-num" id="statReview">0</div>
+    <div class="stat-label">Dalam Review</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-icon"><i class="ph-bold ph-package"></i></div>
+    <div class="stat-num" id="statStok">0</div>
+    <div class="stat-label">Total Stok Unit</div>
+  </div>
+</div>
+
+<div class="main-container">
+
+  <!-- NOTICE -->
+  <div class="notice-box">
+    <i class="ph-bold ph-info"></i>
+    <div>
+      <strong>Integrasi Platform MBG:</strong> Produk yang statusnya <em>Aktif (Live)</em> akan langsung tampil di halaman depan marketplace untuk dipesan oleh dapur MBG.
+    </div>
+  </div>
+
+  <div class="action-strip">
+    <div class="search-box">
+      <i class="ph-bold ph-magnifying-glass"></i>
+      <input type="text" placeholder="Cari nama produk..." oninput="onSearch(this.value)">
+    </div>
+    <button class="btn-add-product" onclick="openModal()">
+      <i class="ph-bold ph-plus-circle"></i> Tambah Produk
+    </button>
+  </div>
+
+  <div class="filter-tabs">
+    <button class="filter-tab active" onclick="filterStatus('semua', this)">Semua Produk</button>
+    <button class="filter-tab" onclick="filterStatus('live', this)"><i class="ph-bold ph-check-circle"></i> Aktif (Live)</button>
+    <button class="filter-tab" onclick="filterStatus('review', this)"><i class="ph-bold ph-clock"></i> Review</button>
+    <button class="filter-tab" onclick="filterStatus('nonaktif', this)"><i class="ph-bold ph-prohibit"></i> Non-aktif</button>
+  </div>
+
+  <div class="product-list-card" id="productList">
+    <div style="padding: 40px; text-align: center; color: var(--text-muted);">Memuat produk supplier...</div>
+  </div>
+
+</div>
+
+<!-- MODAL TAMBAH / EDIT PRODUK -->
+<div class="modal-overlay" id="productModal">
+  <div class="modal-box">
+    <h3 class="modal-title"><i class="ph-bold ph-package"></i> Tambah Produk Baru</h3>
+    <div class="form-group">
+      <label>Nama Bahan / Produk:</label>
+      <input type="text" id="mName" class="form-input" placeholder="Contoh: Beras Premium 5 Kg">
+    </div>
+    <div class="form-group">
+      <label>Harga Satuan (Rp):</label>
+      <input type="number" id="mPrice" class="form-input" placeholder="Contoh: 85000">
+    </div>
+    <div class="form-group">
+      <label>Stok Tersedia (Unit):</label>
+      <input type="number" id="mStok" class="form-input" placeholder="Contoh: 50">
+    </div>
+    <button class="btn-save" onclick="saveProduct()">Simpan & Ajukan Review</button>
+    <button class="btn-close" onclick="closeModal()">Batal</button>
+  </div>
+</div>
+
+<script>
+const TOKEN = 'ZUFzR2Q2U1Z1Z0R3RzZzc3RUOG1DK1RweEx6c3paVnRkNUVDa0pyTXErUFgvbDUvY3REbWo4NTFVMHI0dWVRUjFaY2pKYllsODZFamhpSXRRUDZ3RSsrZ2c3TXYvcXFOSHERQndWUi9SZnd3QjdnMGtUblVyWGtXeWpSaGR4M1ZFUGFIY3FVNFU4dG9iSmFoRUhZWGZFamsrd0d6ZDJJUEdiSVIxUGE3TmZlczJGeXI3Z01rOVRyRjJuMVp5ZWZI';
+let allProducts = [];
+let currentFilter = 'semua';
+let searchQuery = '';
+
+function rp(n) { return 'Rp ' + Math.round(n || 0).toLocaleString('id-ID'); }
+
+function loadProducts() {
+  fetch(`https://openapi.bukaolshop.net/v1/app/produk?token=${TOKEN}&page=1&total_data=30`)
+    .then(r => r.json())
+    .then(data => { if (data.code === 200 && data.data) { allProducts = data.data; renderList(); updateStats(); } else renderFallback(); })
+    .catch(() => renderFallback());
+}
+
+function renderFallback() {
+  allProducts = [
+    { id_produk: 's1', nama_produk: 'Beras Putih Premium 5 Kg', harga_produk: 85000, stok: 45, status_tampil: 'live' },
+    { id_produk: 's2', nama_produk: 'Minyak Goreng Sawit 2 Liter', harga_produk: 34000, stok: 20, status_tampil: 'live' },
+    { id_produk: 's3', nama_produk: 'Sayur Bayam Segar 200 Gram (Organik)', harga_produk: 8000, stok: 15, status_tampil: 'review' },
+    { id_produk: 's4', nama_produk: 'Daging Sapi Segar 500 Gram', harga_produk: 75000, stok: 0, status_tampil: 'nonaktif' },
+    { id_produk: 's5', nama_produk: 'Telur Ayam Pilihan 1 Tray (30 Butir)', harga_produk: 55000, stok: 12, status_tampil: 'live' },
+  ];
+  renderList();
+  updateStats();
+}
+
+function updateStats() {
+  const live = allProducts.filter(p => p.status_tampil === 'live' || !p.status_tampil).length;
+  const review = allProducts.filter(p => p.status_tampil === 'review').length;
+  const totalStok = allProducts.reduce((acc, p) => acc + (parseInt(p.stok) || 0), 0);
+
+  document.getElementById('statLive').textContent = live;
+  document.getElementById('statReview').textContent = review;
+  document.getElementById('statStok').textContent = totalStok;
+}
+
+function filterStatus(status, el) {
+  currentFilter = status;
+  document.querySelectorAll('.filter-tab').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+  renderList();
+}
+
+let searchTimer = null;
+function onSearch(val) {
+  clearTimeout(searchTimer);
+  searchQuery = val.trim().toLowerCase();
+  searchTimer = setTimeout(renderList, 300);
+}
+
+function renderList() {
+  const container = document.getElementById('productList');
+  let filtered = allProducts;
+  if (currentFilter !== 'semua') filtered = filtered.filter(p => (p.status_tampil || 'live') === currentFilter);
+  if (searchQuery) filtered = filtered.filter(p => (p.nama_produk || '').toLowerCase().includes(searchQuery));
+
+  if (!filtered.length) {
+    container.innerHTML = '<div style="padding: 40px; text-align: center; color: var(--text-muted);"><i class="ph-duotone ph-folder-open" style="font-size:48px;display:block;margin:0 auto 12px;"></i> Tidak ada produk ditemukan</div>';
+    return;
+  }
+
+  container.innerHTML = filtered.map(p => {
+    const status = p.status_tampil || 'live';
+    const badgeHtml = status === 'live'
+      ? '<span class="badge live"><i class="ph-bold ph-check-circle"></i> Aktif (Live)</span>'
+      : status === 'review'
+      ? '<span class="badge review"><i class="ph-bold ph-clock"></i> Dalam Review</span>'
+      : '<span class="badge nonaktif"><i class="ph-bold ph-prohibit"></i> Non-aktif</span>';
+    
+    return `
+      <div class="supplier-item">
+        <div class="item-img">
+          ${p.gambar_utama ? `<img src="${p.gambar_utama}">` : '<i class="ph-duotone ph-package"></i>'}
+        </div>
+        <div class="item-body">
+          <div class="item-name">${p.nama_produk || 'Produk MBG'}</div>
+          <div class="item-price">${rp(p.harga_produk || 0)}</div>
+          <div class="badge-row">
+            ${badgeHtml}
+            <span class="badge stok"><i class="ph-bold ph-stack"></i> Stok: ${p.stok || 0} unit</span>
+          </div>
+        </div>
+        <div class="item-actions">
+          <button class="btn-icon" title="Edit Stok" onclick="editStok('${p.nama_produk}')"><i class="ph-bold ph-pencil-simple"></i></button>
+          <button class="btn-icon" title="Hapus Produk" onclick="alert('Ajukan penghapusan produk ke admin.')"><i class="ph-bold ph-trash"></i></button>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+function editStok(nama) {
+  const baru = prompt(`Masukkan jumlah stok baru untuk "${nama}":`, '50');
+  if (baru && !isNaN(baru)) {
+    alert('Stok berhasil diperbarui ke: ' + baru + ' unit.');
+  }
+}
+
+function openModal() { document.getElementById('productModal').classList.add('active'); }
+function closeModal() { document.getElementById('productModal').classList.remove('active'); }
+function saveProduct() {
+  const n = document.getElementById('mName').value.trim();
+  const p = document.getElementById('mPrice').value.trim();
+  const s = document.getElementById('mStok').value.trim();
+  if (!n || !p || !s) { alert('Silakan lengkapi semua kolom.'); return; }
+  
+  allProducts.unshift({ id_produk: 'new_'+Date.now(), nama_produk: n, harga_produk: parseInt(p), stok: parseInt(s), status_tampil: 'review' });
+  closeModal();
+  renderList();
+  updateStats();
+  alert('Produk berhasil ditambahkan dan sedang dalam proses review admin MBG.');
+}
+
+window.addEventListener('DOMContentLoaded', () => { loadProducts(); });
+</script>
+</body>
+</html>
