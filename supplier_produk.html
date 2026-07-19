@@ -351,7 +351,7 @@
 </div>
 
 <script>
-const TOKEN = 'ZUFzR2Q2U1Z1Z0R3RzZzc3RUOG1DK1RweEx6c3paVnRkNUVDa0pyTXErUFgvbDUvY3REbWo4NTFVMHI0dWVRUjFaY2pKYllsODZFamhpSXRRUDZ3RSsrZ2c3TXYvcXFOSHERQndWUi9SZnd3QjdnMGtUblVyWGtXeWpSaGR4M1ZFUGFIY3FVNFU4dG9iSmFoRUhZWGZFamsrd0d6ZDJJUEdiSVIxUGE3TmZlczJGeXI3Z01rOVRyRjJuMVp5ZWZI';
+const TOKEN = 'eyJhcHAiOiIxODY1MDMiLCJhdXRoIjoiMjAyNjA3MTQiLCJzaWduIjoiblUzWkZLcUx1aG5XSXV4YmYwbW1nUT09In0=';
 let allProducts = [];
 let currentFilter = 'semua';
 let searchQuery = '';
@@ -367,19 +367,19 @@ function loadProducts() {
 
 function renderFallback() {
   allProducts = [
-    { id_produk: 's1', nama_produk: 'Beras Putih Premium 5 Kg', harga_produk: 85000, stok: 45, status_tampil: 'live' },
-    { id_produk: 's2', nama_produk: 'Minyak Goreng Sawit 2 Liter', harga_produk: 34000, stok: 20, status_tampil: 'live' },
-    { id_produk: 's3', nama_produk: 'Sayur Bayam Segar 200 Gram (Organik)', harga_produk: 8000, stok: 15, status_tampil: 'review' },
-    { id_produk: 's4', nama_produk: 'Daging Sapi Segar 500 Gram', harga_produk: 75000, stok: 0, status_tampil: 'nonaktif' },
-    { id_produk: 's5', nama_produk: 'Telur Ayam Pilihan 1 Tray (30 Butir)', harga_produk: 55000, stok: 12, status_tampil: 'live' },
+    { id_produk: 's1', nama_produk: 'Beras Putih Premium 5 Kg', harga_produk: 85000, stok: 45, status_produk: 'live' },
+    { id_produk: 's2', nama_produk: 'Minyak Goreng Sawit 2 Liter', harga_produk: 34000, stok: 20, status_produk: 'live' },
+    { id_produk: 's3', nama_produk: 'Sayur Bayam Segar 200 Gram (Organik)', harga_produk: 8000, stok: 15, status_produk: 'review' },
+    { id_produk: 's4', nama_produk: 'Daging Sapi Segar 500 Gram', harga_produk: 75000, stok: 0, status_produk: 'gangguan' },
+    { id_produk: 's5', nama_produk: 'Telur Ayam Pilihan 1 Tray (30 Butir)', harga_produk: 55000, stok: 12, status_produk: 'live' },
   ];
   renderList();
   updateStats();
 }
 
 function updateStats() {
-  const live = allProducts.filter(p => p.status_tampil === 'live' || !p.status_tampil).length;
-  const review = allProducts.filter(p => p.status_tampil === 'review').length;
+  const live = allProducts.filter(p => p.status_produk === 'live' || !p.status_produk).length;
+  const review = allProducts.filter(p => p.status_produk === 'review').length;
   const totalStok = allProducts.reduce((acc, p) => acc + (parseInt(p.stok) || 0), 0);
 
   document.getElementById('statLive').textContent = live;
@@ -404,7 +404,7 @@ function onSearch(val) {
 function renderList() {
   const container = document.getElementById('productList');
   let filtered = allProducts;
-  if (currentFilter !== 'semua') filtered = filtered.filter(p => (p.status_tampil || 'live') === currentFilter);
+  if (currentFilter !== 'semua') filtered = filtered.filter(p => (p.status_produk || 'live') === currentFilter);
   if (searchQuery) filtered = filtered.filter(p => (p.nama_produk || '').toLowerCase().includes(searchQuery));
 
   if (!filtered.length) {
@@ -413,12 +413,12 @@ function renderList() {
   }
 
   container.innerHTML = filtered.map(p => {
-    const status = p.status_tampil || 'live';
+    const status = p.status_produk || 'live';
     const badgeHtml = status === 'live'
       ? '<span class="badge live"><i class="ph-bold ph-check-circle"></i> Aktif (Live)</span>'
       : status === 'review'
       ? '<span class="badge review"><i class="ph-bold ph-clock"></i> Dalam Review</span>'
-      : '<span class="badge nonaktif"><i class="ph-bold ph-prohibit"></i> Non-aktif</span>';
+      : '<span class="badge nonaktif"><i class="ph-bold ph-prohibit"></i> Non-aktif / Gangguan</span>';
     
     return `
       <div class="supplier-item">
@@ -456,7 +456,7 @@ function saveProduct() {
   const s = document.getElementById('mStok').value.trim();
   if (!n || !p || !s) { alert('Silakan lengkapi semua kolom.'); return; }
   
-  allProducts.unshift({ id_produk: 'new_'+Date.now(), nama_produk: n, harga_produk: parseInt(p), stok: parseInt(s), status_tampil: 'review' });
+  allProducts.unshift({ id_produk: 'new_'+Date.now(), nama_produk: n, harga_produk: parseInt(p), stok: parseInt(s), status_produk: 'review' });
   closeModal();
   renderList();
   updateStats();

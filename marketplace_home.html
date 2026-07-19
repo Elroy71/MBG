@@ -367,7 +367,7 @@
 </div>
 
 <script>
-const TOKEN = 'ZUFzR2Q2U1Z1Z0R3RzZzc3RUOG1DK1RweEx6c3paVnRkNUVDa0pyTXErUFgvbDUvY3REbWo4NTFVMHI0dWVRUjFaY2pKYllsODZFamhpSXRRUDZ3RSsrZ2c3TXYvcXFOSHERQndWUi9SZnd3QjdnMGtUblVyWGtXeWpSaGR4M1ZFUGFIY3FVNFU4dG9iSmFoRUhZWGZFamsrd0d6ZDJJUEdiSVIxUGE3TmZlczJGeXI3Z01rOVRyRjJuMVp5ZWZI';
+const TOKEN = 'eyJhcHAiOiIxODY1MDMiLCJhdXRoIjoiMjAyNjA3MTQiLCJzaWduIjoiblUzWkZLcUx1aG5XSXV4YmYwbW1nUT09In0=';
 const BASE = 'https://openapi.bukaolshop.net/v1';
 
 let allProduk = [];
@@ -389,18 +389,30 @@ function showToast(msg) {
   setTimeout(() => t.classList.remove('show'), 2800);
 }
 
-function renderKategoriFallback() {
-  const data = [
-    { id_kategori: '1', nama_kategori: 'Semua', icon: 'squares-four' },
-    { id_kategori: '2', nama_kategori: 'Beras & Padi', icon: 'plant' },
-    { id_kategori: '3', nama_kategori: 'Sayur Segar', icon: 'carrot' },
-    { id_kategori: '4', nama_kategori: 'Buah-buahan', icon: 'apple' },
-    { id_kategori: '5', nama_kategori: 'Daging Segar', icon: 'fish-simple' },
-    { id_kategori: '6', nama_kategori: 'Ikan & Laut', icon: 'fish' },
-    { id_kategori: '7', nama_kategori: 'Bumbu Dapur', icon: 'pepper' },
-    { id_kategori: '8', nama_kategori: 'Minyak & Gula', icon: 'drop' },
-  ];
-  renderKategori(data);
+const FALLBACK_KATEGORI = [
+  { id_kategori: '0', nama_kategori: 'Semua', icon: 'squares-four' },
+  { id_kategori: '1', nama_kategori: 'Beras & Padi', icon: 'plant' },
+  { id_kategori: '2', nama_kategori: 'Sayur Segar', icon: 'carrot' },
+  { id_kategori: '3', nama_kategori: 'Buah-buahan', icon: 'apple' },
+  { id_kategori: '4', nama_kategori: 'Daging Segar', icon: 'fish-simple' },
+  { id_kategori: '5', nama_kategori: 'Ikan & Laut', icon: 'fish' },
+  { id_kategori: '6', nama_kategori: 'Bumbu Dapur', icon: 'pepper' },
+  { id_kategori: '7', nama_kategori: 'Minyak & Gula', icon: 'drop' },
+];
+
+function loadKategori() {
+  fetch(`${BASE}/app/kategori?token=${TOKEN}`)
+    .then(r => r.json())
+    .then(d => {
+      if (d.code === 200 && d.data && d.data.length) {
+        // Tambahkan item "Semua" di depan data dari API
+        const all = [{ id_kategori: '0', nama_kategori: 'Semua', icon: 'squares-four' }, ...d.data];
+        renderKategori(all);
+      } else {
+        renderKategori(FALLBACK_KATEGORI);
+      }
+    })
+    .catch(() => renderKategori(FALLBACK_KATEGORI));
 }
 
 const ICONS = ['squares-four', 'plant', 'carrot', 'apple', 'fish-simple', 'fish', 'pepper', 'drop'];
@@ -489,7 +501,7 @@ function onSearch(val) {
 }
 
 window.addEventListener('DOMContentLoaded', () => {
-  renderKategoriFallback();
+  loadKategori();
   loadProduk();
 });
 </script>
