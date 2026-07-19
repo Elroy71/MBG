@@ -38,7 +38,7 @@
     background: var(--bg-main);
     color: var(--text-main);
     min-height: 100vh;
-    padding-bottom: 110px;
+    padding-bottom: 30px;
     line-height: 1.5;
     font-size: 16px;
   }
@@ -244,37 +244,7 @@
   .btn-add:active { transform: scale(0.96); }
   .btn-add:disabled { border-color: #CBD5E1; background: #F1F5F9; color: #94A3B8; cursor: not-allowed; }
 
-  /* BOTTOM NAVIGATION BAR */
-  .bottom-nav {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: #FFFFFF;
-    border-top: 1px solid var(--border-color);
-    display: flex;
-    justify-content: space-around;
-    padding: 10px 0;
-    box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.06);
-    z-index: 150;
-  }
-  .nav-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 4px;
-    font-size: 13px;
-    font-weight: 700;
-    color: var(--text-muted);
-    cursor: pointer;
-    min-width: 68px;
-    padding: 4px 8px;
-    border-radius: 12px;
-    transition: all 0.2s;
-  }
-  .nav-item i { font-size: 24px; }
-  .nav-item.active { color: var(--primary-blue); }
-  .nav-item.active i { transform: scale(1.1); }
+
 
   /* TOAST */
   .toast {
@@ -358,13 +328,7 @@
 
 </div>
 
-<!-- BOTTOM NAV -->
-<div class="bottom-nav">
-  <div class="nav-item active"><i class="ph-bold ph-house"></i><span>Beranda</span></div>
-  <div class="nav-item" onclick="window.location.href='/akun/?page=transaksi'"><i class="ph-bold ph-receipt"></i><span>Pesanan</span></div>
-  <div class="nav-item" onclick="window.location.href='/pages?riwayat-saldo'"><i class="ph-bold ph-wallet"></i><span>Dompet</span></div>
-  <div class="nav-item" onclick="window.location.href='/akun/'"><i class="ph-bold ph-user"></i><span>Akun</span></div>
-</div>
+
 
 <script>
 const TOKEN = 'eyJhcHAiOiIxODY1MDMiLCJhdXRoIjoiMjAyNjA3MTQiLCJzaWduIjoiblUzWkZLcUx1aG5XSXV4YmYwbW1nUT09In0=';
