@@ -235,37 +235,7 @@
   <!-- KATEGORI EKSPLORASI -->
   <div>
     <div class="section-title"><i class="ph-bold ph-compass"></i> Eksplorasi Kategori Dapur MBG</div>
-    <div class="kategori-grid" id="kategoriContainer">
-      <div class="kat-card" onclick="window.location.href='/'">
-        <div class="kat-icon-box" style="background:#FEF3C7; color:#D97706;"><i class="ph-bold ph-plant"></i></div>
-        <div class="kat-title">Karbohidrat Pokok</div>
-        <div class="kat-desc">Beras, Kentang, Ubi</div>
-      </div>
-      <div class="kat-card" onclick="window.location.href='/'">
-        <div class="kat-icon-box" style="background:#FEE2E2; color:#DC2626;"><i class="ph-bold ph-egg"></i></div>
-        <div class="kat-title">Protein Hewani</div>
-        <div class="kat-desc">Daging Sapi, Ayam, Telur</div>
-      </div>
-      <div class="kat-card" onclick="window.location.href='/'">
-        <div class="kat-icon-box" style="background:#DCFCE7; color:#16A34A;"><i class="ph-bold ph-carrot"></i></div>
-        <div class="kat-title">Sayur Mayur Segar</div>
-        <div class="kat-desc">Bayam, Wortel, Brokoli</div>
-      </div>
-      <div class="kat-card" onclick="window.location.href='/'">
-        <div class="kat-icon-box" style="background:#EFF6FF; color:#2563EB;"><i class="ph-bold ph-drop"></i></div>
-        <div class="kat-title">Bumbu & Minyak</div>
-        <div class="kat-desc">Minyak Goreng, Rempah</div>
-      </div>
-      <div class="kat-card" onclick="window.location.href='/'">
-        <div class="kat-icon-box" style="background:#F3E8FF; color:#9333EA;"><i class="ph-bold ph-cow"></i></div>
-        <div class="kat-title">Susu & Pelengkap</div>
-        <div class="kat-desc">Susu UHT, Multivitamin</div>
-      </div>
-      <div class="kat-card" onclick="window.location.href='/'">
-        <div class="kat-icon-box" style="background:#E0F2FE; color:#0284C7;"><i class="ph-bold ph-package"></i></div>
-        <div class="kat-title">Semua Bahan</div>
-        <div class="kat-desc">Lihat Katalog Lengkap</div>
-      </div>
+      <div style="grid-column: 1/-1; padding: 40px; text-align: center; color: var(--text-muted);">Memuat daftar kategori...</div>
     </div>
   </div>
 
@@ -313,6 +283,64 @@ function hitungPorsi() {
   document.getElementById('resSayur').textContent = (n * 0.1).toFixed(1) + ' Kg';
   document.getElementById('resultBox').classList.add('show');
 }
+
+const TOKEN = 'eyJhcHAiOiIxODY1MDMiLCJhdXRoIjoiMjAyNjA3MTQiLCJzaWduIjoiblUzWkZLcUx1aG5XSXV4YmYwbW1nUT09In0=';
+const BASE = 'https://openapi.bukaolshop.net/v1';
+const ICONS = ['squares-four', 'plant', 'carrot', 'apple', 'fish-simple', 'fish', 'pepper', 'drop'];
+const COLORS = [
+  { bg: '#FEF3C7', fg: '#D97706' },
+  { bg: '#FEE2E2', fg: '#DC2626' },
+  { bg: '#DCFCE7', fg: '#16A34A' },
+  { bg: '#EFF6FF', fg: '#2563EB' },
+  { bg: '#F3E8FF', fg: '#9333EA' },
+  { bg: '#E0F2FE', fg: '#0284C7' }
+];
+
+const FALLBACK_KATEGORI_JELAJAH = [
+  { id_kategori: '1', nama_kategori: 'Karbohidrat Pokok', icon: 'plant' },
+  { id_kategori: '4', nama_kategori: 'Protein Hewani', icon: 'egg' },
+  { id_kategori: '2', nama_kategori: 'Sayur Mayur Segar', icon: 'carrot' },
+  { id_kategori: '6', nama_kategori: 'Bumbu & Minyak', icon: 'drop' },
+  { id_kategori: '3', nama_kategori: 'Buah & Pelengkap', icon: 'apple' },
+  { id_kategori: '0', nama_kategori: 'Semua Bahan', icon: 'package' }
+];
+
+function loadKategoriJelajah() {
+  fetch(`${BASE}/app/kategori?token=${TOKEN}&_t=${Date.now()}`, { cache: 'no-store' })
+    .then(r => r.json())
+    .then(d => {
+      if (d && d.code === 200 && d.data && d.data.length) {
+        renderKategoriJelajah(d.data);
+      } else {
+        renderKategoriJelajah(FALLBACK_KATEGORI_JELAJAH);
+      }
+    })
+    .catch(() => renderKategoriJelajah(FALLBACK_KATEGORI_JELAJAH));
+}
+
+function renderKategoriJelajah(data) {
+  const container = document.getElementById('kategoriContainer');
+  if (!container) return;
+  container.innerHTML = data.map((k, i) => {
+    const col = COLORS[i % COLORS.length];
+    let katImg = k.url_gambar || k.gambar || k.url_icon || k.icon_url || k.foto || k.url_foto || k.gambar_kategori || (k.icon && typeof k.icon === 'string' && (k.icon.startsWith('http') || k.icon.startsWith('//')) ? k.icon : null);
+    if (katImg && katImg.startsWith('//')) katImg = 'https:' + katImg;
+    const iconName = (!katImg && typeof k.icon === 'string' && !k.icon.startsWith('http') && !k.icon.startsWith('//')) ? k.icon : ICONS[i % ICONS.length];
+
+    return `
+      <div class="kat-card" onclick="window.location.href='/'">
+        <div class="kat-icon-box" style="background:${col.bg}; color:${col.fg};">
+          ${katImg ? `<img src="${katImg}" alt="${k.nama_kategori || ''}" style="width:100%;height:100%;object-fit:cover;border-radius:20px;" onerror="this.outerHTML='<i class=\\\'ph-bold ph-${iconName}\\\'></i>'">` : `<i class="ph-bold ph-${iconName}"></i>`}
+        </div>
+        <div class="kat-title">${k.nama_kategori || 'Kategori'}</div>
+        <div class="kat-desc">${k.keterangan || 'Lihat Katalog'}</div>
+      </div>`;
+  }).join('');
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+  loadKategoriJelajah();
+});
 </script>
 </body>
 </html>

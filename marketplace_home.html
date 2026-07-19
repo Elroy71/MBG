@@ -385,10 +385,10 @@ const FALLBACK_KATEGORI = [
 ];
 
 function loadKategori() {
-  fetch(`${BASE}/app/kategori?token=${TOKEN}`)
+  fetch(`${BASE}/app/kategori?token=${TOKEN}&_t=${Date.now()}`, { cache: 'no-store' })
     .then(r => r.json())
     .then(d => {
-      if (d.code === 200 && d.data && d.data.length) {
+      if (d && d.code === 200 && d.data && d.data.length) {
         // Tambahkan item "Semua" di depan data dari API
         const all = [{ id_kategori: '0', nama_kategori: 'Semua', icon: 'squares-four' }, ...d.data];
         allKategoriList = all;
@@ -407,11 +407,19 @@ function loadKategori() {
 const ICONS = ['squares-four', 'plant', 'carrot', 'apple', 'fish-simple', 'fish', 'pepper', 'drop'];
 function renderKategori(data) {
   const container = document.getElementById('kategoriScroll');
-  container.innerHTML = data.map((k, i) => `
+  container.innerHTML = data.map((k, i) => {
+    let katImg = k.url_gambar || k.gambar || k.url_icon || k.icon_url || k.foto || k.url_foto || k.gambar_kategori || (k.icon && typeof k.icon === 'string' && (k.icon.startsWith('http') || k.icon.startsWith('//')) ? k.icon : null);
+    if (katImg && katImg.startsWith('//')) katImg = 'https:' + katImg;
+    const iconName = (!katImg && typeof k.icon === 'string' && !k.icon.startsWith('http') && !k.icon.startsWith('//')) ? k.icon : ICONS[i % ICONS.length];
+    
+    return `
     <div class="kat-item${i === 0 ? ' active' : ''}" onclick="filterKat('${k.id_kategori}', this)">
-      <div class="kat-icon-box"><i class="ph-bold ph-${k.icon || ICONS[i % ICONS.length]}"></i></div>
+      <div class="kat-icon-box">
+        ${katImg ? `<img src="${katImg}" alt="${k.nama_kategori || ''}" style="width:100%;height:100%;object-fit:cover;border-radius:18px;" onerror="this.outerHTML='<i class=\\\'ph-bold ph-${iconName}\\\'></i>'">` : `<i class="ph-bold ph-${iconName}"></i>`}
+      </div>
       <div class="kat-label">${k.nama_kategori}</div>
-    </div>`).join('');
+    </div>`;
+  }).join('');
 }
 
 function filterKat(id, el) {
@@ -423,9 +431,9 @@ function filterKat(id, el) {
 }
 
 function loadProduk() {
-  fetch(`${BASE}/app/produk?token=${TOKEN}&page=1&total_data=20`)
+  fetch(`${BASE}/app/produk?token=${TOKEN}&page=1&total_data=50&_t=${Date.now()}`, { cache: 'no-store' })
     .then(r => r.json())
-    .then(d => { if (d.code === 200 && d.data) { allProduk = d.data; renderProdukGrid(); } else renderProdukFallback(); })
+    .then(d => { if (d && d.code === 200 && d.data) { allProduk = d.data; renderProdukGrid(); } else renderProdukFallback(); })
     .catch(() => renderProdukFallback());
 }
 
@@ -468,12 +476,13 @@ function renderProdukGrid() {
     const menipis = !habis && stok < 5;
     const diskon = p.harga_produk_asli && p.harga_produk_asli > p.harga_produk;
     const urlProduk = p.url_produk || p.url_barang || '/cart/';
-    const imgUrl = p.url_gambar || p.gambar_utama || p.gambar || p.image || p.foto || p.url_foto || p.gambar_produk;
+    let imgUrl = p.gambar_utama || p.url_gambar || (Array.isArray(p.list_gambar) && p.list_gambar.length ? p.list_gambar[0] : null) || p.foto_produk_1 || p.url_gambar_1 || p.gambar || p.image || p.foto || p.url_foto || p.gambar_produk || p.foto_utama || p.img_url;
+    if (imgUrl && typeof imgUrl === 'string' && imgUrl.startsWith('//')) imgUrl = 'https:' + imgUrl;
     const lokasi = p.lokasi || p.kota || p.dikirim_dari || p.lokasi_produk || p.asal_barang || p.keterangan || 'Gudang Utama MBG';
     return `
       <div class="produk-card" onclick="window.location.href='${urlProduk}'">
         <div class="produk-img-box">
-          ${imgUrl ? `<img src="${imgUrl}" alt="${p.nama_produk || 'Produk'}" onerror="this.style.display='none';">` : `<i class="ph-duotone ph-${p.icon || 'package'}"></i>`}
+          ${imgUrl ? `<img src="${imgUrl}" alt="${p.nama_produk || 'Produk'}" style="width:100%;height:100%;object-fit:cover;" onerror="this.outerHTML='<i class=\\\'ph-duotone ph-${p.icon || 'package'}\\\'></i>'">` : `<i class="ph-duotone ph-${p.icon || 'package'}"></i>`}
           <span class="badge-stok ${habis ? 'habis' : menipis ? 'menipis' : 'ready'}">
             <i class="ph-bold ph-${habis ? 'warning-circle' : menipis ? 'info' : 'check'}"></i>
             ${habis ? 'Stok Habis' : menipis ? `Sisa ${stok}` : 'Ready Stock'}
