@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pesanan & Transaksi — My MBG</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<!-- PHOSPHOR ICONS -->
+<script src="https://unpkg.com/@phosphor-icons/web@2.1.1"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  :root {
+    --primary-navy: #1E3A8A;
+    --primary-blue: #2563EB;
+    --primary-light: #EFF6FF;
+    --bg-main: #F8FAFC;
+    --card-bg: #FFFFFF;
+    --border-color: #E2E8F0;
+    --text-main: #0F172A;
+    --text-sec: #475569;
+    --text-muted: #64748B;
+    --success: #16A34A;
+    --success-bg: #DCFCE7;
+    --danger: #DC2626;
+    --danger-bg: #FEE2E2;
+    --warn: #D97706;
+    --warn-bg: #FEF3C7;
+    --radius-lg: 18px;
+    --radius-md: 12px;
+    --shadow-sm: 0 2px 8px rgba(15, 23, 42, 0.04);
+    --shadow-md: 0 8px 24px rgba(15, 23, 42, 0.06);
+  }
+
+  body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    background: var(--bg-main);
+    color: var(--text-main);
+    min-height: 100vh;
+    padding-bottom: 30px;
+    line-height: 1.5;
+    font-size: 16px;
+  }
+
+  /* TOP HEADER (KONSISTEN PERSIS DENGAN HOME - TANPA SEARCH) */
+  .header {
+    background: linear-gradient(135deg, var(--primary-navy) 0%, #1D4ED8 100%);
+    color: #FFFFFF;
+    padding: 16px 20px 20px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 4px 16px rgba(30, 58, 138, 0.2);
+  }
+  .header-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+  .brand-title { font-size: 21px; font-weight: 800; letter-spacing: -0.4px; display: flex; align-items: center; gap: 8px; }
+  .brand-title i { font-size: 26px; color: #93C5FD; }
+  .header-icons { display: flex; gap: 12px; }
+  .icon-btn {
+    position: relative;
+    width: 44px;
+    height: 44px;
+    border-radius: var(--radius-md);
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    color: #FFFFFF;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .icon-btn:active { transform: scale(0.92); }
+  .cart-badge {
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    background: #F59E0B;
+    color: #0F172A;
+    font-size: 11px;
+    font-weight: 800;
+    padding: 2px 6px;
+    border-radius: 12px;
+    border: 2px solid var(--primary-navy);
+    line-height: 1;
+    min-width: 18px;
+    text-align: center;
+  }
+
+  /* SALDO DOMPET STRIP */
+  .wallet-strip {
+    background: rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: var(--radius-lg);
+    padding: 14px 18px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    backdrop-filter: blur(8px);
+  }
+  .wallet-label { font-size: 13px; opacity: 0.85; font-weight: 600; display: flex; align-items: center; gap: 6px; }
+  .wallet-amount { font-size: 20px; font-weight: 800; color: #60A5FA; margin-top: 2px; }
+  .btn-topup {
+    background: #FFFFFF;
+    color: var(--primary-navy);
+    border: none;
+    padding: 10px 18px;
+    border-radius: 24px;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 800;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    transition: all 0.2s;
+  }
+  .btn-topup:active { transform: scale(0.94); }
+
+  /* MAIN CONTAINER */
+  .main-container { max-width: 640px; margin: 0 auto; padding: 20px 16px; display: flex; flex-direction: column; gap: 16px; }
+
+  .section-title { font-size: 18px; font-weight: 800; color: var(--text-main); display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+
+  /* TABS MENU TRANSAKSI */
+  .tx-tabs { display: flex; gap: 8px; background: #E2E8F0; padding: 4px; border-radius: 14px; margin-bottom: 12px; }
+  .tx-tab { flex: 1; padding: 10px; border-radius: 10px; font-size: 14px; font-weight: 700; text-align: center; color: var(--text-sec); cursor: pointer; transition: all 0.2s; }
+  .tx-tab.active { background: #FFFFFF; color: var(--primary-blue); box-shadow: var(--shadow-sm); }
+
+  /* LIST PESANAN */
+  .tx-card { background: var(--card-bg); border: 1.5px solid var(--border-color); border-radius: var(--radius-lg); padding: 16px; display: flex; flex-direction: column; gap: 12px; cursor: pointer; transition: 0.2s; box-shadow: var(--shadow-sm); }
+  .tx-card:active { transform: scale(0.98); }
+  .tx-top { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; }
+  .tx-inv { font-size: 14px; font-weight: 800; color: var(--primary-navy); }
+  .tx-date { font-size: 12px; color: var(--text-muted); }
+  
+  .tx-body { display: flex; justify-content: space-between; align-items: center; }
+  .tx-item-title { font-size: 15px; font-weight: 700; color: var(--text-main); }
+  .tx-item-sub { font-size: 13px; color: var(--text-muted); }
+  .tx-price { font-size: 16px; font-weight: 800; color: var(--primary-blue); }
+
+  .badge-status { padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: 800; display: inline-flex; align-items: center; gap: 4px; }
+  .badge-proses { background: var(--warn-bg); color: var(--warn); }
+  .badge-sukses { background: var(--success-bg); color: var(--success); }
+  .badge-batal { background: var(--danger-bg); color: var(--danger); }
+</style>
+</head>
+<body>
+
+<!-- HEADER PERSIS SEPERTI HOME (TANPA SEARCH BOX) -->
+<div class="header">
+  <div class="header-top">
+    <div class="brand-title"><i class="ph-bold ph-storefront"></i> My MBG</div>
+    <div class="header-icons">
+      <button class="icon-btn" title="Notifikasi" onclick="window.location.href='/akun/?page=notifikasi'">
+        <i class="ph-bold ph-bell"></i>
+      </button>
+      <button class="icon-btn cart-btn" title="Keranjang Belanja" onclick="window.location.href='/cart/'">
+        <i class="ph-bold ph-shopping-cart"></i>
+        <span class="cart-badge">{{total_cart}}</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="wallet-strip">
+    <div>
+      <div class="wallet-label"><i class="ph-bold ph-wallet"></i> Saldo Dompet Anda:</div>
+      <div class="wallet-amount" id="saldoDisplay">Rp {{saldo_user}}</div>
+    </div>
+    <button class="btn-topup" onclick="window.location.href='/akun/?page=topup'">
+      <i class="ph-bold ph-plus-circle"></i> Isi Ulang
+    </button>
+  </div>
+</div>
+
+<div class="main-container">
+
+  <div class="section-title"><i class="ph-bold ph-receipt"></i> Riwayat Pesanan & Transaksi</div>
+  
+  <div class="tx-tabs">
+    <div class="tx-tab active" onclick="switchTab(this, 'semua')">Semua</div>
+    <div class="tx-tab" onclick="switchTab(this, 'proses')">Diproses</div>
+    <div class="tx-tab" onclick="switchTab(this, 'selesai')">Selesai</div>
+  </div>
+
+  <div id="txList" style="display: flex; flex-direction: column; gap: 14px;">
+    <!-- SIMULASI DAFTAR PESANAN MBG YANG TERHUBUNG DETAIL -->
+    <div class="tx-card" onclick="window.location.href='/akun/?page=transaksi'">
+      <div class="tx-top">
+        <span class="tx-inv">INV/MBG/2026/07191</span>
+        <span class="badge-status badge-proses"><i class="ph-bold ph-clock"></i> Sedang Diproses</span>
+      </div>
+      <div class="tx-body">
+        <div>
+          <div class="tx-item-title">Beras Putih Premium 5 Kg (x4)</div>
+          <div class="tx-item-sub">+ 2 bahan mentah lainnya</div>
+        </div>
+        <div class="tx-price">Rp 483.000</div>
+      </div>
+      <div style="font-size: 12px; color: var(--text-muted); border-top: 1px dashed var(--border-color); pt-2; padding-top: 8px;">
+        <i class="ph-bold ph-calendar"></i> 19 Juli 2026 • SPPG SMPN 1 Belanja Pagi
+      </div>
+    </div>
+
+    <div class="tx-card" onclick="window.location.href='/akun/?page=transaksi'">
+      <div class="tx-top">
+        <span class="tx-inv">INV/MBG/2026/07185</span>
+        <span class="badge-status badge-sukses"><i class="ph-bold ph-check-circle"></i> Selesai (H+1 Cair)</span>
+      </div>
+      <div class="tx-body">
+        <div>
+          <div class="tx-item-title">Daging Sapi Segar 500g (x10)</div>
+          <div class="tx-item-sub">Distribusi SPPG Lancar</div>
+        </div>
+        <div class="tx-price">Rp 750.000</div>
+      </div>
+      <div style="font-size: 12px; color: var(--text-muted); border-top: 1px dashed var(--border-color); pt-2; padding-top: 8px;">
+        <i class="ph-bold ph-calendar"></i> 18 Juli 2026 • Pembayaran Split 80/5/5/5/5 Sukses
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+function rp(n) { return 'Rp ' + Math.round(n || 0).toLocaleString('id-ID'); }
+
+(function() {
+  const el = document.getElementById('saldoDisplay');
+  const n = parseFloat(el.textContent.replace(/[^0-9]/g, ''));
+  if (!isNaN(n) && n > 0) el.textContent = rp(n);
+})();
+
+function switchTab(el, type) {
+  document.querySelectorAll('.tx-tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  // Logika filter visual tabs jika diperlukan
+}
+</script>
+</body>
+</html>

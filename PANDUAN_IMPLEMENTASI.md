@@ -11,10 +11,12 @@
 bukaOlshop Admin App → Tab TOKO
 │
 ├── Tampilan Aplikasi
-│   ├── Tampilan Olshop → HOME       → marketplace_home.html
-│   └── Menu & Kostum Halaman        → wallet_mutasi.html
-│                                    → riwayat_transaksi.html
-│                                    → supplier_produk.html
+│   ├── Tampilan Olshop → Tab HOME       → marketplace_home.html (Ada Search Bar)
+│   ├── Tampilan Olshop → Tab JELAJAH    → jelajah.html (Header Konsisten Tanpa Search)
+│   ├── Tampilan Olshop → Tab TRANSAKSI  → transaksi.html (Header Konsisten Tanpa Search)
+│   └── Menu & Kostum Halaman            → wallet_mutasi.html
+│                                        → riwayat_transaksi.html
+│                                        → supplier_produk.html
 │
 └── Personal Branding → KOSTUM HTML
     ├── Kostum Halaman Checkout      → checkout.html
@@ -223,14 +225,16 @@ Bagikan link halaman langsung ke akun Supplier → Muncul statistik produk, daft
 
 ## 🗂️ Ringkasan Lengkap Semua Modul
 
-| File | Nama Menu | Jalur Admin | Tipe |
-|------|-----------|-------------|------|
-| `marketplace_home.html` | `Marketplace MBG` | TOKO → Tampilan Olshop → HOME → + → **HTML/CSS/JS** | Widget |
-| `checkout.html` | *(Otomatis saat Checkout)* | TOKO → Personal Branding → **KOSTUM HTML** → Kostum Halaman Checkout | Kostum HTML |
-| `wallet_topup.html` | *(Otomatis saat Top Up)* | TOKO → Personal Branding → **KOSTUM HTML** → Kostum Halaman TopUp Saldo | Kostum HTML |
-| `riwayat_transaksi.html` | *(Otomatis saat buka Transaksi)* | TOKO → Personal Branding → **KOSTUM HTML** → Kostum Halaman Detail Transaksi | Kostum HTML |
-| `wallet_mutasi.html` | `Riwayat Saldo` | TOKO → Menu & Kostum Halaman → + → **HTML dan Teks** | Kostum Halaman |
-| `supplier_produk.html` | `Portal Supplier` | TOKO → Menu & Kostum Halaman → + → **HTML dan Teks** *(tersembunyi)* | Kostum Halaman |
+| File | Nama Menu / Tab | Jalur Admin | Tipe | Keterangan Header |
+|------|-----------------|-------------|------|-------------------|
+| `marketplace_home.html` | Tab `HOME` | TOKO → Tampilan Olshop → Tab HOME → + → **HTML/CSS/JS** | Widget | Header Lengkap + Search Bar + Keranjang Paling Kanan |
+| `jelajah.html` | Tab `JELAJAH` | TOKO → Tampilan Olshop → Tab JELAJAH → + → **HTML/CSS/JS** | Widget | Header Konsisten (Tanpa Search) + Kalkulator & Kategori Gizi |
+| `transaksi.html` | Tab `TRANSAKSI` | TOKO → Tampilan Olshop → Tab TRANSAKSI → + → **HTML/CSS/JS** | Widget | Header Konsisten (Tanpa Search) + Daftar Pesanan |
+| `checkout.html` | *(Otomatis saat Checkout)* | TOKO → Personal Branding → **KOSTUM HTML** → Kostum Halaman Checkout | Kostum HTML | Override saat klik Bayar |
+| `wallet_topup.html` | *(Otomatis saat Top Up)* | TOKO → Personal Branding → **KOSTUM HTML** → Kostum Halaman TopUp Saldo | Kostum HTML | Override saat klik Top Up |
+| `riwayat_transaksi.html` | *(Otomatis saat buka Transaksi)* | TOKO → Personal Branding → **KOSTUM HTML** → Kostum Halaman Detail Transaksi | Kostum HTML | Override saat klik detail pesanan |
+| `wallet_mutasi.html` | `Riwayat Saldo` | TOKO → Menu & Kostum Halaman → + → **HTML dan Teks** | Kostum Halaman | Header Konsisten (Tanpa Search) + Kas Digital |
+| `supplier_produk.html` | `Portal Supplier` | TOKO → Menu & Kostum Halaman → + → **HTML dan Teks** *(tersembunyi)* | Kostum Halaman | Portal Gudang & Stok |
 
 ---
 

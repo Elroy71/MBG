@@ -44,63 +44,82 @@
   }
 
   /* TOP HEADER */
+  /* TOP HEADER (KONSISTEN PERSIS DENGAN HOME - TANPA SEARCH) */
   .header {
     background: linear-gradient(135deg, var(--primary-navy) 0%, #1D4ED8 100%);
     color: #FFFFFF;
-    padding: 16px 20px;
-    display: flex;
-    align-items: center;
-    gap: 16px;
+    padding: 16px 20px 20px;
     position: sticky;
     top: 0;
     z-index: 100;
     box-shadow: 0 4px 16px rgba(30, 58, 138, 0.2);
   }
-  .header-back {
-    background: rgba(255, 255, 255, 0.15);
-    border: 1px solid rgba(255, 255, 255, 0.25);
-    color: #FFFFFF;
+  .header-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+  .brand-title { font-size: 21px; font-weight: 800; letter-spacing: -0.4px; display: flex; align-items: center; gap: 8px; }
+  .brand-title i { font-size: 26px; color: #93C5FD; }
+  .header-icons { display: flex; gap: 12px; }
+  .icon-btn {
+    position: relative;
     width: 44px;
     height: 44px;
     border-radius: var(--radius-md);
-    cursor: pointer;
-    font-size: 20px;
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    color: #FFFFFF;
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: all 0.2s ease;
+    font-size: 20px;
+    cursor: pointer;
+    transition: all 0.2s;
   }
-  .header-back:active { transform: scale(0.92); }
-  .header h1 { font-size: 19px; font-weight: 800; }
+  .icon-btn:active { transform: scale(0.92); }
+  .cart-badge {
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    background: #F59E0B;
+    color: #0F172A;
+    font-size: 11px;
+    font-weight: 800;
+    padding: 2px 6px;
+    border-radius: 12px;
+    border: 2px solid var(--primary-navy);
+    line-height: 1;
+    min-width: 18px;
+    text-align: center;
+  }
 
-  /* HERO SUMMARY */
-  .hero-box {
-    background: linear-gradient(135deg, #0F172A 0%, var(--primary-navy) 100%);
-    color: #FFFFFF;
-    padding: 24px 20px;
+  /* SALDO DOMPET STRIP */
+  .wallet-strip {
+    background: rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: var(--radius-lg);
+    padding: 14px 18px;
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    justify-content: space-between;
+    backdrop-filter: blur(8px);
   }
-  .hero-label { font-size: 13px; opacity: 0.8; font-weight: 600; display: flex; align-items: center; gap: 6px; }
-  .hero-amount { font-size: 28px; font-weight: 800; color: #60A5FA; margin-top: 4px; }
+  .wallet-label { font-size: 13px; opacity: 0.85; font-weight: 600; display: flex; align-items: center; gap: 6px; }
+  .wallet-amount { font-size: 20px; font-weight: 800; color: #60A5FA; margin-top: 2px; }
   .btn-topup {
     background: #FFFFFF;
     color: var(--primary-navy);
     border: none;
-    padding: 12px 20px;
-    border-radius: 30px;
+    padding: 10px 18px;
+    border-radius: 24px;
     font-family: 'Plus Jakarta Sans', sans-serif;
-    font-size: 15px;
+    font-size: 14px;
     font-weight: 800;
     cursor: pointer;
     display: flex;
     align-items: center;
-    gap: 8px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-    transition: 0.2s;
+    gap: 6px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    transition: all 0.2s;
   }
-  .btn-topup:active { transform: scale(0.95); }
+  .btn-topup:active { transform: scale(0.94); }
 
   .main-container { max-width: 640px; margin: 0 auto; padding: 16px; display: flex; flex-direction: column; gap: 16px; }
 
@@ -170,19 +189,30 @@
 </head>
 <body>
 
+<!-- HEADER PERSIS SEPERTI HOME (TANPA SEARCH BOX) -->
 <div class="header">
-  <button class="header-back" onclick="history.back()"><i class="ph-bold ph-arrow-left"></i></button>
-  <h1>Riwayat Saldo Dompet</h1>
-</div>
-
-<div class="hero-box">
-  <div>
-    <div class="hero-label"><i class="ph-bold ph-wallet"></i> Saldo Aktif Saat Ini</div>
-    <div class="hero-amount" id="saldoDisplay">Rp {{saldo_user}}</div>
+  <div class="header-top">
+    <div class="brand-title"><i class="ph-bold ph-storefront"></i> My MBG</div>
+    <div class="header-icons">
+      <button class="icon-btn" title="Notifikasi" onclick="window.location.href='/akun/?page=notifikasi'">
+        <i class="ph-bold ph-bell"></i>
+      </button>
+      <button class="icon-btn cart-btn" title="Keranjang Belanja" onclick="window.location.href='/cart/'">
+        <i class="ph-bold ph-shopping-cart"></i>
+        <span class="cart-badge">{{total_cart}}</span>
+      </button>
+    </div>
   </div>
-  <button class="btn-topup" onclick="location.href='/akun/?page=topup'">
-    <i class="ph-bold ph-plus-circle"></i> Isi Ulang
-  </button>
+
+  <div class="wallet-strip">
+    <div>
+      <div class="wallet-label"><i class="ph-bold ph-wallet"></i> Saldo Dompet Anda:</div>
+      <div class="wallet-amount" id="saldoDisplay">Rp {{saldo_user}}</div>
+    </div>
+    <button class="btn-topup" onclick="window.location.href='/akun/?page=topup'">
+      <i class="ph-bold ph-plus-circle"></i> Isi Ulang
+    </button>
+  </div>
 </div>
 
 <div class="main-container">

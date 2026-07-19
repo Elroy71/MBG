@@ -58,6 +58,7 @@
   .brand-title i { font-size: 26px; color: #93C5FD; }
   .header-icons { display: flex; gap: 12px; }
   .icon-btn {
+    position: relative;
     width: 44px;
     height: 44px;
     border-radius: var(--radius-md);
@@ -72,6 +73,21 @@
     transition: all 0.2s;
   }
   .icon-btn:active { transform: scale(0.92); }
+  .cart-badge {
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    background: #F59E0B;
+    color: #0F172A;
+    font-size: 11px;
+    font-weight: 800;
+    padding: 2px 6px;
+    border-radius: 12px;
+    border: 2px solid var(--primary-navy);
+    line-height: 1;
+    min-width: 18px;
+    text-align: center;
+  }
 
   /* SEARCH & SALDO BAR */
   .search-box {
@@ -219,7 +235,9 @@
   .badge-stok.habis { background: var(--danger); color: #fff; }
 
   .produk-body { padding: 14px 14px 16px; display: flex; flex-direction: column; flex: 1; }
-  .produk-name { font-size: 16px; font-weight: 800; color: var(--text-main); line-height: 1.35; margin-bottom: 8px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; flex: 1; }
+  .produk-name { font-size: 16px; font-weight: 800; color: var(--text-main); line-height: 1.35; margin-bottom: 4px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; flex: 1; }
+  .produk-location { font-size: 12px; color: var(--text-muted); font-weight: 600; display: flex; align-items: center; gap: 4px; margin-bottom: 8px; }
+  .produk-location i { color: #EF4444; font-size: 14px; }
   .produk-price-old { font-size: 13px; color: var(--text-muted); text-decoration: line-through; font-weight: 600; }
   .produk-price { font-size: 18px; font-weight: 800; color: var(--primary-blue); margin-bottom: 14px; }
 
@@ -281,11 +299,12 @@
   <div class="header-top">
     <div class="brand-title"><i class="ph-bold ph-storefront"></i> My MBG</div>
     <div class="header-icons">
-      <button class="icon-btn" title="Keranjang Belanja" onclick="window.location.href='/cart/'">
-        <i class="ph-bold ph-shopping-bag"></i>
-      </button>
       <button class="icon-btn" title="Notifikasi" onclick="window.location.href='/akun/?page=notifikasi'">
         <i class="ph-bold ph-bell"></i>
+      </button>
+      <button class="icon-btn cart-btn" title="Keranjang Belanja" onclick="window.location.href='/cart/'">
+        <i class="ph-bold ph-shopping-cart"></i>
+        <span class="cart-badge">{{total_cart}}</span>
       </button>
     </div>
   </div>
@@ -406,12 +425,12 @@ function loadProduk() {
 
 function renderProdukFallback() {
   allProduk = [
-    { id_produk: 'p1', nama_produk: 'Beras Putih Premium 5 Kg', harga_produk: 85000, harga_produk_asli: 95000, stok: 25, icon: 'plant' },
-    { id_produk: 'p2', nama_produk: 'Minyak Goreng Sawit 2 Liter', harga_produk: 34000, harga_produk_asli: 0, stok: 18, icon: 'drop' },
-    { id_produk: 'p3', nama_produk: 'Daging Sapi Segar 500 Gram', harga_produk: 75000, harga_produk_asli: 80000, stok: 3, icon: 'fish-simple' },
-    { id_produk: 'p4', nama_produk: 'Telur Ayam Pilihan 1 Tray (30 Butir)', harga_produk: 55000, harga_produk_asli: 0, stok: 0, icon: 'egg' },
-    { id_produk: 'p5', nama_produk: 'Sayur Bayam Segar 200 Gram', harga_produk: 8000, harga_produk_asli: 0, stok: 30, icon: 'carrot' },
-    { id_produk: 'p6', nama_produk: 'Ikan Lele Segar 1 Kg', harga_produk: 28000, harga_produk_asli: 0, stok: 12, icon: 'fish' },
+    { id_produk: 'p1', nama_produk: 'Beras Putih Premium 5 Kg', harga_produk: 85000, harga_produk_asli: 95000, stok: 25, icon: 'plant', lokasi: 'Jakarta Selatan', gambar_utama: 'https://images.unsplash.com/photo-1586201375761-83865001e31c?auto=format&fit=crop&w=400&q=80' },
+    { id_produk: 'p2', nama_produk: 'Minyak Goreng Sawit 2 Liter', harga_produk: 34000, harga_produk_asli: 0, stok: 18, icon: 'drop', lokasi: 'Surabaya, Jatim', gambar_utama: 'https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?auto=format&fit=crop&w=400&q=80' },
+    { id_produk: 'p3', nama_produk: 'Daging Sapi Segar 500 Gram', harga_produk: 75000, harga_produk_asli: 80000, stok: 3, icon: 'fish-simple', lokasi: 'Bogor, Jabar', gambar_utama: 'https://images.unsplash.com/photo-1607623814075-e51df1bdc82f?auto=format&fit=crop&w=400&q=80' },
+    { id_produk: 'p4', nama_produk: 'Telur Ayam Pilihan 1 Tray (30 Butir)', harga_produk: 55000, harga_produk_asli: 0, stok: 0, icon: 'egg', lokasi: 'Tangerang, Banten', gambar_utama: 'https://images.unsplash.com/photo-1518568814500-bf0f8d125f46?auto=format&fit=crop&w=400&q=80' },
+    { id_produk: 'p5', nama_produk: 'Sayur Bayam Segar 200 Gram', harga_produk: 8000, harga_produk_asli: 0, stok: 30, icon: 'carrot', lokasi: 'Lembang, Bandung', gambar_utama: 'https://images.unsplash.com/photo-1576045057995-568f588f82fb?auto=format&fit=crop&w=400&q=80' },
+    { id_produk: 'p6', nama_produk: 'Ikan Lele Segar 1 Kg', harga_produk: 28000, harga_produk_asli: 0, stok: 12, icon: 'fish', lokasi: 'Bekasi, Jabar', gambar_utama: 'https://images.unsplash.com/photo-1534948216015-843149f72be3?auto=format&fit=crop&w=400&q=80' },
   ];
   renderProdukGrid();
 }
@@ -432,10 +451,12 @@ function renderProdukGrid() {
     const menipis = !habis && stok < 5;
     const diskon = p.harga_produk_asli && p.harga_produk_asli > p.harga_produk;
     const urlProduk = p.url_produk || p.url_barang || '/cart/';
+    const imgUrl = p.url_gambar || p.gambar_utama || p.gambar || p.image || p.foto || p.url_foto || p.gambar_produk;
+    const lokasi = p.lokasi || p.kota || p.dikirim_dari || p.lokasi_produk || p.asal_barang || p.keterangan || 'Gudang Utama MBG';
     return `
       <div class="produk-card" onclick="window.location.href='${urlProduk}'">
         <div class="produk-img-box">
-          ${p.gambar_utama ? `<img src="${p.gambar_utama}" onerror="this.style.display='none'">` : `<i class="ph-duotone ph-${p.icon || 'package'}"></i>`}
+          ${imgUrl ? `<img src="${imgUrl}" alt="${p.nama_produk || 'Produk'}" onerror="this.style.display='none';">` : `<i class="ph-duotone ph-${p.icon || 'package'}"></i>`}
           <span class="badge-stok ${habis ? 'habis' : menipis ? 'menipis' : 'ready'}">
             <i class="ph-bold ph-${habis ? 'warning-circle' : menipis ? 'info' : 'check'}"></i>
             ${habis ? 'Stok Habis' : menipis ? `Sisa ${stok}` : 'Ready Stock'}
@@ -443,6 +464,7 @@ function renderProdukGrid() {
         </div>
         <div class="produk-body">
           <div class="produk-name">${p.nama_produk || 'Produk MBG'}</div>
+          <div class="produk-location"><i class="ph-bold ph-map-pin"></i> ${lokasi}</div>
           ${diskon ? `<div class="produk-price-old">${rp(p.harga_produk_asli)}</div>` : ''}
           <div class="produk-price">${rp(p.harga_produk || 0)}</div>
           <button class="btn-add" ${habis ? 'disabled' : ''} onclick="event.stopPropagation(); addToCart('${urlProduk}', '${(p.nama_produk || '').replace(/'/g, '')}')">

@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jelajah Kategori — My MBG</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<!-- PHOSPHOR ICONS -->
+<script src="https://unpkg.com/@phosphor-icons/web@2.1.1"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  :root {
+    --primary-navy: #1E3A8A;
+    --primary-blue: #2563EB;
+    --primary-light: #EFF6FF;
+    --bg-main: #F8FAFC;
+    --card-bg: #FFFFFF;
+    --border-color: #E2E8F0;
+    --text-main: #0F172A;
+    --text-sec: #475569;
+    --text-muted: #64748B;
+    --success: #16A34A;
+    --success-bg: #DCFCE7;
+    --danger: #DC2626;
+    --danger-bg: #FEE2E2;
+    --warn: #D97706;
+    --warn-bg: #FEF3C7;
+    --radius-lg: 18px;
+    --radius-md: 12px;
+    --shadow-sm: 0 2px 8px rgba(15, 23, 42, 0.04);
+    --shadow-md: 0 8px 24px rgba(15, 23, 42, 0.06);
+  }
+
+  body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    background: var(--bg-main);
+    color: var(--text-main);
+    min-height: 100vh;
+    padding-bottom: 30px;
+    line-height: 1.5;
+    font-size: 16px;
+  }
+
+  /* TOP HEADER (KONSISTEN PERSIS DENGAN HOME - TANPA SEARCH) */
+  .header {
+    background: linear-gradient(135deg, var(--primary-navy) 0%, #1D4ED8 100%);
+    color: #FFFFFF;
+    padding: 16px 20px 20px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 4px 16px rgba(30, 58, 138, 0.2);
+  }
+  .header-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+  .brand-title { font-size: 21px; font-weight: 800; letter-spacing: -0.4px; display: flex; align-items: center; gap: 8px; }
+  .brand-title i { font-size: 26px; color: #93C5FD; }
+  .header-icons { display: flex; gap: 12px; }
+  .icon-btn {
+    position: relative;
+    width: 44px;
+    height: 44px;
+    border-radius: var(--radius-md);
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    color: #FFFFFF;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .icon-btn:active { transform: scale(0.92); }
+  .cart-badge {
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    background: #F59E0B;
+    color: #0F172A;
+    font-size: 11px;
+    font-weight: 800;
+    padding: 2px 6px;
+    border-radius: 12px;
+    border: 2px solid var(--primary-navy);
+    line-height: 1;
+    min-width: 18px;
+    text-align: center;
+  }
+
+  /* SALDO DOMPET STRIP */
+  .wallet-strip {
+    background: rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: var(--radius-lg);
+    padding: 14px 18px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    backdrop-filter: blur(8px);
+  }
+  .wallet-label { font-size: 13px; opacity: 0.85; font-weight: 600; display: flex; align-items: center; gap: 6px; }
+  .wallet-amount { font-size: 20px; font-weight: 800; color: #60A5FA; margin-top: 2px; }
+  .btn-topup {
+    background: #FFFFFF;
+    color: var(--primary-navy);
+    border: none;
+    padding: 10px 18px;
+    border-radius: 24px;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 800;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    transition: all 0.2s;
+  }
+  .btn-topup:active { transform: scale(0.94); }
+
+  /* MAIN CONTAINER */
+  .main-container { max-width: 640px; margin: 0 auto; padding: 20px 16px; display: flex; flex-direction: column; gap: 24px; }
+
+  .section-title { font-size: 18px; font-weight: 800; color: var(--text-main); display: flex; align-items: center; gap: 8px; margin-bottom: 14px; }
+  
+  /* GRID KATEGORI 4 SEHAT 5 SEMPURNA MBG */
+  .kategori-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+  }
+  .kat-card {
+    background: var(--card-bg);
+    border: 1.5px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    padding: 20px 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 12px;
+    cursor: pointer;
+    box-shadow: var(--shadow-sm);
+    transition: all 0.2s ease;
+  }
+  .kat-card:hover, .kat-card:active { border-color: var(--primary-blue); transform: translateY(-3px); box-shadow: var(--shadow-md); }
+  .kat-icon-box {
+    width: 64px;
+    height: 64px;
+    border-radius: 20px;
+    background: var(--primary-light);
+    color: var(--primary-blue);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+  }
+  .kat-title { font-size: 16px; font-weight: 800; color: var(--text-main); line-height: 1.3; }
+  .kat-desc { font-size: 13px; color: var(--text-muted); font-weight: 500; }
+
+  /* KALKULATOR GIZI STRIP */
+  .kalkulator-box {
+    background: linear-gradient(135deg, #1E293B 0%, #0F172A 100%);
+    color: #FFFFFF;
+    border-radius: var(--radius-lg);
+    padding: 22px;
+    box-shadow: var(--shadow-md);
+  }
+  .kalk-head { display: flex; align-items: center; gap: 10px; font-size: 17px; font-weight: 800; margin-bottom: 6px; color: #60A5FA; }
+  .kalk-desc { font-size: 14px; color: #94A3B8; margin-bottom: 16px; line-height: 1.5; }
+  .kalk-input-group { display: flex; gap: 10px; margin-bottom: 16px; }
+  .kalk-input { flex: 1; padding: 14px; border-radius: var(--radius-md); border: 1px solid #334155; background: #1E293B; color: #fff; font-size: 16px; font-weight: 700; font-family: 'Plus Jakarta Sans', sans-serif; }
+  .kalk-input:focus { outline: none; border-color: #60A5FA; }
+  .btn-kalk { padding: 0 20px; background: var(--primary-blue); color: #fff; border: none; border-radius: var(--radius-md); font-weight: 800; font-size: 15px; cursor: pointer; transition: 0.2s; }
+  .btn-kalk:active { transform: scale(0.96); }
+  
+  .kalk-result { background: rgba(255, 255, 255, 0.07); border-radius: var(--radius-md); padding: 16px; display: none; }
+  .kalk-result.show { display: block; }
+  .result-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; text-align: center; margin-top: 10px; }
+  .res-item { background: rgba(0,0,0,0.25); padding: 10px; border-radius: 10px; }
+  .res-val { font-size: 17px; font-weight: 800; color: #34D399; }
+  .res-lbl { font-size: 11px; color: #CBD5E1; margin-top: 2px; }
+</style>
+</head>
+<body>
+
+<!-- HEADER PERSIS SEPERTI HOME (TANPA SEARCH BOX) -->
+<div class="header">
+  <div class="header-top">
+    <div class="brand-title"><i class="ph-bold ph-storefront"></i> My MBG</div>
+    <div class="header-icons">
+      <button class="icon-btn" title="Notifikasi" onclick="window.location.href='/akun/?page=notifikasi'">
+        <i class="ph-bold ph-bell"></i>
+      </button>
+      <button class="icon-btn cart-btn" title="Keranjang Belanja" onclick="window.location.href='/cart/'">
+        <i class="ph-bold ph-shopping-cart"></i>
+        <span class="cart-badge">{{total_cart}}</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="wallet-strip">
+    <div>
+      <div class="wallet-label"><i class="ph-bold ph-wallet"></i> Saldo Dompet Anda:</div>
+      <div class="wallet-amount" id="saldoDisplay">Rp {{saldo_user}}</div>
+    </div>
+    <button class="btn-topup" onclick="window.location.href='/akun/?page=topup'">
+      <i class="ph-bold ph-plus-circle"></i> Isi Ulang
+    </button>
+  </div>
+</div>
+
+<div class="main-container">
+
+  <!-- KALKULATOR GIZI CEPAT -->
+  <div class="kalkulator-box">
+    <div class="kalk-head"><i class="ph-bold ph-calculator"></i> Kalkulator Kebutuhan Porsi SPPG</div>
+    <div class="kalk-desc">Hitung estimasi kebutuhan bahan mentah dapur MBG berdasarkan jumlah siswa/porsi hari ini.</div>
+    <div class="kalk-input-group">
+      <input type="number" id="inputSiswa" class="kalk-input" placeholder="Masukkan jumlah siswa (mis: 100)" value="100">
+      <button class="btn-kalk" onclick="hitungPorsi()">Hitung</button>
+    </div>
+    <div class="kalk-result show" id="resultBox">
+      <div style="font-size: 13px; font-weight: 700; color: #93C5FD;">Rekomendasi Belanja untuk <span id="txtSiswa">100</span> Porsi:</div>
+      <div class="result-grid">
+        <div class="res-item"><div class="res-val" id="resBeras">15 Kg</div><div class="res-lbl">Beras Premium</div></div>
+        <div class="res-item"><div class="res-val" id="resProtein">10 Kg</div><div class="res-lbl">Ayam / Daging</div></div>
+        <div class="res-item"><div class="res-val" id="resSayur">10 Kg</div><div class="res-lbl">Sayuran Segar</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- KATEGORI EKSPLORASI -->
+  <div>
+    <div class="section-title"><i class="ph-bold ph-compass"></i> Eksplorasi Kategori Dapur MBG</div>
+    <div class="kategori-grid" id="kategoriContainer">
+      <div class="kat-card" onclick="window.location.href='/'">
+        <div class="kat-icon-box" style="background:#FEF3C7; color:#D97706;"><i class="ph-bold ph-plant"></i></div>
+        <div class="kat-title">Karbohidrat Pokok</div>
+        <div class="kat-desc">Beras, Kentang, Ubi</div>
+      </div>
+      <div class="kat-card" onclick="window.location.href='/'">
+        <div class="kat-icon-box" style="background:#FEE2E2; color:#DC2626;"><i class="ph-bold ph-egg"></i></div>
+        <div class="kat-title">Protein Hewani</div>
+        <div class="kat-desc">Daging Sapi, Ayam, Telur</div>
+      </div>
+      <div class="kat-card" onclick="window.location.href='/'">
+        <div class="kat-icon-box" style="background:#DCFCE7; color:#16A34A;"><i class="ph-bold ph-carrot"></i></div>
+        <div class="kat-title">Sayur Mayur Segar</div>
+        <div class="kat-desc">Bayam, Wortel, Brokoli</div>
+      </div>
+      <div class="kat-card" onclick="window.location.href='/'">
+        <div class="kat-icon-box" style="background:#EFF6FF; color:#2563EB;"><i class="ph-bold ph-drop"></i></div>
+        <div class="kat-title">Bumbu & Minyak</div>
+        <div class="kat-desc">Minyak Goreng, Rempah</div>
+      </div>
+      <div class="kat-card" onclick="window.location.href='/'">
+        <div class="kat-icon-box" style="background:#F3E8FF; color:#9333EA;"><i class="ph-bold ph-cow"></i></div>
+        <div class="kat-title">Susu & Pelengkap</div>
+        <div class="kat-desc">Susu UHT, Multivitamin</div>
+      </div>
+      <div class="kat-card" onclick="window.location.href='/'">
+        <div class="kat-icon-box" style="background:#E0F2FE; color:#0284C7;"><i class="ph-bold ph-package"></i></div>
+        <div class="kat-title">Semua Bahan</div>
+        <div class="kat-desc">Lihat Katalog Lengkap</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+function rp(n) { return 'Rp ' + Math.round(n || 0).toLocaleString('id-ID'); }
+
+(function() {
+  const el = document.getElementById('saldoDisplay');
+  const n = parseFloat(el.textContent.replace(/[^0-9]/g, ''));
+  if (!isNaN(n) && n > 0) el.textContent = rp(n);
+})();
+
+function hitungPorsi() {
+  const n = parseFloat(document.getElementById('inputSiswa').value) || 0;
+  if (n <= 0) return;
+  document.getElementById('txtSiswa').textContent = n;
+  document.getElementById('resBeras').textContent = (n * 0.15).toFixed(1) + ' Kg';
+  document.getElementById('resProtein').textContent = (n * 0.1).toFixed(1) + ' Kg';
+  document.getElementById('resSayur').textContent = (n * 0.1).toFixed(1) + ' Kg';
+  document.getElementById('resultBox').classList.add('show');
+}
+</script>
+</body>
+</html>
