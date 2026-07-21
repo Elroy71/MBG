@@ -45,26 +45,12 @@
     padding: 8px 16px;
     border-radius: 10px;
     text-decoration: none;
-    transition: all 0.2s ease;
+    transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
   }
   .mbg-web-footer .btn-footer-link:hover {
     background: #2563EB;
     border-color: #2563EB;
     color: #FFFFFF;
-    transform: translateY(-2px);
-  }
-  .mbg-web-footer .footer-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    padding: 6px 12px;
-    background: rgba(37, 99, 235, 0.15);
-    border: 1px solid rgba(37, 99, 235, 0.3);
-    border-radius: 20px;
-    color: #60A5FA;
-    font-size: 0.78rem;
-    font-weight: 700;
-    margin-top: 14px;
   }
   .mbg-web-footer .footer-bottom {
     background: #0B1120;
@@ -86,12 +72,8 @@
           <span>{{nama_toko}}</span>
         </h5>
         <p class="footer-desc">
-          Platform digital terintegrasi penyedia dan pengelolaan rantai pasok bahan pangan untuk <b>Program Makan Bergizi Gratis (MBG)</b>. Menjamin ketepatan gizi SPPG, transparansi distribusi anggaran, dan kesejahteraan petani lokal.
+          Platform digital terintegrasi penyedia &amp; pengelolaan rantai pasok bahan pangan untuk <b>Program Makan Bergizi Gratis (MBG)</b> terstandarisasi SPPG.
         </p>
-        <div class="footer-badge">
-          <i class="fa-solid fa-check-double"></i>
-          <span>Sistem Distribusi Anggaran 80/5/5/5/5% Terverifikasi</span>
-        </div>
       </div>
 
       <!-- KOLOM 2: TAUTAN CEPAT & INFORMASI -->
@@ -106,12 +88,12 @@
 
         <div class="mt-4 pt-2">
           <h6 class="footer-heading" style="font-size: 0.82rem;">MITRA OPERASIONAL</h6>
-          <div class="d-flex align-items-center gap-3 text-muted" style="font-size: 0.85rem;">
-            <span><i class="fa-solid fa-store text-light me-1"></i> Satuan Pelayanan (SPPG)</span>
+          <div class="d-flex align-items-center gap-3" style="font-size: 0.85rem; color: #FFFFFF !important; font-weight: 600;">
+            <span><i class="fa-solid fa-store text-primary me-1"></i> Satuan Pelayanan (SPPG)</span>
             <span>•</span>
-            <span><i class="fa-solid fa-truck-fast text-light me-1"></i> Ekspedisi &amp; Dropship</span>
+            <span><i class="fa-solid fa-truck-fast text-primary me-1"></i> Ekspedisi &amp; Dropship</span>
             <span>•</span>
-            <span><i class="fa-solid fa-seedling text-light me-1"></i> Supplier Lokal</span>
+            <span><i class="fa-solid fa-seedling text-primary me-1"></i> Supplier Lokal</span>
           </div>
         </div>
       </div>
@@ -126,7 +108,7 @@
         &copy; 2026 <b class="text-light">{{nama_toko}}</b>. All rights reserved.
       </div>
       <div class="text-secondary" style="font-size: 0.8rem;">
-        Powered by <span class="text-light font-weight-bold">bukaOlshop Engine</span> &amp; <span class="text-primary font-weight-bold">My MBG Ecosystem</span>
+        Powered by <span class="text-primary font-weight-bold">My MBG Ecosystem</span>
       </div>
     </div>
   </div>
