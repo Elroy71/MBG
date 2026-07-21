@@ -235,6 +235,7 @@
   <!-- KATEGORI EKSPLORASI -->
   <div>
     <div class="section-title"><i class="ph-bold ph-compass"></i> Eksplorasi Kategori Dapur MBG</div>
+    <div id="kategoriContainer" class="kategori-grid">
       <div style="grid-column: 1/-1; padding: 40px; text-align: center; color: var(--text-muted);">Memuat daftar kategori...</div>
     </div>
   </div>
@@ -341,9 +342,10 @@ function renderKategoriJelajah(data) {
     const col = COLORS[i % COLORS.length];
     let katImg = getKatImg(k);
     const iconName = (!katImg && typeof k.icon === 'string' && !k.icon.includes('/') && !k.icon.includes('.')) ? k.icon : ICONS[i % ICONS.length];
+    const targetUrl = k.url_kategori || k.url || k.link || ('/kategori/' + (k.id_kategori || ''));
 
     return `
-      <div class="kat-card" onclick="window.location.href='/'">
+      <div class="kat-card" onclick="window.location.href='${targetUrl}'">
         <div class="kat-icon-box" style="background:${col.bg}; color:${col.fg};">
           ${katImg ? `<img src="${katImg}" alt="${k.nama_kategori || ''}" style="width:100%;height:100%;object-fit:cover;border-radius:20px;" onerror="this.outerHTML='<i class=\\\'ph-bold ph-${iconName}\\\'></i>'">` : `<i class="ph-bold ph-${iconName}"></i>`}
         </div>
