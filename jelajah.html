@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Jelajah Kategori — My MBG</title>
+<title>Jelajah Supplier & Kebutuhan — My MBG</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -38,12 +38,12 @@
     background: var(--bg-main);
     color: var(--text-main);
     min-height: 100vh;
-    padding-bottom: 30px;
+    padding-bottom: 40px;
     line-height: 1.5;
     font-size: 16px;
   }
 
-  /* TOP HEADER (KONSISTEN PERSIS DENGAN HOME - TANPA SEARCH) */
+  /* TOP HEADER (KONSISTEN TANPA SEARCH) */
   .header {
     background: linear-gradient(135deg, var(--primary-navy) 0%, #1D4ED8 100%);
     color: #FFFFFF;
@@ -56,11 +56,11 @@
   .header-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
   .brand-title { font-size: 21px; font-weight: 800; letter-spacing: -0.4px; display: flex; align-items: center; gap: 8px; }
   .brand-title i { font-size: 26px; color: #93C5FD; }
-  .header-icons { display: flex; gap: 12px; }
+  .header-icons { display: flex; gap: 8px; }
   .icon-btn {
     position: relative;
-    width: 44px;
-    height: 44px;
+    width: 42px;
+    height: 42px;
     border-radius: var(--radius-md);
     background: rgba(255, 255, 255, 0.15);
     border: 1px solid rgba(255, 255, 255, 0.25);
@@ -68,11 +68,15 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 20px;
+    font-size: 19px;
     cursor: pointer;
     transition: all 0.2s;
   }
   .icon-btn:active { transform: scale(0.92); }
+  @media (max-width: 380px) {
+    .icon-btn { width: 37px; height: 37px; font-size: 17px; }
+    .brand-title { font-size: 18px; }
+  }
   .cart-badge {
     position: absolute;
     top: -4px;
@@ -87,6 +91,10 @@
     line-height: 1;
     min-width: 18px;
     text-align: center;
+  }
+  .fav-badge {
+    background: #EC4899 !important;
+    color: #FFFFFF !important;
   }
 
   /* SALDO DOMPET STRIP */
@@ -121,44 +129,41 @@
   .btn-topup:active { transform: scale(0.94); }
 
   /* MAIN CONTAINER */
-  .main-container { max-width: 640px; margin: 0 auto; padding: 20px 16px; display: flex; flex-direction: column; gap: 24px; }
+  .main-container { max-width: 640px; margin: 0 auto; padding: 16px; display: flex; flex-direction: column; gap: 24px; }
 
-  .section-title { font-size: 18px; font-weight: 800; color: var(--text-main); display: flex; align-items: center; gap: 8px; margin-bottom: 14px; }
-  
-  /* GRID KATEGORI 4 SEHAT 5 SEMPURNA MBG */
-  .kategori-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 14px;
-  }
-  .kat-card {
-    background: var(--card-bg);
-    border: 1.5px solid var(--border-color);
-    border-radius: var(--radius-lg);
-    padding: 20px 16px;
+  /* INFO PENGIRIMAN & ESTIMASI BANNER */
+  .shipping-banner {
+    background: linear-gradient(135deg, #1E293B 0%, #0F172A 100%);
+    border: 1px solid #334155;
+    border-radius: var(--radius-md);
+    padding: 14px 16px;
     display: flex;
-    flex-direction: column;
     align-items: center;
-    text-align: center;
     gap: 12px;
+    color: #FFFFFF;
     cursor: pointer;
     box-shadow: var(--shadow-sm);
-    transition: all 0.2s ease;
+    transition: all 0.2s;
   }
-  .kat-card:hover, .kat-card:active { border-color: var(--primary-blue); transform: translateY(-3px); box-shadow: var(--shadow-md); }
-  .kat-icon-box {
-    width: 64px;
-    height: 64px;
-    border-radius: 20px;
-    background: var(--primary-light);
-    color: var(--primary-blue);
+  .shipping-banner:active { transform: scale(0.98); border-color: var(--primary-blue); }
+  .ship-icon {
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    background: rgba(96, 165, 250, 0.15);
+    color: #60A5FA;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 32px;
+    font-size: 24px;
+    flex-shrink: 0;
   }
-  .kat-title { font-size: 16px; font-weight: 800; color: var(--text-main); line-height: 1.3; }
-  .kat-desc { font-size: 13px; color: var(--text-muted); font-weight: 500; }
+  .ship-content { flex: 1; min-width: 0; }
+  .ship-title { font-size: 13px; font-weight: 800; color: #93C5FD; text-transform: uppercase; letter-spacing: 0.5px; display: flex; align-items: center; gap: 6px; }
+  .ship-title span { display: inline-block; width: 6px; height: 6px; background: #34D399; border-radius: 50%; animation: pulse 1.5s infinite; }
+  .ship-text { font-size: 13.5px; font-weight: 600; color: #E2E8F0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 2px; }
+  .ship-arrow { color: #64748B; font-size: 18px; }
+  @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.3; } 100% { opacity: 1; } }
 
   /* KALKULATOR GIZI STRIP */
   .kalkulator-box {
@@ -182,15 +187,225 @@
   .res-item { background: rgba(0,0,0,0.25); padding: 10px; border-radius: 10px; }
   .res-val { font-size: 17px; font-weight: 800; color: #34D399; }
   .res-lbl { font-size: 11px; color: #CBD5E1; margin-top: 2px; }
+
+  /* SEARCH & FILTER SUPPLIER */
+  .section-header { display: flex; flex-direction: column; gap: 12px; margin-bottom: 14px; }
+  .section-title { font-size: 18px; font-weight: 800; color: var(--text-main); display: flex; align-items: center; gap: 8px; }
+  .section-title i { font-size: 22px; color: var(--primary-blue); }
+
+  .search-box {
+    display: flex;
+    align-items: center;
+    background: #FFFFFF;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: 6px 16px;
+    box-shadow: var(--shadow-sm);
+  }
+  .search-box input {
+    flex: 1;
+    border: none;
+    outline: none;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text-main);
+    padding: 10px 8px;
+  }
+  .search-box i { font-size: 20px; color: var(--primary-blue); }
+
+  .filter-strip {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    overflow-x: auto;
+    padding-bottom: 4px;
+    scrollbar-width: none;
+  }
+  .filter-strip::-webkit-scrollbar { display: none; }
+  .filter-chip {
+    padding: 8px 14px;
+    background: #FFFFFF;
+    border: 1.5px solid var(--border-color);
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-sec);
+    cursor: pointer;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.2s;
+  }
+  .filter-chip.active {
+    background: var(--primary-navy);
+    color: #FFFFFF;
+    border-color: var(--primary-navy);
+    box-shadow: 0 3px 8px rgba(30, 58, 138, 0.2);
+  }
+
+  /* SUPPLIER GRID */
+  .supplier-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+  .supplier-card {
+    background: #FFFFFF;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    padding: 16px;
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    box-shadow: var(--shadow-sm);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .supplier-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); border-color: var(--primary-blue); }
+  .supplier-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 16px;
+    background: var(--primary-light);
+    color: var(--primary-blue);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    flex-shrink: 0;
+  }
+  .supplier-body { flex: 1; min-width: 0; }
+  .supplier-name { font-size: 16px; font-weight: 800; color: var(--text-main); margin-bottom: 4px; display: flex; align-items: center; gap: 6px; }
+  .badge-verified {
+    background: #DBEAFE;
+    color: #1D4ED8;
+    font-size: 11px;
+    font-weight: 800;
+    padding: 2px 8px;
+    border-radius: 10px;
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+  }
+  .supplier-meta { font-size: 13px; color: var(--text-muted); font-weight: 600; display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin-top: 6px; }
+  .supplier-meta-item { display: flex; align-items: center; gap: 4px; }
+  .rating-gold { color: #F59E0B; }
+  .supplier-action {
+    color: var(--primary-blue);
+    font-size: 20px;
+    align-self: center;
+  }
+
+  /* MODAL STATUS PENGEMBANGAN */
+  .modal-overlay {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(15, 23, 42, 0.7);
+    backdrop-filter: blur(4px);
+    z-index: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.25s ease;
+  }
+  .modal-overlay.show { opacity: 1; pointer-events: auto; }
+  .modal-box {
+    background: #FFFFFF;
+    border-radius: 24px;
+    width: 100%;
+    max-width: 360px;
+    padding: 28px 24px;
+    text-align: center;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+    transform: translateY(20px) scale(0.95);
+    transition: all 0.25s ease;
+  }
+  .modal-overlay.show .modal-box { transform: translateY(0) scale(1); }
+  .modal-icon {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    background: #FEF3C7;
+    color: #D97706;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 38px;
+    margin: 0 auto 16px;
+  }
+  .modal-title { font-size: 18px; font-weight: 800; color: var(--text-main); margin-bottom: 8px; }
+  .modal-desc { font-size: 14px; color: var(--text-sec); font-weight: 500; line-height: 1.5; margin-bottom: 22px; }
+  .modal-btn {
+    width: 100%;
+    padding: 13px;
+    background: var(--primary-navy);
+    color: #FFFFFF;
+    border: none;
+    border-radius: 14px;
+    font-size: 15px;
+    font-weight: 800;
+    cursor: pointer;
+    transition: 0.2s;
+  }
+  .modal-btn:active { transform: scale(0.96); }
+
+  /* TOAST */
+  .toast {
+    position: fixed;
+    top: 130px;
+    left: 50%;
+    transform: translateX(-50%) translateY(-10px);
+    background: #0F172A;
+    color: #FFFFFF;
+    padding: 14px 24px;
+    border-radius: 30px;
+    font-size: 15px;
+    font-weight: 700;
+    opacity: 0;
+    pointer-events: none;
+    transition: 0.3s;
+    z-index: 300;
+    white-space: nowrap;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 </style>
 </head>
 <body>
 
-<!-- HEADER PERSIS SEPERTI HOME (TANPA SEARCH BOX) -->
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- MODAL STATUS PENGEMBANGAN -->
+<div class="modal-overlay" id="devModal">
+  <div class="modal-box">
+    <div class="modal-icon"><i class="ph-duotone ph-cone-diagonal"></i></div>
+    <div class="modal-title" id="modalSupplierName">Supplier MBG</div>
+    <div class="modal-desc">Masih dalam tahap pengembangan. Fitur kemitraan supplier & vendor langsung SPPG sedang dipersiapkan.</div>
+    <button class="modal-btn" onclick="closeDevModal()">Mengerti & Tutup</button>
+  </div>
+</div>
+
+<!-- HEADER (TANPA SEARCH BOX DI HEADER - KONSISTEN) -->
 <div class="header">
   <div class="header-top">
     <div class="brand-title"><i class="ph-bold ph-storefront"></i> My MBG</div>
     <div class="header-icons">
+      <button class="icon-btn" title="Hubungi Penjual / CS" onclick="window.location.href='/akun/?page=chat'">
+        <i class="ph-bold ph-chat-teardrop-dots"></i>
+      </button>
+      <button class="icon-btn" title="Produk Favorit" onclick="window.location.href='/akun/?page=favorit'">
+        <i class="ph-bold ph-heart"></i>
+        <span class="cart-badge fav-badge" id="favBadgeDisplay" style="display:none;">0</span>
+      </button>
       <button class="icon-btn" title="Notifikasi" onclick="window.location.href='/akun/?page=notifikasi'">
         <i class="ph-bold ph-bell"></i>
       </button>
@@ -214,6 +429,16 @@
 
 <div class="main-container">
 
+  <!-- INFO PENGIRIMAN & ESTIMASI BANNER -->
+  <div class="shipping-banner" onclick="window.location.href='/akun/?page=transaksi'">
+    <div class="ship-icon"><i class="ph-bold ph-truck"></i></div>
+    <div class="ship-content">
+      <div class="ship-title"><span></span> Status Logistik MBG Aktif</div>
+      <div class="ship-text">Pesanan bahan mentah Anda sedang dalam pengiriman 🚚</div>
+    </div>
+    <i class="ph-bold ph-caret-right ship-arrow"></i>
+  </div>
+
   <!-- KALKULATOR GIZI CEPAT -->
   <div class="kalkulator-box">
     <div class="kalk-head"><i class="ph-bold ph-calculator"></i> Kalkulator Kebutuhan Porsi SPPG</div>
@@ -232,12 +457,29 @@
     </div>
   </div>
 
-  <!-- KATEGORI EKSPLORASI -->
+  <!-- DAFTAR SUPPLIER & VENDOR UNGGULAN MBG (PENGGANTI KATEGORI EKSPLORASI) -->
   <div>
-    <div class="section-title"><i class="ph-bold ph-compass"></i> Eksplorasi Kategori Dapur MBG</div>
-    <div id="kategoriContainer" class="kategori-grid">
-      <div style="grid-column: 1/-1; padding: 40px; text-align: center; color: var(--text-muted);">Memuat daftar kategori...</div>
+    <div class="section-header">
+      <div class="section-title"><i class="ph-bold ph-shield-check"></i> Supplier & Vendor Terpercaya SPPG</div>
+      
+      <!-- SEARCH BAR SUPPLIER -->
+      <div class="search-box">
+        <i class="ph-bold ph-magnifying-glass"></i>
+        <input type="text" id="searchSupplier" placeholder="Cari supplier atau lokasi gudang..." oninput="filterSupplier(this.value)">
+      </div>
+
+      <!-- FILTER CHIPS WILAYAH -->
+      <div class="filter-strip">
+        <button class="filter-chip active" onclick="setWilayah('Semua', this)"><i class="ph-bold ph-map-pin"></i> Semua Wilayah</button>
+        <button class="filter-chip" onclick="setWilayah('Jakarta', this)"><i class="ph-bold ph-buildings"></i> Jakarta</button>
+        <button class="filter-chip" onclick="setWilayah('Bandung', this)"><i class="ph-bold ph-tree"></i> Bandung</button>
+        <button class="filter-chip" onclick="setWilayah('Jawa Barat', this)"><i class="ph-bold ph-map-trifold"></i> Jawa Barat</button>
+        <button class="filter-chip" onclick="setWilayah('Jawa Tengah', this)"><i class="ph-bold ph-barn"></i> Jawa Tengah</button>
+      </div>
     </div>
+
+    <!-- SUPPLIER LIST -->
+    <div class="supplier-grid" id="supplierGrid"></div>
   </div>
 
 </div>
@@ -245,34 +487,54 @@
 <script>
 function rp(n) { return 'Rp ' + Math.round(n || 0).toLocaleString('id-ID'); }
 
+function syncFavBadge() {
+  const badge = document.getElementById('favBadgeDisplay');
+  if (!badge) return;
+  let favs = [];
+  try { favs = JSON.parse(localStorage.getItem('mbg_favorites') || '[]'); } catch(e) { favs = []; }
+  if (Array.isArray(favs) && favs.length > 0) {
+    badge.textContent = favs.length;
+    badge.style.display = 'inline-block';
+  } else {
+    badge.style.display = 'none';
+  }
+}
+
 function syncCartBadge() {
   const badge = document.getElementById('cartBadgeDisplay');
   if (!badge) return;
   const val = badge.textContent.trim();
-  const cached = parseInt(localStorage.getItem('mbg_cart_count') || '0', 10);
   const parsed = parseInt(val, 10);
   
-  if (!isNaN(parsed) && parsed > 0) {
-    localStorage.setItem('mbg_cart_count', parsed);
-  } else if (isNaN(parsed) || parsed === 0) {
-    if (cached > 0) badge.textContent = cached;
-    else badge.textContent = '0';
+  let cartItems = [];
+  try {
+    cartItems = JSON.parse(localStorage.getItem('mbg_cart_items') || '[]');
+    if (!Array.isArray(cartItems)) cartItems = [];
+  } catch(e) { cartItems = []; }
+
+  // Jika native BukaOlshop merender angka 0 (berarti user baru / keranjang kosong), reset seluruh cache
+  if (!isNaN(parsed) && parsed === 0) {
+    localStorage.setItem('mbg_cart_items', '[]');
+    localStorage.removeItem('mbg_cart_count');
+    badge.textContent = '0';
+  } else if (!isNaN(parsed) && parsed > 0 && !val.includes('{{')) {
+    badge.textContent = parsed;
+  } else {
+    badge.textContent = cartItems.length;
   }
 }
 
 (function() {
   syncCartBadge();
+  syncFavBadge();
   const el = document.getElementById('saldoDisplay');
   const n = parseFloat(el.textContent.replace(/[^0-9]/g, ''));
   if (!isNaN(n) && n > 0) el.textContent = rp(n);
 })();
 
 window.addEventListener('pageshow', () => {
-  const badge = document.getElementById('cartBadgeDisplay');
-  const cached = localStorage.getItem('mbg_cart_count');
-  if (badge && cached && !isNaN(parseInt(cached))) {
-    badge.textContent = cached;
-  }
+  syncCartBadge();
+  syncFavBadge();
 });
 
 function hitungPorsi() {
@@ -285,78 +547,76 @@ function hitungPorsi() {
   document.getElementById('resultBox').classList.add('show');
 }
 
-const TOKEN = 'eyJhcHAiOiIxODY1MDMiLCJhdXRoIjoiMjAyNjA3MTQiLCJzaWduIjoiblUzWkZLcUx1aG5XSXV4YmYwbW1nUT09In0=';
-const BASE = 'https://openapi.bukaolshop.net/v1';
-const ICONS = ['squares-four', 'plant', 'carrot', 'apple', 'fish-simple', 'fish', 'pepper', 'drop'];
-const COLORS = [
-  { bg: '#FEF3C7', fg: '#D97706' },
-  { bg: '#FEE2E2', fg: '#DC2626' },
-  { bg: '#DCFCE7', fg: '#16A34A' },
-  { bg: '#EFF6FF', fg: '#2563EB' },
-  { bg: '#F3E8FF', fg: '#9333EA' },
-  { bg: '#E0F2FE', fg: '#0284C7' }
+// DUMMY SUPPLIER TERPERCAYA DATA
+const DUMMY_SUPPLIERS = [
+  { id: 1, nama: 'PT Pangan Sejahtera Nasional', rating: '4.9', trx: '1.4k+ Transaksi', lokasi: 'Lembang, Bandung', wilayah: 'Bandung', icon: 'warehouse', badge: 'Terverifikasi SPPG' },
+  { id: 2, nama: 'CV Tani Makmur Abadi', rating: '4.8', trx: '980+ Transaksi', lokasi: 'Cianjur, Jawa Barat', wilayah: 'Jawa Barat', icon: 'plant', badge: 'Terverifikasi SPPG' },
+  { id: 3, nama: 'Koperasi Peternak Unggul Jabar', rating: '4.9', trx: '2.1k+ Transaksi', lokasi: 'Bogor, Jawa Barat', wilayah: 'Jawa Barat', icon: 'fish-simple', badge: 'Mitra Utama' },
+  { id: 4, nama: 'PT Bulog Logistik SPPG', rating: '5.0', trx: '5.0k+ Transaksi', lokasi: 'Jakarta Pusat', wilayah: 'Jakarta', icon: 'shield-check', badge: 'BUMN Resmi' },
+  { id: 5, nama: 'UD Bahari Nusantara Abadi', rating: '4.7', trx: '850+ Transaksi', lokasi: 'Muara Baru, Jakarta', wilayah: 'Jakarta', icon: 'fish', badge: 'Terverifikasi SPPG' },
+  { id: 6, nama: 'CV Agro Segar Sentosa', rating: '4.8', trx: '1.1k+ Transaksi', lokasi: 'Brebes, Jawa Tengah', wilayah: 'Jawa Tengah', icon: 'carrot', badge: 'Mitra Unggulan' },
 ];
 
-const FALLBACK_KATEGORI_JELAJAH = [
-  { id_kategori: '1', nama_kategori: 'Karbohidrat Pokok', icon: 'plant' },
-  { id_kategori: '4', nama_kategori: 'Protein Hewani', icon: 'egg' },
-  { id_kategori: '2', nama_kategori: 'Sayur Mayur Segar', icon: 'carrot' },
-  { id_kategori: '6', nama_kategori: 'Bumbu & Minyak', icon: 'drop' },
-  { id_kategori: '3', nama_kategori: 'Buah & Pelengkap', icon: 'apple' },
-  { id_kategori: '0', nama_kategori: 'Semua Bahan', icon: 'package' }
-];
+let activeWilayah = 'Semua';
+let searchQuery = '';
 
-function loadKategoriJelajah() {
-  fetch(`${BASE}/app/kategori?token=${TOKEN}&_t=${Date.now()}&_r=${Math.random().toString(36).substring(2)}`, { cache: 'no-store' })
-    .then(r => r.json())
-    .then(d => {
-      if (d && d.code === 200 && d.data && d.data.length) {
-        renderKategoriJelajah(d.data);
-      } else {
-        renderKategoriJelajah(FALLBACK_KATEGORI_JELAJAH);
-      }
-    })
-    .catch(() => renderKategoriJelajah(FALLBACK_KATEGORI_JELAJAH));
+function setWilayah(wilayah, el) {
+  document.querySelectorAll('.filter-chip').forEach(e => e.classList.remove('active'));
+  el.classList.add('active');
+  activeWilayah = wilayah;
+  renderSuppliers();
 }
 
-function getKatImg(k) {
-  if (!k || typeof k !== 'object') return null;
-  let img = k.url_gambar || k.gambar || k.url_icon || k.icon_url || k.url_icon_kategori || k.icon_kategori || k.foto || k.url_foto || k.gambar_kategori || k.url_gambar_kategori || k.foto_kategori || k.gambar_utama || k.image || k.img || k.url_image;
-  if (!img && typeof k.icon === 'string') {
-    if (k.icon.startsWith('http') || k.icon.startsWith('//') || k.icon.includes('/') || (k.icon.includes('.') && !k.icon.includes(' '))) {
-      img = k.icon;
-    }
-  }
-  if (img && typeof img === 'string') {
-    if (img.startsWith('//')) img = 'https:' + img;
-    else if (!img.startsWith('http') && (img.includes('/') || img.includes('.'))) img = 'https://' + img;
-    return img;
-  }
-  return null;
+function filterSupplier(val) {
+  searchQuery = val.trim().toLowerCase();
+  renderSuppliers();
 }
 
-function renderKategoriJelajah(data) {
-  const container = document.getElementById('kategoriContainer');
-  if (!container) return;
-  container.innerHTML = data.map((k, i) => {
-    const col = COLORS[i % COLORS.length];
-    let katImg = getKatImg(k);
-    const iconName = (!katImg && typeof k.icon === 'string' && !k.icon.includes('/') && !k.icon.includes('.')) ? k.icon : ICONS[i % ICONS.length];
-    const targetUrl = k.url_kategori || k.url || k.link || ('/kategori/' + (k.id_kategori || ''));
+function renderSuppliers() {
+  const container = document.getElementById('supplierGrid');
+  let list = [...DUMMY_SUPPLIERS];
 
-    return `
-      <div class="kat-card" onclick="window.location.href='${targetUrl}'">
-        <div class="kat-icon-box" style="background:${col.bg}; color:${col.fg};">
-          ${katImg ? `<img src="${katImg}" alt="${k.nama_kategori || ''}" style="width:100%;height:100%;object-fit:cover;border-radius:20px;" onerror="this.outerHTML='<i class=\\\'ph-bold ph-${iconName}\\\'></i>'">` : `<i class="ph-bold ph-${iconName}"></i>`}
+  if (activeWilayah !== 'Semua') {
+    list = list.filter(s => s.wilayah === activeWilayah || s.lokasi.includes(activeWilayah));
+  }
+  if (searchQuery) {
+    list = list.filter(s => s.nama.toLowerCase().includes(searchQuery) || s.lokasi.toLowerCase().includes(searchQuery));
+  }
+
+  if (!list.length) {
+    container.innerHTML = '<div style="padding: 40px; text-align: center; color: var(--text-muted); font-size: 15px;"><i class="ph-duotone ph-building-office" style="font-size:44px;display:block;margin:0 auto 10px;"></i> Supplier untuk kriteria pencarian ini belum ditemukan</div>';
+    return;
+  }
+
+  container.innerHTML = list.map(s => `
+    <div class="supplier-card" onclick="openDevModal('${s.nama.replace(/'/g, "\\'")}')">
+      <div class="supplier-icon"><i class="ph-bold ph-${s.icon || 'storefront'}"></i></div>
+      <div class="supplier-body">
+        <div class="supplier-name">
+          ${s.nama}
+          <span class="badge-verified"><i class="ph-bold ph-check-circle"></i> ${s.badge}</span>
         </div>
-        <div class="kat-title">${k.nama_kategori || 'Kategori'}</div>
-        <div class="kat-desc">${k.keterangan || 'Lihat Katalog'}</div>
-      </div>`;
-  }).join('');
+        <div class="supplier-meta">
+          <div class="supplier-meta-item rating-gold"><i class="ph-fill ph-star"></i> <b>${s.rating}</b> (${s.trx})</div>
+          <div class="supplier-meta-item"><i class="ph-bold ph-map-pin"></i> ${s.lokasi}</div>
+        </div>
+      </div>
+      <div class="supplier-action"><i class="ph-bold ph-caret-right"></i></div>
+    </div>
+  `).join('');
+}
+
+function openDevModal(nama) {
+  document.getElementById('modalSupplierName').textContent = nama;
+  document.getElementById('devModal').classList.add('show');
+}
+
+function closeDevModal() {
+  document.getElementById('devModal').classList.remove('show');
 }
 
 window.addEventListener('DOMContentLoaded', () => {
-  loadKategoriJelajah();
+  renderSuppliers();
 });
 </script>
 </body>
