@@ -31,6 +31,12 @@
     --radius-md: 12px;
     --shadow-sm: 0 2px 8px rgba(15, 23, 42, 0.04);
     --shadow-md: 0 8px 24px rgba(15, 23, 42, 0.06);
+  }  html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
   }
 
   body {
@@ -43,17 +49,21 @@
     font-size: 16px;
   }
 
-  /* TOP HEADER (KONSISTEN TANPA SEARCH) */
-  .header {
+  /* TOP NAVBAR (FIXED ABOVE) */
+  .top-navbar {
     background: linear-gradient(135deg, var(--primary-navy) 0%, #1D4ED8 100%);
     color: #FFFFFF;
-    padding: 16px 20px 20px;
+    padding: 14px 20px;
     position: sticky;
     top: 0;
     z-index: 100;
-    box-shadow: 0 4px 16px rgba(30, 58, 138, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 4px 16px rgba(30, 58, 138, 0.25);
+    width: 100%;
+    box-sizing: border-box;
   }
-  .header-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
   .brand-title { font-size: 21px; font-weight: 800; letter-spacing: -0.4px; display: flex; align-items: center; gap: 8px; }
   .brand-title i { font-size: 26px; color: #93C5FD; }
   .header-icons { display: flex; gap: 8px; }
@@ -72,7 +82,7 @@
     cursor: pointer;
     transition: all 0.2s;
   }
-  .icon-btn:active { transform: scale(0.92); }
+  .icon-btn:active { transform: none; }
   @media (max-width: 380px) {
     .icon-btn { width: 37px; height: 37px; font-size: 17px; }
     .brand-title { font-size: 18px; }
@@ -97,96 +107,101 @@
     color: #FFFFFF !important;
   }
 
-  /* SALDO DOMPET STRIP */
-  .wallet-strip {
-    background: rgba(255, 255, 255, 0.12);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: var(--radius-lg);
-    padding: 14px 18px;
+  /* FAVORIT MODAL BACKDROP & BOX */
+  .fav-modal-backdrop {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(15, 23, 42, 0.65);
+    backdrop-filter: blur(5px);
+    z-index: 9999;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.25s ease;
+  }
+  .fav-modal-backdrop.show { opacity: 1; pointer-events: auto; }
+  .fav-modal-box {
+    background: #FFFFFF;
+    width: 100%;
+    max-width: 640px;
+    border-radius: 24px 24px 0 0;
+    max-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 -8px 30px rgba(0,0,0,0.25);
+    transform: translateY(100%);
+    transition: transform 0.25s ease;
+  }
+  .fav-modal-backdrop.show .fav-modal-box { transform: translateY(0); }
+  .fav-modal-header {
+    padding: 20px;
+    border-bottom: 1px solid var(--border-color);
     display: flex;
     align-items: center;
     justify-content: space-between;
-    backdrop-filter: blur(8px);
   }
-  .wallet-label { font-size: 13px; opacity: 0.85; font-weight: 600; display: flex; align-items: center; gap: 6px; }
-  .wallet-amount { font-size: 20px; font-weight: 800; color: #60A5FA; margin-top: 2px; }
-  .btn-topup {
-    background: #FFFFFF;
-    color: var(--primary-navy);
+  .close-modal-btn {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    background: #F1F5F9;
     border: none;
-    padding: 10px 18px;
-    border-radius: 24px;
-    font-family: 'Plus Jakarta Sans', sans-serif;
-    font-size: 14px;
-    font-weight: 800;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px; color: var(--text-sec);
     cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    transition: all 0.2s;
   }
-  .btn-topup:active { transform: scale(0.94); }
-
-  /* MAIN CONTAINER */
-  .main-container { max-width: 640px; margin: 0 auto; padding: 16px; display: flex; flex-direction: column; gap: 24px; }
-
-  /* INFO PENGIRIMAN & ESTIMASI BANNER */
-  .shipping-banner {
-    background: linear-gradient(135deg, #1E293B 0%, #0F172A 100%);
-    border: 1px solid #334155;
-    border-radius: var(--radius-md);
-    padding: 14px 16px;
+  .fav-modal-body {
+    padding: 16px 20px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .fav-item-row {
     display: flex;
     align-items: center;
     gap: 12px;
-    color: #FFFFFF;
+    padding: 12px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    background: #FAFAFA;
     cursor: pointer;
-    box-shadow: var(--shadow-sm);
     transition: all 0.2s;
   }
-  .shipping-banner:active { transform: scale(0.98); border-color: var(--primary-blue); }
-  .ship-icon {
-    width: 42px;
-    height: 42px;
-    border-radius: 12px;
-    background: rgba(96, 165, 250, 0.15);
-    color: #60A5FA;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 24px;
-    flex-shrink: 0;
+  .fav-item-row:hover { border-color: var(--primary-blue); background: #FFFFFF; }
+  .fav-item-img {
+    width: 56px; height: 56px;
+    border-radius: 10px;
+    background: #F1F5F9;
+    display: flex; align-items: center; justify-content: center;
+    overflow: hidden; flex-shrink: 0;
   }
-  .ship-content { flex: 1; min-width: 0; }
-  .ship-title { font-size: 13px; font-weight: 800; color: #93C5FD; text-transform: uppercase; letter-spacing: 0.5px; display: flex; align-items: center; gap: 6px; }
-  .ship-title span { display: inline-block; width: 6px; height: 6px; background: #34D399; border-radius: 50%; animation: pulse 1.5s infinite; }
-  .ship-text { font-size: 13.5px; font-weight: 600; color: #E2E8F0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 2px; }
-  .ship-arrow { color: #64748B; font-size: 18px; }
-  @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.3; } 100% { opacity: 1; } }
-
-  /* KALKULATOR GIZI STRIP */
-  .kalkulator-box {
-    background: linear-gradient(135deg, #1E293B 0%, #0F172A 100%);
+  .fav-item-img img { width: 100%; height: 100%; object-fit: cover; }
+  .fav-item-info { flex: 1; min-width: 0; }
+  .fav-item-name { font-size: 14px; font-weight: 800; color: var(--text-main); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .fav-item-price { font-size: 15px; font-weight: 800; color: var(--primary-blue); margin-top: 2px; }
+  .fav-order-btn {
+    background: var(--primary-blue);
     color: #FFFFFF;
-    border-radius: var(--radius-lg);
-    padding: 22px;
-    box-shadow: var(--shadow-md);
+    border: none;
+    padding: 8px 14px;
+    border-radius: 20px;
+    font-size: 13px; font-weight: 800;
+    cursor: pointer;
   }
-  .kalk-head { display: flex; align-items: center; gap: 10px; font-size: 17px; font-weight: 800; margin-bottom: 6px; color: #60A5FA; }
-  .kalk-desc { font-size: 14px; color: #94A3B8; margin-bottom: 16px; line-height: 1.5; }
-  .kalk-input-group { display: flex; gap: 10px; margin-bottom: 16px; }
-  .kalk-input { flex: 1; padding: 14px; border-radius: var(--radius-md); border: 1px solid #334155; background: #1E293B; color: #fff; font-size: 16px; font-weight: 700; font-family: 'Plus Jakarta Sans', sans-serif; }
-  .kalk-input:focus { outline: none; border-color: #60A5FA; }
-  .btn-kalk { padding: 0 20px; background: var(--primary-blue); color: #fff; border: none; border-radius: var(--radius-md); font-weight: 800; font-size: 15px; cursor: pointer; transition: 0.2s; }
-  .btn-kalk:active { transform: scale(0.96); }
-  
-  .kalk-result { background: rgba(255, 255, 255, 0.07); border-radius: var(--radius-md); padding: 16px; display: none; }
-  .kalk-result.show { display: block; }
-  .result-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; text-align: center; margin-top: 10px; }
-  .res-item { background: rgba(0,0,0,0.25); padding: 10px; border-radius: 10px; }
-  .res-val { font-size: 17px; font-weight: 800; color: #34D399; }
-  .res-lbl { font-size: 11px; color: #CBD5E1; margin-top: 2px; }
+  .fav-remove-btn {
+    width: 34px; height: 34px;
+    border-radius: 50%;
+    background: #FEE2E2;
+    color: #EF4444;
+    border: none;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px; cursor: pointer;
+  }
+
+  /* MAIN CONTAINER */
+  .main-container { max-width: 640px; margin: 0 auto; padding: 16px; display: flex; flex-direction: column; gap: 24px; width: 100%; box-sizing: border-box; overflow: hidden; }
 
   /* SEARCH & FILTER SUPPLIER */
   .section-header { display: flex; flex-direction: column; gap: 12px; margin-bottom: 14px; }
@@ -263,7 +278,7 @@
     cursor: pointer;
     transition: all 0.2s;
   }
-  .supplier-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); border-color: var(--primary-blue); }
+  .supplier-card:hover { box-shadow: var(--shadow-md); border-color: var(--primary-blue); }
   .supplier-icon {
     width: 56px;
     height: 56px;
@@ -352,7 +367,7 @@
     cursor: pointer;
     transition: 0.2s;
   }
-  .modal-btn:active { transform: scale(0.96); }
+  .modal-btn:active { transform: none; }
 
   /* TOAST */
   .toast {
@@ -394,68 +409,43 @@
   </div>
 </div>
 
-<!-- HEADER (TANPA SEARCH BOX DI HEADER - KONSISTEN) -->
-<div class="header">
-  <div class="header-top">
-    <div class="brand-title"><i class="ph-bold ph-storefront"></i> My MBG</div>
-    <div class="header-icons">
-      <button class="icon-btn" title="Hubungi Penjual / CS" onclick="window.location.href='/akun/?page=chat'">
-        <i class="ph-bold ph-chat-teardrop-dots"></i>
-      </button>
-      <button class="icon-btn" title="Produk Favorit" onclick="window.location.href='/akun/?page=favorit'">
-        <i class="ph-bold ph-heart"></i>
-        <span class="cart-badge fav-badge" id="favBadgeDisplay" style="display:none;">0</span>
-      </button>
-      <button class="icon-btn" title="Notifikasi" onclick="window.location.href='/akun/?page=notifikasi'">
-        <i class="ph-bold ph-bell"></i>
-      </button>
-      <button class="icon-btn cart-btn" title="Keranjang Belanja" onclick="window.location.href='/cart/'">
-        <i class="ph-bold ph-shopping-cart"></i>
-        <span class="cart-badge" id="cartBadgeDisplay">{{total_cart}}</span>
-      </button>
-    </div>
-  </div>
-
-  <div class="wallet-strip">
-    <div>
-      <div class="wallet-label"><i class="ph-bold ph-wallet"></i> Saldo Dompet Anda:</div>
-      <div class="wallet-amount" id="saldoDisplay">Rp {{saldo_user}}</div>
-    </div>
-    <button class="btn-topup" onclick="window.location.href='/akun/?page=topup'">
-      <i class="ph-bold ph-plus-circle"></i> Isi Ulang
+<!-- TOP NAVBAR (FIXED ABOVE) -->
+<div class="top-navbar">
+  <div class="brand-title"><i class="ph-bold ph-storefront"></i> My MBG</div>
+  <div class="header-icons">
+    <button class="icon-btn" title="Hubungi Penjual / CS" onclick="window.location.href='/akun/?page=chat'">
+      <i class="ph-bold ph-chat-teardrop-dots"></i>
+    </button>
+    <button class="icon-btn" title="Produk Favorit" onclick="openFavModal()">
+      <i class="ph-bold ph-heart"></i>
+      <span class="cart-badge fav-badge" id="favBadgeDisplay" style="display:none;">0</span>
+    </button>
+    <button class="icon-btn" title="Notifikasi" onclick="window.location.href='/akun/?page=notifikasi'">
+      <i class="ph-bold ph-bell"></i>
+    </button>
+    <button class="icon-btn cart-btn" title="Keranjang Belanja" onclick="window.location.href='/cart/'">
+      <i class="ph-bold ph-shopping-cart"></i>
+      <span class="cart-badge" id="cartBadgeDisplay">{{total_cart}}</span>
     </button>
   </div>
 </div>
 
-<div class="main-container">
-
-  <!-- INFO PENGIRIMAN & ESTIMASI BANNER -->
-  <div class="shipping-banner" onclick="window.location.href='/akun/?page=transaksi'">
-    <div class="ship-icon"><i class="ph-bold ph-truck"></i></div>
-    <div class="ship-content">
-      <div class="ship-title"><span></span> Status Logistik MBG Aktif</div>
-      <div class="ship-text">Pesanan bahan mentah Anda sedang dalam pengiriman 🚚</div>
-    </div>
-    <i class="ph-bold ph-caret-right ship-arrow"></i>
-  </div>
-
-  <!-- KALKULATOR GIZI CEPAT -->
-  <div class="kalkulator-box">
-    <div class="kalk-head"><i class="ph-bold ph-calculator"></i> Kalkulator Kebutuhan Porsi SPPG</div>
-    <div class="kalk-desc">Hitung estimasi kebutuhan bahan mentah dapur MBG berdasarkan jumlah siswa/porsi hari ini.</div>
-    <div class="kalk-input-group">
-      <input type="number" id="inputSiswa" class="kalk-input" placeholder="Masukkan jumlah siswa (mis: 100)" value="100">
-      <button class="btn-kalk" onclick="hitungPorsi()">Hitung</button>
-    </div>
-    <div class="kalk-result show" id="resultBox">
-      <div style="font-size: 13px; font-weight: 700; color: #93C5FD;">Rekomendasi Belanja untuk <span id="txtSiswa">100</span> Porsi:</div>
-      <div class="result-grid">
-        <div class="res-item"><div class="res-val" id="resBeras">15 Kg</div><div class="res-lbl">Beras Premium</div></div>
-        <div class="res-item"><div class="res-val" id="resProtein">10 Kg</div><div class="res-lbl">Ayam / Daging</div></div>
-        <div class="res-item"><div class="res-val" id="resSayur">10 Kg</div><div class="res-lbl">Sayuran Segar</div></div>
+<!-- FAVORIT MODAL -->
+<div class="fav-modal-backdrop" id="favModalBackdrop" onclick="closeFavModal()">
+  <div class="fav-modal-box" onclick="event.stopPropagation()">
+    <div class="fav-modal-header">
+      <div style="display:flex;align-items:center;gap:8px;font-size:18px;font-weight:800;color:var(--primary-navy);">
+        <i class="ph-fill ph-heart" style="color:#EC4899;font-size:24px;"></i> Daftar Produk Favorit
       </div>
+      <button class="close-modal-btn" onclick="closeFavModal()"><i class="ph-bold ph-x"></i></button>
+    </div>
+    <div class="fav-modal-body" id="favModalList">
+      <div style="padding:40px;text-align:center;color:var(--text-muted);">Belum ada produk favorit tersimpan</div>
     </div>
   </div>
+</div>
+
+<div class="main-container">
 
   <!-- DAFTAR SUPPLIER & VENDOR UNGGULAN MBG (PENGGANTI KATEGORI EKSPLORASI) -->
   <div>
@@ -487,16 +477,81 @@
 <script>
 function rp(n) { return 'Rp ' + Math.round(n || 0).toLocaleString('id-ID'); }
 
+function getFavs() {
+  try {
+    const f = JSON.parse(localStorage.getItem('mbg_favorites') || '[]');
+    return Array.isArray(f) ? f.filter((v, i, a) => a.indexOf(v) === i) : [];
+  } catch(e) { return []; }
+}
+
+function cleanStaleFavs() {
+  const favs = getFavs();
+  // Di halaman jelajah kita bersihkan duplikat
+  if (favs.length) {
+    const cleaned = favs.filter((id, index) => favs.indexOf(id) === index);
+    if (cleaned.length !== favs.length) {
+      localStorage.setItem('mbg_favorites', JSON.stringify(cleaned));
+    }
+  }
+}
+
 function syncFavBadge() {
+  cleanStaleFavs();
   const badge = document.getElementById('favBadgeDisplay');
   if (!badge) return;
-  let favs = [];
-  try { favs = JSON.parse(localStorage.getItem('mbg_favorites') || '[]'); } catch(e) { favs = []; }
-  if (Array.isArray(favs) && favs.length > 0) {
+  const favs = getFavs();
+  if (favs.length > 0) {
     badge.textContent = favs.length;
     badge.style.display = 'inline-block';
   } else {
     badge.style.display = 'none';
+  }
+}
+
+function openFavModal() {
+  const backdrop = document.getElementById('favModalBackdrop');
+  const listEl = document.getElementById('favModalList');
+  if (!backdrop || !listEl) return;
+
+  const favs = getFavs();
+  if (!favs.length) {
+    listEl.innerHTML = '<div style="padding:40px;text-align:center;color:var(--text-muted);"><i class="ph-duotone ph-heart-break" style="font-size:56px;display:block;margin:0 auto 12px;color:#CBD5E1;"></i>Belum ada produk favorit tersimpan.<br><span style="font-size:13px;">Klik ikon hati (♡) pada produk di halaman Home untuk menyimpan.</span></div>';
+  } else {
+    listEl.innerHTML = favs.map(id => {
+      return `
+        <div class="fav-item-row" onclick="window.location.href='/cart/'">
+          <div class="fav-item-img">
+            <i class="ph-duotone ph-package" style="font-size:28px;color:#94A3B8;"></i>
+          </div>
+          <div class="fav-item-info">
+            <div class="fav-item-name">Produk Favorit (#${id})</div>
+            <div class="fav-item-price">Tersedia di Home</div>
+          </div>
+          <div style="display:flex;gap:6px;align-items:center;">
+            <button class="fav-order-btn" onclick="event.stopPropagation(); window.location.href='/cart/'">Lihat</button>
+            <button class="fav-remove-btn" onclick="event.stopPropagation(); removeFavItem('${id}')" title="Hapus"><i class="ph-bold ph-trash"></i></button>
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  backdrop.classList.add('show');
+}
+
+function closeFavModal() {
+  const backdrop = document.getElementById('favModalBackdrop');
+  if (backdrop) backdrop.classList.remove('show');
+}
+
+function removeFavItem(id) {
+  let favs = getFavs();
+  const idx = favs.indexOf(String(id));
+  if (idx !== -1) {
+    favs.splice(idx, 1);
+    localStorage.setItem('mbg_favorites', JSON.stringify(favs));
+    syncFavBadge();
+    openFavModal();
   }
 }
 
@@ -512,13 +567,8 @@ function syncCartBadge() {
     if (!Array.isArray(cartItems)) cartItems = [];
   } catch(e) { cartItems = []; }
 
-  // Jika native BukaOlshop merender angka 0 (berarti user baru / keranjang kosong), reset seluruh cache
-  if (!isNaN(parsed) && parsed === 0) {
-    localStorage.setItem('mbg_cart_items', '[]');
-    localStorage.removeItem('mbg_cart_count');
-    badge.textContent = '0';
-  } else if (!isNaN(parsed) && parsed > 0 && !val.includes('{{')) {
-    badge.textContent = parsed;
+  if (!isNaN(parsed) && parsed > 0 && !val.includes('{{')) {
+    badge.textContent = Math.max(parsed, cartItems.length);
   } else {
     badge.textContent = cartItems.length;
   }
@@ -527,25 +577,12 @@ function syncCartBadge() {
 (function() {
   syncCartBadge();
   syncFavBadge();
-  const el = document.getElementById('saldoDisplay');
-  const n = parseFloat(el.textContent.replace(/[^0-9]/g, ''));
-  if (!isNaN(n) && n > 0) el.textContent = rp(n);
 })();
 
 window.addEventListener('pageshow', () => {
   syncCartBadge();
   syncFavBadge();
 });
-
-function hitungPorsi() {
-  const n = parseFloat(document.getElementById('inputSiswa').value) || 0;
-  if (n <= 0) return;
-  document.getElementById('txtSiswa').textContent = n;
-  document.getElementById('resBeras').textContent = (n * 0.15).toFixed(1) + ' Kg';
-  document.getElementById('resProtein').textContent = (n * 0.1).toFixed(1) + ' Kg';
-  document.getElementById('resSayur').textContent = (n * 0.1).toFixed(1) + ' Kg';
-  document.getElementById('resultBox').classList.add('show');
-}
 
 // DUMMY SUPPLIER TERPERCAYA DATA
 const DUMMY_SUPPLIERS = [

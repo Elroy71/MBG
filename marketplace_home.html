@@ -33,6 +33,14 @@
     --shadow-md: 0 8px 24px rgba(15, 23, 42, 0.06);
   }
 
+  html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+
   body {
     font-family: 'Plus Jakarta Sans', sans-serif;
     background: var(--bg-main);
@@ -43,17 +51,21 @@
     font-size: 16px;
   }
 
-  /* TOP HEADER */
-  .header {
+  /* TOP NAVBAR (FIXED ABOVE) */
+  .top-navbar {
     background: linear-gradient(135deg, var(--primary-navy) 0%, #1D4ED8 100%);
     color: #FFFFFF;
-    padding: 16px 20px 20px;
+    padding: 14px 20px;
     position: sticky;
     top: 0;
     z-index: 100;
-    box-shadow: 0 4px 16px rgba(30, 58, 138, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 4px 16px rgba(30, 58, 138, 0.25);
+    width: 100%;
+    box-sizing: border-box;
   }
-  .header-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
   .brand-title { font-size: 21px; font-weight: 800; letter-spacing: -0.4px; display: flex; align-items: center; gap: 8px; }
   .brand-title i { font-size: 26px; color: #93C5FD; }
   .header-icons { display: flex; gap: 8px; }
@@ -72,7 +84,7 @@
     cursor: pointer;
     transition: all 0.2s;
   }
-  .icon-btn:active { transform: scale(0.92); }
+  .icon-btn:active { transform: none; }
   @media (max-width: 380px) {
     .icon-btn { width: 37px; height: 37px; font-size: 17px; }
     .brand-title { font-size: 18px; }
@@ -117,7 +129,17 @@
     z-index: 5;
   }
   .card-fav-btn.active { color: #EC4899; background: #FFFFFF; }
-  .card-fav-btn:active { transform: scale(0.85); }
+  .card-fav-btn:active { transform: none; }
+
+  /* HEADER SUB (SCROLLABLE BELOW NAVBAR) */
+  .header-sub {
+    background: linear-gradient(135deg, var(--primary-navy) 0%, #1D4ED8 100%);
+    color: #FFFFFF;
+    padding: 0 20px 20px;
+    position: relative;
+    width: 100%;
+    box-sizing: border-box;
+  }
 
   /* SEARCH & SALDO BAR */
   .search-box {
@@ -168,10 +190,103 @@
     box-shadow: 0 2px 8px rgba(0,0,0,0.12);
     transition: 0.2s;
   }
-  .btn-topup:active { transform: scale(0.95); }
+  .btn-topup:active { transform: none; }
+
+  /* FAVORIT MODAL BACKDROP & BOX */
+  .fav-modal-backdrop {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(15, 23, 42, 0.65);
+    backdrop-filter: blur(5px);
+    z-index: 9999;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.25s ease;
+  }
+  .fav-modal-backdrop.show { opacity: 1; pointer-events: auto; }
+  .fav-modal-box {
+    background: #FFFFFF;
+    width: 100%;
+    max-width: 640px;
+    border-radius: 24px 24px 0 0;
+    max-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 -8px 30px rgba(0,0,0,0.25);
+    transform: translateY(100%);
+    transition: transform 0.25s ease;
+  }
+  .fav-modal-backdrop.show .fav-modal-box { transform: translateY(0); }
+  .fav-modal-header {
+    padding: 20px;
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .close-modal-btn {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    background: #F1F5F9;
+    border: none;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px; color: var(--text-sec);
+    cursor: pointer;
+  }
+  .fav-modal-body {
+    padding: 16px 20px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .fav-item-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    background: #FAFAFA;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .fav-item-row:hover { border-color: var(--primary-blue); background: #FFFFFF; }
+  .fav-item-img {
+    width: 56px; height: 56px;
+    border-radius: 10px;
+    background: #F1F5F9;
+    display: flex; align-items: center; justify-content: center;
+    overflow: hidden; flex-shrink: 0;
+  }
+  .fav-item-img img { width: 100%; height: 100%; object-fit: cover; }
+  .fav-item-info { flex: 1; min-width: 0; }
+  .fav-item-name { font-size: 14px; font-weight: 800; color: var(--text-main); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .fav-item-price { font-size: 15px; font-weight: 800; color: var(--primary-blue); margin-top: 2px; }
+  .fav-order-btn {
+    background: var(--primary-blue);
+    color: #FFFFFF;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 20px;
+    font-size: 13px; font-weight: 800;
+    cursor: pointer;
+  }
+  .fav-remove-btn {
+    width: 34px; height: 34px;
+    border-radius: 50%;
+    background: #FEE2E2;
+    color: #EF4444;
+    border: none;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px; cursor: pointer;
+  }
 
   /* MAIN CONTAINER */
-  .main-container { max-width: 640px; margin: 0 auto; padding: 16px; display: flex; flex-direction: column; gap: 24px; }
+  .main-container { max-width: 640px; margin: 0 auto; padding: 16px; display: flex; flex-direction: column; gap: 24px; width: 100%; box-sizing: border-box; overflow: hidden; }
 
   /* INFO PENGIRIMAN & ESTIMASI BANNER */
   .shipping-banner {
@@ -265,7 +380,7 @@
     cursor: pointer;
     transition: all 0.2s;
   }
-  .terlaris-card:hover { transform: translateY(-3px); }
+  .terlaris-card:hover { transform: none; }
   .terlaris-img-box {
     width: 100%;
     height: 125px;
@@ -311,7 +426,7 @@
     gap: 6px;
     transition: 0.2s;
   }
-  .btn-terlaris-add:active { transform: scale(0.95); }
+  .btn-terlaris-add:active { transform: none; }
 
   /* FILTER SORT BAR */
   .filter-strip {
@@ -363,7 +478,7 @@
     flex-direction: column;
     transition: all 0.2s ease;
   }
-  .produk-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
+  .produk-card:hover { box-shadow: var(--shadow-md); }
   
   .produk-img-box {
     width: 100%;
@@ -419,7 +534,7 @@
     gap: 8px;
   }
   .btn-add:hover { background: var(--primary-blue); color: #fff; }
-  .btn-add:active { transform: scale(0.96); }
+  .btn-add:active { transform: none; }
   .btn-add:disabled { border-color: #CBD5E1; background: #F1F5F9; color: #94A3B8; cursor: not-allowed; }
 
   /* TOAST */
@@ -452,28 +567,29 @@
 <!-- TOAST -->
 <div class="toast" id="toast"></div>
 
-<!-- HEADER -->
-<div class="header">
-  <div class="header-top">
-    <div class="brand-title"><i class="ph-bold ph-storefront"></i> My MBG</div>
-    <div class="header-icons">
-      <button class="icon-btn" title="Hubungi Penjual / CS" onclick="window.location.href='/akun/?page=chat'">
-        <i class="ph-bold ph-chat-teardrop-dots"></i>
-      </button>
-      <button class="icon-btn" title="Produk Favorit" onclick="window.location.href='/akun/?page=favorit'">
-        <i class="ph-bold ph-heart"></i>
-        <span class="cart-badge fav-badge" id="favBadgeDisplay" style="display:none;">0</span>
-      </button>
-      <button class="icon-btn" title="Notifikasi" onclick="window.location.href='/akun/?page=notifikasi'">
-        <i class="ph-bold ph-bell"></i>
-      </button>
-      <button class="icon-btn cart-btn" title="Keranjang Belanja" onclick="window.location.href='/cart/'">
-        <i class="ph-bold ph-shopping-cart"></i>
-        <span class="cart-badge" id="cartBadgeDisplay">{{total_cart}}</span>
-      </button>
-    </div>
+<!-- TOP NAVBAR (FIXED ABOVE) -->
+<div class="top-navbar">
+  <div class="brand-title"><i class="ph-bold ph-storefront"></i> My MBG</div>
+  <div class="header-icons">
+    <button class="icon-btn" title="Hubungi Penjual / CS" onclick="window.location.href='/akun/?page=chat'">
+      <i class="ph-bold ph-chat-teardrop-dots"></i>
+    </button>
+    <button class="icon-btn" title="Produk Favorit" onclick="openFavModal()">
+      <i class="ph-bold ph-heart"></i>
+      <span class="cart-badge fav-badge" id="favBadgeDisplay" style="display:none;">0</span>
+    </button>
+    <button class="icon-btn" title="Notifikasi" onclick="window.location.href='/akun/?page=notifikasi'">
+      <i class="ph-bold ph-bell"></i>
+    </button>
+    <button class="icon-btn cart-btn" title="Keranjang Belanja" onclick="window.location.href='/cart/'">
+      <i class="ph-bold ph-shopping-cart"></i>
+      <span class="cart-badge" id="cartBadgeDisplay">{{total_cart}}</span>
+    </button>
   </div>
-  
+</div>
+
+<!-- HEADER SUB (SCROLLABLE BELOW NAVBAR) -->
+<div class="header-sub">
   <div class="search-box">
     <i class="ph-bold ph-magnifying-glass"></i>
     <input type="text" id="searchInput" placeholder="Cari beras, minyak, sayuran..." oninput="onSearch(this.value)">
@@ -490,17 +606,22 @@
   </div>
 </div>
 
-<div class="main-container">
-
-  <!-- INFO PENGIRIMAN & ESTIMASI BANNER -->
-  <div class="shipping-banner" onclick="window.location.href='/akun/?page=transaksi'">
-    <div class="ship-icon"><i class="ph-bold ph-truck"></i></div>
-    <div class="ship-content">
-      <div class="ship-title"><span></span> Status Logistik MBG Aktif</div>
-      <div class="ship-text">Pesanan bahan mentah Anda sedang dalam pengiriman 🚚</div>
+<!-- FAVORIT MODAL -->
+<div class="fav-modal-backdrop" id="favModalBackdrop" onclick="closeFavModal()">
+  <div class="fav-modal-box" onclick="event.stopPropagation()">
+    <div class="fav-modal-header">
+      <div style="display:flex;align-items:center;gap:8px;font-size:18px;font-weight:800;color:var(--primary-navy);">
+        <i class="ph-fill ph-heart" style="color:#EC4899;font-size:24px;"></i> Daftar Produk Favorit
+      </div>
+      <button class="close-modal-btn" onclick="closeFavModal()"><i class="ph-bold ph-x"></i></button>
     </div>
-    <i class="ph-bold ph-caret-right ship-arrow"></i>
+    <div class="fav-modal-body" id="favModalList">
+      <div style="padding:40px;text-align:center;color:var(--text-muted);">Belum ada produk favorit tersimpan</div>
+    </div>
   </div>
+</div>
+
+<div class="main-container">
 
   <!-- KATEGORI -->
   <div>
@@ -514,7 +635,6 @@
   <div>
     <div class="section-header">
       <div class="section-title"><i class="ph-bold ph-fire"></i> Produk Terlaris & Rekomendasi</div>
-      <span style="font-size: 13px; font-weight: 700; color: var(--primary-blue);">Pilihan SPPG</span>
     </div>
     <div class="terlaris-scroll" id="terlarisScroll">
       <div style="padding: 20px; color: var(--text-muted); font-size: 14px;">Memuat produk terlaris...</div>
@@ -527,7 +647,7 @@
       <div class="section-title" id="produkTitle"><i class="ph-bold ph-package"></i> Semua Produk Berkualitas</div>
       <div class="filter-strip">
         <button class="filter-chip active" onclick="setSort('default', this)"><i class="ph-bold ph-squares-four"></i> Semua</button>
-        <button class="filter-chip" onclick="setSort('terlaris', this)"><i class="ph-bold ph-trend-up"></i> Terlaris</button>
+        <button class="filter-chip" onclick="setSort('terpopuler', this)"><i class="ph-bold ph-eye"></i> Paling Diminati</button>
         <button class="filter-chip" onclick="setSort('termurah', this)"><i class="ph-bold ph-tag"></i> Harga Termurah</button>
         <button class="filter-chip" onclick="setSort('stok', this)"><i class="ph-bold ph-check-circle"></i> Stok Terbanyak</button>
       </div>
@@ -635,18 +755,6 @@ function filterKat(id, el) {
   renderProdukGrid();
 }
 
-function enrichProdukTerjual(list) {
-  return (list || []).map(p => {
-    if (p.terjual === undefined || p.terjual === null) {
-      const str = String(p.id_produk || p.nama_produk || 'mbg');
-      let hash = 0;
-      for (let i = 0; i < str.length; i++) hash = (hash * 31 + str.charCodeAt(i)) & 0xFFFFFFFF;
-      p.terjual = 42 + (Math.abs(hash) % 450);
-    }
-    return p;
-  });
-}
-
 function setSort(mode, el) {
   document.querySelectorAll('.filter-chip').forEach(e => e.classList.remove('active'));
   el.classList.add('active');
@@ -654,12 +762,24 @@ function setSort(mode, el) {
   renderProdukGrid();
 }
 
+function cleanStaleFavs() {
+  if (!allProduk || !allProduk.length) return;
+  const validIds = allProduk.map(p => String(p.id_produk || p.nama_produk || ''));
+  const favs = getFavs();
+  const cleaned = favs.filter((id, index) => validIds.includes(id) && favs.indexOf(id) === index);
+  if (cleaned.length !== favs.length) {
+    localStorage.setItem('mbg_favorites', JSON.stringify(cleaned));
+  }
+  syncFavBadge();
+}
+
 function loadProduk() {
   fetch(`${BASE}/app/produk?token=${TOKEN}&page=1&total_data=50&_t=${Date.now()}`, { cache: 'no-store' })
     .then(r => r.json())
     .then(d => {
       if (d && d.code === 200 && d.data) {
-        allProduk = enrichProdukTerjual(d.data);
+        allProduk = d.data;
+        cleanStaleFavs();
         renderTerlaris();
         renderProdukGrid();
       } else {
@@ -670,14 +790,15 @@ function loadProduk() {
 }
 
 function renderProdukFallback() {
-  allProduk = enrichProdukTerjual([
-    { id_produk: 'p1', id_kategori: '1', nama_produk: 'Beras Putih Premium 5 Kg', harga_produk: 85000, harga_produk_asli: 95000, stok: 25, icon: 'plant', lokasi: 'Jakarta Selatan', gambar_utama: 'https://images.unsplash.com/photo-1586201375761-83865001e31c?auto=format&fit=crop&w=400&q=80', terjual: 142 },
-    { id_produk: 'p2', id_kategori: '7', nama_produk: 'Minyak Goreng Sawit 2 Liter', harga_produk: 34000, harga_produk_asli: 0, stok: 18, icon: 'drop', lokasi: 'Surabaya, Jatim', gambar_utama: 'https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?auto=format&fit=crop&w=400&q=80', terjual: 98 },
-    { id_produk: 'p3', id_kategori: '4', nama_produk: 'Daging Sapi Segar 500 Gram', harga_produk: 75000, harga_produk_asli: 80000, stok: 3, icon: 'fish-simple', lokasi: 'Bogor, Jabar', gambar_utama: 'https://images.unsplash.com/photo-1607623814075-e51df1bdc82f?auto=format&fit=crop&w=400&q=80', terjual: 85 },
-    { id_produk: 'p4', id_kategori: '4', nama_produk: 'Telur Ayam Pilihan 1 Tray (30 Butir)', harga_produk: 55000, harga_produk_asli: 0, stok: 0, icon: 'egg', lokasi: 'Tangerang, Banten', gambar_utama: 'https://images.unsplash.com/photo-1518568814500-bf0f8d125f46?auto=format&fit=crop&w=400&q=80', terjual: 210 },
-    { id_produk: 'p5', id_kategori: '2', nama_produk: 'Sayur Bayam Segar 200 Gram', harga_produk: 8000, harga_produk_asli: 0, stok: 30, icon: 'carrot', lokasi: 'Lembang, Bandung', gambar_utama: 'https://images.unsplash.com/photo-1576045057995-568f588f82fb?auto=format&fit=crop&w=400&q=80', terjual: 164 },
-    { id_produk: 'p6', id_kategori: '5', nama_produk: 'Ikan Lele Segar 1 Kg', harga_produk: 28000, harga_produk_asli: 0, stok: 12, icon: 'fish', lokasi: 'Bekasi, Jabar', gambar_utama: 'https://images.unsplash.com/photo-1534948216015-843149f72be3?auto=format&fit=crop&w=400&q=80', terjual: 76 },
-  ]);
+  allProduk = [
+    { id_produk: 'p1', id_kategori: '1', nama_produk: 'Beras Putih Premium 5 Kg', harga_produk: 85000, harga_produk_asli: 95000, stok: 25, icon: 'plant', lokasi: 'Jakarta Selatan', gambar_utama: 'https://images.unsplash.com/photo-1586201375761-83865001e31c?auto=format&fit=crop&w=400&q=80', dilihat: 520 },
+    { id_produk: 'p2', id_kategori: '7', nama_produk: 'Minyak Goreng Sawit 2 Liter', harga_produk: 34000, harga_produk_asli: 0, stok: 18, icon: 'drop', lokasi: 'Surabaya, Jatim', gambar_utama: 'https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?auto=format&fit=crop&w=400&q=80', dilihat: 310 },
+    { id_produk: 'p3', id_kategori: '4', nama_produk: 'Daging Sapi Segar 500 Gram', harga_produk: 75000, harga_produk_asli: 80000, stok: 3, icon: 'fish-simple', lokasi: 'Bogor, Jabar', gambar_utama: 'https://images.unsplash.com/photo-1607623814075-e51df1bdc82f?auto=format&fit=crop&w=400&q=80', dilihat: 290 },
+    { id_produk: 'p4', id_kategori: '4', nama_produk: 'Telur Ayam Pilihan 1 Tray (30 Butir)', harga_produk: 55000, harga_produk_asli: 0, stok: 0, icon: 'egg', lokasi: 'Tangerang, Banten', gambar_utama: 'https://images.unsplash.com/photo-1518568814500-bf0f8d125f46?auto=format&fit=crop&w=400&q=80', dilihat: 610 },
+    { id_produk: 'p5', id_kategori: '2', nama_produk: 'Sayur Bayam Segar 200 Gram', harga_produk: 8000, harga_produk_asli: 0, stok: 30, icon: 'carrot', lokasi: 'Lembang, Bandung', gambar_utama: 'https://images.unsplash.com/photo-1576045057995-568f588f82fb?auto=format&fit=crop&w=400&q=80', dilihat: 480 },
+    { id_produk: 'p6', id_kategori: '5', nama_produk: 'Ikan Lele Segar 1 Kg', harga_produk: 28000, harga_produk_asli: 0, stok: 12, icon: 'fish', lokasi: 'Bekasi, Jabar', gambar_utama: 'https://images.unsplash.com/photo-1534948216015-843149f72be3?auto=format&fit=crop&w=400&q=80', dilihat: 210 },
+  ];
+  cleanStaleFavs();
   renderTerlaris();
   renderProdukGrid();
 }
@@ -691,7 +812,7 @@ function getProdukImgUrl(p) {
 function getFavs() {
   try {
     const f = JSON.parse(localStorage.getItem('mbg_favorites') || '[]');
-    return Array.isArray(f) ? f : [];
+    return Array.isArray(f) ? f.filter((v, i, a) => a.indexOf(v) === i) : [];
   } catch(e) { return []; }
 }
 
@@ -702,11 +823,11 @@ function renderTerlaris() {
     return;
   }
   
-  // Ambil 4 produk terlaris / rekomendasi
+  // Logika: Tampilkan produk yang paling sering dilihat/diminati
   const topList = [...allProduk].sort((a,b) => {
-    const scoreA = (a.terjual || 0) + (a.stok || 0) * 2;
-    const scoreB = (b.terjual || 0) + (b.stok || 0) * 2;
-    return scoreB - scoreA;
+    const dilihatA = a.dilihat || a.views || a.jumlah_dilihat || 0;
+    const dilihatB = b.dilihat || b.views || b.jumlah_dilihat || 0;
+    return dilihatB - dilihatA;
   }).slice(0, 4);
 
   const favs = getFavs();
@@ -715,7 +836,6 @@ function renderTerlaris() {
     const urlProduk = p.url_produk || p.url_barang || '/cart/';
     const imgUrl = getProdukImgUrl(p);
     const lokasi = p.lokasi || p.kota || p.dikirim_dari || p.lokasi_produk || 'Gudang Utama MBG';
-    const terjual = p.terjual || 100;
     const pKey = String(p.id_produk || p.nama_produk || '');
     const isFav = favs.includes(pKey);
     
@@ -723,7 +843,7 @@ function renderTerlaris() {
       <div class="terlaris-card" onclick="window.location.href='${urlProduk}'">
         <div class="terlaris-img-box">
           ${imgUrl ? `<img src="${imgUrl}" alt="${p.nama_produk || 'Produk'}" onerror="this.outerHTML='<i class=\\\'ph-duotone ph-${p.icon || 'package'}\\\' style=\\\'font-size:48px;color:#94A3B8;\\\'></i>'">` : `<i class="ph-duotone ph-${p.icon || 'package'}" style="font-size:48px;color:#94A3B8;"></i>`}
-          <span class="badge-terlaris"><i class="ph-bold ph-fire"></i> #${index + 1} Terlaris</span>
+          <span class="badge-terlaris"><i class="ph-bold ph-fire"></i> #${index + 1} Unggulan</span>
           <button class="card-fav-btn ${isFav ? 'active' : ''}" onclick="event.stopPropagation(); toggleFavorite('${pKey}', '${(p.nama_produk || '').replace(/'/g, '')}', this)" title="Favorit">
             <i class="ph-${isFav ? 'fill' : 'bold'} ph-heart"></i>
           </button>
@@ -732,7 +852,6 @@ function renderTerlaris() {
           <div class="terlaris-name">${p.nama_produk || 'Produk MBG'}</div>
           <div class="terlaris-loc">
             <span><i class="ph-bold ph-map-pin"></i> ${lokasi}</span>
-            <span style="color:#D97706;font-weight:700;"><i class="ph-bold ph-lightning"></i> ${terjual} Terjual</span>
           </div>
           <div class="terlaris-price">${rp(p.harga_produk || 0)}</div>
           <button class="btn-terlaris-add" onclick="event.stopPropagation(); addToCart('${urlProduk}', '${(p.nama_produk || '').replace(/'/g, '')}')">
@@ -763,8 +882,8 @@ function renderProdukGrid() {
   // Apply sorting
   if (activeSort === 'termurah') {
     filtered.sort((a, b) => (a.harga_produk || 0) - (b.harga_produk || 0));
-  } else if (activeSort === 'terlaris') {
-    filtered.sort((a, b) => (b.terjual || 100) - (a.terjual || 100));
+  } else if (activeSort === 'terpopuler' || activeSort === 'terlaris') {
+    filtered.sort((a, b) => (b.dilihat || b.views || 0) - (a.dilihat || a.views || 0));
   } else if (activeSort === 'stok') {
     filtered.sort((a, b) => (b.stok || 0) - (a.stok || 0));
   }
@@ -784,7 +903,6 @@ function renderProdukGrid() {
     const urlProduk = p.url_produk || p.url_barang || '/cart/';
     const imgUrl = getProdukImgUrl(p);
     const lokasi = p.lokasi || p.kota || p.dikirim_dari || p.lokasi_produk || p.asal_barang || 'Gudang Utama MBG';
-    const terjual = p.terjual || 100;
     const pKey = String(p.id_produk || p.nama_produk || '');
     const isFav = favs.includes(pKey);
     
@@ -792,19 +910,15 @@ function renderProdukGrid() {
       <div class="produk-card" onclick="window.location.href='${urlProduk}'">
         <div class="produk-img-box">
           ${imgUrl ? `<img src="${imgUrl}" alt="${p.nama_produk || 'Produk'}" style="width:100%;height:100%;object-fit:cover;" onerror="this.outerHTML='<i class=\\\'ph-duotone ph-${p.icon || 'package'}\\\' style=\\\'font-size:48px;color:#94A3B8;\\\'></i>'">` : `<i class="ph-duotone ph-${p.icon || 'package'}"></i>`}
-          <span class="badge-stok ${habis ? 'habis' : menipis ? 'menipis' : 'ready'}">
-            <i class="ph-bold ph-${habis ? 'warning-circle' : menipis ? 'info' : 'check'}"></i>
-            ${habis ? 'Stok Habis' : menipis ? `Sisa ${stok}` : 'Ready Stock'}
-          </span>
+          ${habis ? `<span class="badge-stok habis"><i class="ph-bold ph-warning-circle"></i> Stok Habis</span>` : menipis ? `<span class="badge-stok menipis"><i class="ph-bold ph-info"></i> Sisa ${stok}</span>` : ''}
           <button class="card-fav-btn ${isFav ? 'active' : ''}" onclick="event.stopPropagation(); toggleFavorite('${pKey}', '${(p.nama_produk || '').replace(/'/g, '')}', this)" title="Favorit">
             <i class="ph-${isFav ? 'fill' : 'bold'} ph-heart"></i>
           </button>
         </div>
         <div class="produk-body">
           <div class="produk-name">${p.nama_produk || 'Produk MBG'}</div>
-          <div class="produk-location" style="display:flex;justify-content:space-between;align-items:center;">
+          <div class="produk-location">
             <span><i class="ph-bold ph-map-pin"></i> ${lokasi}</span>
-            <span style="color:#D97706;font-weight:700;"><i class="ph-bold ph-lightning"></i> ${terjual} Terjual</span>
           </div>
           ${diskon ? `<div class="produk-price-old">${rp(p.harga_produk_asli)}</div>` : ''}
           <div class="produk-price">${rp(p.harga_produk || 0)}</div>
@@ -824,32 +938,19 @@ function addToCart(urlProduk, nama) {
     if (!Array.isArray(cartItems)) cartItems = [];
   } catch(e) { cartItems = []; }
 
-  const badge = document.getElementById('cartBadgeDisplay');
   const key = urlProduk || nama;
-
-  if (cartItems.includes(key)) {
-    showToast(`"${nama}" sudah ada di keranjang (+1 kuantitas)`);
-  } else {
+  if (!cartItems.includes(key)) {
     cartItems.push(key);
     localStorage.setItem('mbg_cart_items', JSON.stringify(cartItems));
-    if (badge) {
-      const currentNative = parseInt(badge.textContent, 10);
-      if (!isNaN(currentNative) && !badge.textContent.includes('{{')) {
-        badge.textContent = cartItems.length;
-      } else {
-        badge.textContent = cartItems.length;
-      }
-    }
-    showToast(`"${nama}" berhasil ditambahkan ke keranjang`);
   }
+  syncCartBadge();
 
-  setTimeout(() => {
-    if (urlProduk && urlProduk !== '/cart/') {
-      window.location.href = urlProduk;
-    } else {
-      window.location.href = '/cart/';
-    }
-  }, 800);
+  // Langsung direct ke halaman beli/detail tanpa toast atau delay
+  if (urlProduk && urlProduk !== '/cart/') {
+    window.location.href = urlProduk;
+  } else {
+    window.location.href = '/cart/';
+  }
 }
 
 function toggleFavorite(id, nama, btnEl) {
@@ -875,6 +976,55 @@ function toggleFavorite(id, nama, btnEl) {
   }
   localStorage.setItem('mbg_favorites', JSON.stringify(favs));
   syncFavBadge();
+  
+  const backdrop = document.getElementById('favModalBackdrop');
+  if (backdrop && backdrop.classList.contains('show')) {
+    openFavModal();
+  } else {
+    renderTerlaris();
+    renderProdukGrid();
+  }
+}
+
+function openFavModal() {
+  const backdrop = document.getElementById('favModalBackdrop');
+  const listEl = document.getElementById('favModalList');
+  if (!backdrop || !listEl) return;
+
+  const favs = getFavs();
+  const favProducts = allProduk.filter(p => favs.includes(String(p.id_produk || p.nama_produk)));
+
+  if (!favProducts.length) {
+    listEl.innerHTML = '<div style="padding:40px;text-align:center;color:var(--text-muted);"><i class="ph-duotone ph-heart-break" style="font-size:56px;display:block;margin:0 auto 12px;color:#CBD5E1;"></i>Belum ada produk favorit tersimpan.<br><span style="font-size:13px;">Klik ikon hati (♡) pada produk untuk menyimpan.</span></div>';
+  } else {
+    listEl.innerHTML = favProducts.map(p => {
+      const urlProduk = p.url_produk || p.url_barang || '/cart/';
+      const imgUrl = getProdukImgUrl(p);
+      const pKey = String(p.id_produk || p.nama_produk);
+      return `
+        <div class="fav-item-row" onclick="window.location.href='${urlProduk}'">
+          <div class="fav-item-img">
+            ${imgUrl ? `<img src="${imgUrl}" alt="${p.nama_produk}">` : `<i class="ph-duotone ph-${p.icon || 'package'}" style="font-size:28px;color:#94A3B8;"></i>`}
+          </div>
+          <div class="fav-item-info">
+            <div class="fav-item-name">${p.nama_produk || 'Produk MBG'}</div>
+            <div class="fav-item-price">${rp(p.harga_produk || 0)}</div>
+          </div>
+          <div style="display:flex;gap:6px;align-items:center;">
+            <button class="fav-order-btn" onclick="event.stopPropagation(); addToCart('${urlProduk}', '${(p.nama_produk || '').replace(/'/g, '')}')">Beli</button>
+            <button class="fav-remove-btn" onclick="event.stopPropagation(); toggleFavorite('${pKey}', '${(p.nama_produk || '').replace(/'/g, '')}')" title="Hapus"><i class="ph-bold ph-trash"></i></button>
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  backdrop.classList.add('show');
+}
+
+function closeFavModal() {
+  const backdrop = document.getElementById('favModalBackdrop');
+  if (backdrop) backdrop.classList.remove('show');
 }
 
 function syncFavBadge() {
@@ -908,16 +1058,9 @@ function syncCartBadge() {
     if (!Array.isArray(cartItems)) cartItems = [];
   } catch(e) { cartItems = []; }
 
-  // Jika native BukaOlshop merender angka 0 (berarti user baru / keranjang kosong), reset seluruh cache
-  if (!isNaN(parsed) && parsed === 0) {
-    localStorage.setItem('mbg_cart_items', '[]');
-    localStorage.removeItem('mbg_cart_count');
-    badge.textContent = '0';
-  } else if (!isNaN(parsed) && parsed > 0 && !val.includes('{{')) {
-    // Jika native merender angka asli dari server BukaOlshop
-    badge.textContent = parsed;
+  if (!isNaN(parsed) && parsed > 0 && !val.includes('{{')) {
+    badge.textContent = Math.max(parsed, cartItems.length);
   } else {
-    // Di luar app / preview shortcode belum ter-replace, ikuti jumlah item unik bergaya Shopee/Tokped
     badge.textContent = cartItems.length;
   }
 }
