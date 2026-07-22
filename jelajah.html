@@ -44,6 +44,7 @@
     background: var(--bg-main);
     color: var(--text-main);
     min-height: 100vh;
+    padding-top: 76px;
     padding-bottom: 40px;
     line-height: 1.5;
     font-size: 16px;
@@ -53,10 +54,12 @@
   .top-navbar {
     background: linear-gradient(135deg, var(--primary-navy) 0%, #1D4ED8 100%);
     color: #FFFFFF;
-    padding: 14px 20px;
-    position: sticky;
+    padding: 12px 20px;
+    position: fixed;
     top: 0;
-    z-index: 100;
+    left: 0;
+    right: 0;
+    z-index: 9999;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -64,8 +67,8 @@
     width: 100%;
     box-sizing: border-box;
   }
-  .brand-title { font-size: 21px; font-weight: 800; letter-spacing: -0.4px; display: flex; align-items: center; gap: 8px; }
-  .brand-title i { font-size: 26px; color: #93C5FD; }
+  .brand-title { display: flex; align-items: center; cursor: default; }
+  .brand-logo { height: 52px; width: auto; max-width: 200px; object-fit: contain; }
   .header-icons { display: flex; gap: 8px; }
   .icon-btn {
     position: relative;
@@ -84,8 +87,9 @@
   }
   .icon-btn:active { transform: none; }
   @media (max-width: 380px) {
+    body { padding-top: 68px; }
     .icon-btn { width: 37px; height: 37px; font-size: 17px; }
-    .brand-title { font-size: 18px; }
+    .brand-logo { height: 44px; }
   }
   .cart-badge {
     position: absolute;
@@ -104,6 +108,14 @@
   }
   .fav-badge {
     background: #EC4899 !important;
+    color: #FFFFFF !important;
+  }
+  .chat-badge {
+    background: #EF4444 !important;
+    color: #FFFFFF !important;
+  }
+  .notif-badge {
+    background: #3B82F6 !important;
     color: #FFFFFF !important;
   }
 
@@ -264,16 +276,16 @@
   .supplier-grid {
     display: grid;
     grid-template-columns: 1fr;
-    gap: 14px;
+    gap: 10px;
   }
   .supplier-card {
     background: #FFFFFF;
     border: 1px solid var(--border-color);
-    border-radius: var(--radius-lg);
-    padding: 16px;
+    border-radius: 8px;
+    padding: 12px 14px;
     display: flex;
     align-items: flex-start;
-    gap: 14px;
+    gap: 12px;
     box-shadow: var(--shadow-sm);
     cursor: pointer;
     transition: all 0.2s;
@@ -411,10 +423,13 @@
 
 <!-- TOP NAVBAR (FIXED ABOVE) -->
 <div class="top-navbar">
-  <div class="brand-title"><i class="ph-bold ph-storefront"></i> My MBG</div>
+  <div class="brand-title">
+    <img src="asset/logombg.png" alt="My MBG" class="brand-logo" onerror="this.onerror=null;this.src='file:///d:/MBG_project/asset/logombg.png';">
+  </div>
   <div class="header-icons">
     <button class="icon-btn" title="Hubungi Penjual / CS" onclick="window.location.href='/akun/?page=chat'">
       <i class="ph-bold ph-chat-teardrop-dots"></i>
+      <span class="cart-badge chat-badge" id="chatBadgeDisplay" style="display:none;">{{unread_chat}}</span>
     </button>
     <button class="icon-btn" title="Produk Favorit" onclick="openFavModal()">
       <i class="ph-bold ph-heart"></i>
@@ -422,6 +437,7 @@
     </button>
     <button class="icon-btn" title="Notifikasi" onclick="window.location.href='/akun/?page=notifikasi'">
       <i class="ph-bold ph-bell"></i>
+      <span class="cart-badge notif-badge" id="notifBadgeDisplay" style="display:none;">{{unread_notif}}</span>
     </button>
     <button class="icon-btn cart-btn" title="Keranjang Belanja" onclick="window.location.href='/cart/'">
       <i class="ph-bold ph-shopping-cart"></i>
@@ -574,14 +590,54 @@ function syncCartBadge() {
   }
 }
 
+function syncChatBadge() {
+  const badge = document.getElementById('chatBadgeDisplay');
+  if (!badge) return;
+  const val = badge.textContent.trim();
+  let count = 0;
+  if (val && !val.includes('{{') && !isNaN(parseInt(val, 10))) {
+    count = parseInt(val, 10);
+  }
+  const localCount = parseInt(localStorage.getItem('mbg_unread_chat') || '0', 10);
+  if (localCount > count) count = localCount;
+  if (count > 0) {
+    badge.textContent = count > 99 ? '99+' : count;
+    badge.style.display = 'inline-block';
+  } else {
+    badge.style.display = 'none';
+  }
+}
+
+function syncNotifBadge() {
+  const badge = document.getElementById('notifBadgeDisplay');
+  if (!badge) return;
+  const val = badge.textContent.trim();
+  let count = 0;
+  if (val && !val.includes('{{') && !isNaN(parseInt(val, 10))) {
+    count = parseInt(val, 10);
+  }
+  const localCount = parseInt(localStorage.getItem('mbg_unread_notif') || '0', 10);
+  if (localCount > count) count = localCount;
+  if (count > 0) {
+    badge.textContent = count > 99 ? '99+' : count;
+    badge.style.display = 'inline-block';
+  } else {
+    badge.style.display = 'none';
+  }
+}
+
 (function() {
   syncCartBadge();
   syncFavBadge();
+  syncChatBadge();
+  syncNotifBadge();
 })();
 
 window.addEventListener('pageshow', () => {
   syncCartBadge();
   syncFavBadge();
+  syncChatBadge();
+  syncNotifBadge();
 });
 
 // DUMMY SUPPLIER TERPERCAYA DATA
