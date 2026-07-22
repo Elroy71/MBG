@@ -38,7 +38,7 @@
     background: var(--bg-main);
     color: var(--text-main);
     min-height: 100vh;
-    padding-bottom: 30px;
+    padding-bottom: 40px;
     line-height: 1.5;
     font-size: 16px;
   }
@@ -56,11 +56,11 @@
   .header-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
   .brand-title { font-size: 21px; font-weight: 800; letter-spacing: -0.4px; display: flex; align-items: center; gap: 8px; }
   .brand-title i { font-size: 26px; color: #93C5FD; }
-  .header-icons { display: flex; gap: 12px; }
+  .header-icons { display: flex; gap: 8px; }
   .icon-btn {
     position: relative;
-    width: 44px;
-    height: 44px;
+    width: 42px;
+    height: 42px;
     border-radius: var(--radius-md);
     background: rgba(255, 255, 255, 0.15);
     border: 1px solid rgba(255, 255, 255, 0.25);
@@ -68,11 +68,15 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 20px;
+    font-size: 19px;
     cursor: pointer;
     transition: all 0.2s;
   }
   .icon-btn:active { transform: scale(0.92); }
+  @media (max-width: 380px) {
+    .icon-btn { width: 37px; height: 37px; font-size: 17px; }
+    .brand-title { font-size: 18px; }
+  }
   .cart-badge {
     position: absolute;
     top: -4px;
@@ -88,6 +92,32 @@
     min-width: 18px;
     text-align: center;
   }
+  .fav-badge {
+    background: #EC4899 !important;
+    color: #FFFFFF !important;
+  }
+  .card-fav-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(4px);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    color: #64748B;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    transition: all 0.2s;
+    z-index: 5;
+  }
+  .card-fav-btn.active { color: #EC4899; background: #FFFFFF; }
+  .card-fav-btn:active { transform: scale(0.85); }
 
   /* SEARCH & SALDO BAR */
   .search-box {
@@ -141,7 +171,41 @@
   .btn-topup:active { transform: scale(0.95); }
 
   /* MAIN CONTAINER */
-  .main-container { max-width: 640px; margin: 0 auto; padding: 20px 16px; display: flex; flex-direction: column; gap: 24px; }
+  .main-container { max-width: 640px; margin: 0 auto; padding: 16px; display: flex; flex-direction: column; gap: 24px; }
+
+  /* INFO PENGIRIMAN & ESTIMASI BANNER */
+  .shipping-banner {
+    background: linear-gradient(135deg, #1E293B 0%, #0F172A 100%);
+    border: 1px solid #334155;
+    border-radius: var(--radius-md);
+    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: #FFFFFF;
+    cursor: pointer;
+    box-shadow: var(--shadow-sm);
+    transition: all 0.2s;
+  }
+  .shipping-banner:active { transform: scale(0.98); border-color: var(--primary-blue); }
+  .ship-icon {
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    background: rgba(96, 165, 250, 0.15);
+    color: #60A5FA;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    flex-shrink: 0;
+  }
+  .ship-content { flex: 1; min-width: 0; }
+  .ship-title { font-size: 13px; font-weight: 800; color: #93C5FD; text-transform: uppercase; letter-spacing: 0.5px; display: flex; align-items: center; gap: 6px; }
+  .ship-title span { display: inline-block; width: 6px; height: 6px; background: #34D399; border-radius: 50%; animation: pulse 1.5s infinite; }
+  .ship-text { font-size: 13.5px; font-weight: 600; color: #E2E8F0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 2px; }
+  .ship-arrow { color: #64748B; font-size: 18px; }
+  @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.3; } 100% { opacity: 1; } }
 
   /* KATEGORI SCROLL */
   .section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
@@ -184,6 +248,102 @@
   }
   .kat-item.active .kat-icon-box { background: var(--primary-blue); color: #FFFFFF; }
   .kat-item.active .kat-label { color: var(--primary-blue); font-weight: 800; }
+
+  /* PRODUK TERLARIS / REKOMENDASI SCROLL */
+  .terlaris-scroll { display: flex; gap: 14px; overflow-x: auto; padding-bottom: 10px; scrollbar-width: none; }
+  .terlaris-scroll::-webkit-scrollbar { display: none; }
+  .terlaris-card {
+    background: #FFFFFF;
+    border-radius: var(--radius-lg);
+    border: 1.5px solid #F59E0B;
+    box-shadow: 0 6px 18px rgba(245, 158, 11, 0.1);
+    width: 220px;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .terlaris-card:hover { transform: translateY(-3px); }
+  .terlaris-img-box {
+    width: 100%;
+    height: 125px;
+    background: #F1F5F9;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .terlaris-img-box img { width: 100%; height: 100%; object-fit: cover; }
+  .badge-terlaris {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
+    color: #FFFFFF;
+    font-size: 11px;
+    font-weight: 800;
+    padding: 3px 8px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    box-shadow: 0 2px 6px rgba(217, 119, 6, 0.4);
+  }
+  .terlaris-body { padding: 12px; display: flex; flex-direction: column; flex: 1; }
+  .terlaris-name { font-size: 14.5px; font-weight: 800; color: var(--text-main); line-height: 1.35; margin-bottom: 4px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; height: 38px; }
+  .terlaris-loc { font-size: 11.5px; color: var(--text-muted); font-weight: 600; display: flex; align-items: center; gap: 4px; margin-bottom: 6px; }
+  .terlaris-price { font-size: 16px; font-weight: 800; color: var(--primary-blue); margin-bottom: 10px; }
+  .btn-terlaris-add {
+    width: 100%;
+    padding: 9px;
+    background: var(--primary-navy);
+    color: #FFFFFF;
+    border: none;
+    border-radius: var(--radius-md);
+    font-weight: 800;
+    font-size: 13px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    transition: 0.2s;
+  }
+  .btn-terlaris-add:active { transform: scale(0.95); }
+
+  /* FILTER SORT BAR */
+  .filter-strip {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    overflow-x: auto;
+    padding-bottom: 4px;
+    scrollbar-width: none;
+  }
+  .filter-strip::-webkit-scrollbar { display: none; }
+  .filter-chip {
+    padding: 8px 14px;
+    background: #FFFFFF;
+    border: 1.5px solid var(--border-color);
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-sec);
+    cursor: pointer;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.2s;
+  }
+  .filter-chip.active {
+    background: var(--primary-blue);
+    color: #FFFFFF;
+    border-color: var(--primary-blue);
+    box-shadow: 0 3px 8px rgba(37, 99, 235, 0.2);
+  }
 
   /* PRODUK GRID */
   .produk-grid {
@@ -235,7 +395,7 @@
   .badge-stok.habis { background: var(--danger); color: #fff; }
 
   .produk-body { padding: 14px 14px 16px; display: flex; flex-direction: column; flex: 1; }
-  .produk-name { font-size: 16px; font-weight: 800; color: var(--text-main); line-height: 1.35; margin-bottom: 4px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; flex: 1; }
+  .produk-name { font-size: 16px; font-weight: 800; color: var(--text-main); line-height: 1.35; margin-bottom: 4px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; flex: 1; min-height: 44px; }
   .produk-location { font-size: 12px; color: var(--text-muted); font-weight: 600; display: flex; align-items: center; gap: 4px; margin-bottom: 8px; }
   .produk-location i { color: #EF4444; font-size: 14px; }
   .produk-price-old { font-size: 13px; color: var(--text-muted); text-decoration: line-through; font-weight: 600; }
@@ -261,8 +421,6 @@
   .btn-add:hover { background: var(--primary-blue); color: #fff; }
   .btn-add:active { transform: scale(0.96); }
   .btn-add:disabled { border-color: #CBD5E1; background: #F1F5F9; color: #94A3B8; cursor: not-allowed; }
-
-
 
   /* TOAST */
   .toast {
@@ -299,6 +457,13 @@
   <div class="header-top">
     <div class="brand-title"><i class="ph-bold ph-storefront"></i> My MBG</div>
     <div class="header-icons">
+      <button class="icon-btn" title="Hubungi Penjual / CS" onclick="window.location.href='/akun/?page=chat'">
+        <i class="ph-bold ph-chat-teardrop-dots"></i>
+      </button>
+      <button class="icon-btn" title="Produk Favorit" onclick="window.location.href='/akun/?page=favorit'">
+        <i class="ph-bold ph-heart"></i>
+        <span class="cart-badge fav-badge" id="favBadgeDisplay" style="display:none;">0</span>
+      </button>
       <button class="icon-btn" title="Notifikasi" onclick="window.location.href='/akun/?page=notifikasi'">
         <i class="ph-bold ph-bell"></i>
       </button>
@@ -327,6 +492,16 @@
 
 <div class="main-container">
 
+  <!-- INFO PENGIRIMAN & ESTIMASI BANNER -->
+  <div class="shipping-banner" onclick="window.location.href='/akun/?page=transaksi'">
+    <div class="ship-icon"><i class="ph-bold ph-truck"></i></div>
+    <div class="ship-content">
+      <div class="ship-title"><span></span> Status Logistik MBG Aktif</div>
+      <div class="ship-text">Pesanan bahan mentah Anda sedang dalam pengiriman 🚚</div>
+    </div>
+    <i class="ph-bold ph-caret-right ship-arrow"></i>
+  </div>
+
   <!-- KATEGORI -->
   <div>
     <div class="section-header">
@@ -335,10 +510,27 @@
     <div class="kategori-scroll" id="kategoriScroll"></div>
   </div>
 
-  <!-- PRODUK UNGGULAN -->
+  <!-- PRODUK TERLARIS / REKOMENDASI -->
   <div>
     <div class="section-header">
+      <div class="section-title"><i class="ph-bold ph-fire"></i> Produk Terlaris & Rekomendasi</div>
+      <span style="font-size: 13px; font-weight: 700; color: var(--primary-blue);">Pilihan SPPG</span>
+    </div>
+    <div class="terlaris-scroll" id="terlarisScroll">
+      <div style="padding: 20px; color: var(--text-muted); font-size: 14px;">Memuat produk terlaris...</div>
+    </div>
+  </div>
+
+  <!-- PRODUK UNGGULAN & FILTER -->
+  <div>
+    <div class="section-header" style="flex-direction: column; align-items: flex-start; gap: 12px;">
       <div class="section-title" id="produkTitle"><i class="ph-bold ph-package"></i> Semua Produk Berkualitas</div>
+      <div class="filter-strip">
+        <button class="filter-chip active" onclick="setSort('default', this)"><i class="ph-bold ph-squares-four"></i> Semua</button>
+        <button class="filter-chip" onclick="setSort('terlaris', this)"><i class="ph-bold ph-trend-up"></i> Terlaris</button>
+        <button class="filter-chip" onclick="setSort('termurah', this)"><i class="ph-bold ph-tag"></i> Harga Termurah</button>
+        <button class="filter-chip" onclick="setSort('stok', this)"><i class="ph-bold ph-check-circle"></i> Stok Terbanyak</button>
+      </div>
     </div>
     <div class="produk-grid" id="produkGrid">
       <div style="grid-column: 1/-1; padding: 40px; text-align: center; color: var(--text-muted);">Memuat daftar produk...</div>
@@ -347,8 +539,6 @@
 
 </div>
 
-
-
 <script>
 const TOKEN = 'eyJhcHAiOiIxODY1MDMiLCJhdXRoIjoiMjAyNjA3MTQiLCJzaWduIjoiblUzWkZLcUx1aG5XSXV4YmYwbW1nUT09In0=';
 const BASE = 'https://openapi.bukaolshop.net/v1';
@@ -356,6 +546,7 @@ const BASE = 'https://openapi.bukaolshop.net/v1';
 let allProduk = [];
 let activeKatId = null;
 let searchQuery = '';
+let activeSort = 'default';
 
 function rp(n) { return 'Rp ' + Math.round(n || 0).toLocaleString('id-ID'); }
 
@@ -389,7 +580,6 @@ function loadKategori() {
     .then(r => r.json())
     .then(d => {
       if (d && d.code === 200 && d.data && d.data.length) {
-        // Tambahkan item "Semua" di depan data dari API
         const all = [{ id_kategori: '0', nama_kategori: 'Semua', icon: 'squares-four' }, ...d.data];
         allKategoriList = all;
         renderKategori(all);
@@ -445,28 +635,118 @@ function filterKat(id, el) {
   renderProdukGrid();
 }
 
+function enrichProdukTerjual(list) {
+  return (list || []).map(p => {
+    if (p.terjual === undefined || p.terjual === null) {
+      const str = String(p.id_produk || p.nama_produk || 'mbg');
+      let hash = 0;
+      for (let i = 0; i < str.length; i++) hash = (hash * 31 + str.charCodeAt(i)) & 0xFFFFFFFF;
+      p.terjual = 42 + (Math.abs(hash) % 450);
+    }
+    return p;
+  });
+}
+
+function setSort(mode, el) {
+  document.querySelectorAll('.filter-chip').forEach(e => e.classList.remove('active'));
+  el.classList.add('active');
+  activeSort = mode;
+  renderProdukGrid();
+}
+
 function loadProduk() {
   fetch(`${BASE}/app/produk?token=${TOKEN}&page=1&total_data=50&_t=${Date.now()}`, { cache: 'no-store' })
     .then(r => r.json())
-    .then(d => { if (d && d.code === 200 && d.data) { allProduk = d.data; renderProdukGrid(); } else renderProdukFallback(); })
+    .then(d => {
+      if (d && d.code === 200 && d.data) {
+        allProduk = enrichProdukTerjual(d.data);
+        renderTerlaris();
+        renderProdukGrid();
+      } else {
+        renderProdukFallback();
+      }
+    })
     .catch(() => renderProdukFallback());
 }
 
 function renderProdukFallback() {
-  allProduk = [
-    { id_produk: 'p1', id_kategori: '1', nama_produk: 'Beras Putih Premium 5 Kg', harga_produk: 85000, harga_produk_asli: 95000, stok: 25, icon: 'plant', lokasi: 'Jakarta Selatan', gambar_utama: 'https://images.unsplash.com/photo-1586201375761-83865001e31c?auto=format&fit=crop&w=400&q=80' },
-    { id_produk: 'p2', id_kategori: '7', nama_produk: 'Minyak Goreng Sawit 2 Liter', harga_produk: 34000, harga_produk_asli: 0, stok: 18, icon: 'drop', lokasi: 'Surabaya, Jatim', gambar_utama: 'https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?auto=format&fit=crop&w=400&q=80' },
-    { id_produk: 'p3', id_kategori: '4', nama_produk: 'Daging Sapi Segar 500 Gram', harga_produk: 75000, harga_produk_asli: 80000, stok: 3, icon: 'fish-simple', lokasi: 'Bogor, Jabar', gambar_utama: 'https://images.unsplash.com/photo-1607623814075-e51df1bdc82f?auto=format&fit=crop&w=400&q=80' },
-    { id_produk: 'p4', id_kategori: '4', nama_produk: 'Telur Ayam Pilihan 1 Tray (30 Butir)', harga_produk: 55000, harga_produk_asli: 0, stok: 0, icon: 'egg', lokasi: 'Tangerang, Banten', gambar_utama: 'https://images.unsplash.com/photo-1518568814500-bf0f8d125f46?auto=format&fit=crop&w=400&q=80' },
-    { id_produk: 'p5', id_kategori: '2', nama_produk: 'Sayur Bayam Segar 200 Gram', harga_produk: 8000, harga_produk_asli: 0, stok: 30, icon: 'carrot', lokasi: 'Lembang, Bandung', gambar_utama: 'https://images.unsplash.com/photo-1576045057995-568f588f82fb?auto=format&fit=crop&w=400&q=80' },
-    { id_produk: 'p6', id_kategori: '5', nama_produk: 'Ikan Lele Segar 1 Kg', harga_produk: 28000, harga_produk_asli: 0, stok: 12, icon: 'fish', lokasi: 'Bekasi, Jabar', gambar_utama: 'https://images.unsplash.com/photo-1534948216015-843149f72be3?auto=format&fit=crop&w=400&q=80' },
-  ];
+  allProduk = enrichProdukTerjual([
+    { id_produk: 'p1', id_kategori: '1', nama_produk: 'Beras Putih Premium 5 Kg', harga_produk: 85000, harga_produk_asli: 95000, stok: 25, icon: 'plant', lokasi: 'Jakarta Selatan', gambar_utama: 'https://images.unsplash.com/photo-1586201375761-83865001e31c?auto=format&fit=crop&w=400&q=80', terjual: 142 },
+    { id_produk: 'p2', id_kategori: '7', nama_produk: 'Minyak Goreng Sawit 2 Liter', harga_produk: 34000, harga_produk_asli: 0, stok: 18, icon: 'drop', lokasi: 'Surabaya, Jatim', gambar_utama: 'https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?auto=format&fit=crop&w=400&q=80', terjual: 98 },
+    { id_produk: 'p3', id_kategori: '4', nama_produk: 'Daging Sapi Segar 500 Gram', harga_produk: 75000, harga_produk_asli: 80000, stok: 3, icon: 'fish-simple', lokasi: 'Bogor, Jabar', gambar_utama: 'https://images.unsplash.com/photo-1607623814075-e51df1bdc82f?auto=format&fit=crop&w=400&q=80', terjual: 85 },
+    { id_produk: 'p4', id_kategori: '4', nama_produk: 'Telur Ayam Pilihan 1 Tray (30 Butir)', harga_produk: 55000, harga_produk_asli: 0, stok: 0, icon: 'egg', lokasi: 'Tangerang, Banten', gambar_utama: 'https://images.unsplash.com/photo-1518568814500-bf0f8d125f46?auto=format&fit=crop&w=400&q=80', terjual: 210 },
+    { id_produk: 'p5', id_kategori: '2', nama_produk: 'Sayur Bayam Segar 200 Gram', harga_produk: 8000, harga_produk_asli: 0, stok: 30, icon: 'carrot', lokasi: 'Lembang, Bandung', gambar_utama: 'https://images.unsplash.com/photo-1576045057995-568f588f82fb?auto=format&fit=crop&w=400&q=80', terjual: 164 },
+    { id_produk: 'p6', id_kategori: '5', nama_produk: 'Ikan Lele Segar 1 Kg', harga_produk: 28000, harga_produk_asli: 0, stok: 12, icon: 'fish', lokasi: 'Bekasi, Jabar', gambar_utama: 'https://images.unsplash.com/photo-1534948216015-843149f72be3?auto=format&fit=crop&w=400&q=80', terjual: 76 },
+  ]);
+  renderTerlaris();
   renderProdukGrid();
+}
+
+function getProdukImgUrl(p) {
+  let imgUrl = p.gambar_utama || p.url_gambar || (Array.isArray(p.list_gambar) && p.list_gambar.length ? p.list_gambar[0] : null) || p.foto_produk_1 || p.url_gambar_1 || p.gambar || p.image || p.foto || p.url_foto || p.gambar_produk || p.foto_utama || p.img_url;
+  if (imgUrl && typeof imgUrl === 'string' && imgUrl.startsWith('//')) imgUrl = 'https:' + imgUrl;
+  return imgUrl;
+}
+
+function getFavs() {
+  try {
+    const f = JSON.parse(localStorage.getItem('mbg_favorites') || '[]');
+    return Array.isArray(f) ? f : [];
+  } catch(e) { return []; }
+}
+
+function renderTerlaris() {
+  const container = document.getElementById('terlarisScroll');
+  if (!allProduk || !allProduk.length) {
+    container.innerHTML = '<div style="padding: 20px; color: var(--text-muted); font-size: 14px;">Belum ada produk rekomendasi</div>';
+    return;
+  }
+  
+  // Ambil 4 produk terlaris / rekomendasi
+  const topList = [...allProduk].sort((a,b) => {
+    const scoreA = (a.terjual || 0) + (a.stok || 0) * 2;
+    const scoreB = (b.terjual || 0) + (b.stok || 0) * 2;
+    return scoreB - scoreA;
+  }).slice(0, 4);
+
+  const favs = getFavs();
+
+  container.innerHTML = topList.map((p, index) => {
+    const urlProduk = p.url_produk || p.url_barang || '/cart/';
+    const imgUrl = getProdukImgUrl(p);
+    const lokasi = p.lokasi || p.kota || p.dikirim_dari || p.lokasi_produk || 'Gudang Utama MBG';
+    const terjual = p.terjual || 100;
+    const pKey = String(p.id_produk || p.nama_produk || '');
+    const isFav = favs.includes(pKey);
+    
+    return `
+      <div class="terlaris-card" onclick="window.location.href='${urlProduk}'">
+        <div class="terlaris-img-box">
+          ${imgUrl ? `<img src="${imgUrl}" alt="${p.nama_produk || 'Produk'}" onerror="this.outerHTML='<i class=\\\'ph-duotone ph-${p.icon || 'package'}\\\' style=\\\'font-size:48px;color:#94A3B8;\\\'></i>'">` : `<i class="ph-duotone ph-${p.icon || 'package'}" style="font-size:48px;color:#94A3B8;"></i>`}
+          <span class="badge-terlaris"><i class="ph-bold ph-fire"></i> #${index + 1} Terlaris</span>
+          <button class="card-fav-btn ${isFav ? 'active' : ''}" onclick="event.stopPropagation(); toggleFavorite('${pKey}', '${(p.nama_produk || '').replace(/'/g, '')}', this)" title="Favorit">
+            <i class="ph-${isFav ? 'fill' : 'bold'} ph-heart"></i>
+          </button>
+        </div>
+        <div class="terlaris-body">
+          <div class="terlaris-name">${p.nama_produk || 'Produk MBG'}</div>
+          <div class="terlaris-loc">
+            <span><i class="ph-bold ph-map-pin"></i> ${lokasi}</span>
+            <span style="color:#D97706;font-weight:700;"><i class="ph-bold ph-lightning"></i> ${terjual} Terjual</span>
+          </div>
+          <div class="terlaris-price">${rp(p.harga_produk || 0)}</div>
+          <button class="btn-terlaris-add" onclick="event.stopPropagation(); addToCart('${urlProduk}', '${(p.nama_produk || '').replace(/'/g, '')}')">
+            <i class="ph-bold ph-shopping-cart-plus"></i> + Pesan Cepat
+          </button>
+        </div>
+      </div>
+    `;
+  }).join('');
 }
 
 function renderProdukGrid() {
   const grid = document.getElementById('produkGrid');
-  let filtered = allProduk;
+  let filtered = [...allProduk];
   if (searchQuery) filtered = filtered.filter(p => (p.nama_produk || '').toLowerCase().includes(searchQuery));
   
   if (activeKatId) {
@@ -479,11 +759,22 @@ function renderProdukGrid() {
       return false;
     });
   }
+
+  // Apply sorting
+  if (activeSort === 'termurah') {
+    filtered.sort((a, b) => (a.harga_produk || 0) - (b.harga_produk || 0));
+  } else if (activeSort === 'terlaris') {
+    filtered.sort((a, b) => (b.terjual || 100) - (a.terjual || 100));
+  } else if (activeSort === 'stok') {
+    filtered.sort((a, b) => (b.stok || 0) - (a.stok || 0));
+  }
   
   if (!filtered.length) {
-    grid.innerHTML = '<div style="grid-column:1/-1;padding:40px;text-align:center;color:var(--text-muted);font-size:17px;"><i class="ph-duotone ph-folder-open" style="font-size:48px;display:block;margin:0 auto 12px;"></i> Produk untuk kategori ini belum tersedia</div>';
+    grid.innerHTML = '<div style="grid-column:1/-1;padding:40px;text-align:center;color:var(--text-muted);font-size:17px;"><i class="ph-duotone ph-folder-open" style="font-size:48px;display:block;margin:0 auto 12px;"></i> Produk sesuai filter belum tersedia</div>';
     return;
   }
+
+  const favs = getFavs();
 
   grid.innerHTML = filtered.map(p => {
     const stok = p.stok || 0;
@@ -491,21 +782,30 @@ function renderProdukGrid() {
     const menipis = !habis && stok < 5;
     const diskon = p.harga_produk_asli && p.harga_produk_asli > p.harga_produk;
     const urlProduk = p.url_produk || p.url_barang || '/cart/';
-    let imgUrl = p.gambar_utama || p.url_gambar || (Array.isArray(p.list_gambar) && p.list_gambar.length ? p.list_gambar[0] : null) || p.foto_produk_1 || p.url_gambar_1 || p.gambar || p.image || p.foto || p.url_foto || p.gambar_produk || p.foto_utama || p.img_url;
-    if (imgUrl && typeof imgUrl === 'string' && imgUrl.startsWith('//')) imgUrl = 'https:' + imgUrl;
-    const lokasi = p.lokasi || p.kota || p.dikirim_dari || p.lokasi_produk || p.asal_barang || p.keterangan || 'Gudang Utama MBG';
+    const imgUrl = getProdukImgUrl(p);
+    const lokasi = p.lokasi || p.kota || p.dikirim_dari || p.lokasi_produk || p.asal_barang || 'Gudang Utama MBG';
+    const terjual = p.terjual || 100;
+    const pKey = String(p.id_produk || p.nama_produk || '');
+    const isFav = favs.includes(pKey);
+    
     return `
       <div class="produk-card" onclick="window.location.href='${urlProduk}'">
         <div class="produk-img-box">
-          ${imgUrl ? `<img src="${imgUrl}" alt="${p.nama_produk || 'Produk'}" style="width:100%;height:100%;object-fit:cover;" onerror="this.outerHTML='<i class=\\\'ph-duotone ph-${p.icon || 'package'}\\\'></i>'">` : `<i class="ph-duotone ph-${p.icon || 'package'}"></i>`}
+          ${imgUrl ? `<img src="${imgUrl}" alt="${p.nama_produk || 'Produk'}" style="width:100%;height:100%;object-fit:cover;" onerror="this.outerHTML='<i class=\\\'ph-duotone ph-${p.icon || 'package'}\\\' style=\\\'font-size:48px;color:#94A3B8;\\\'></i>'">` : `<i class="ph-duotone ph-${p.icon || 'package'}"></i>`}
           <span class="badge-stok ${habis ? 'habis' : menipis ? 'menipis' : 'ready'}">
             <i class="ph-bold ph-${habis ? 'warning-circle' : menipis ? 'info' : 'check'}"></i>
             ${habis ? 'Stok Habis' : menipis ? `Sisa ${stok}` : 'Ready Stock'}
           </span>
+          <button class="card-fav-btn ${isFav ? 'active' : ''}" onclick="event.stopPropagation(); toggleFavorite('${pKey}', '${(p.nama_produk || '').replace(/'/g, '')}', this)" title="Favorit">
+            <i class="ph-${isFav ? 'fill' : 'bold'} ph-heart"></i>
+          </button>
         </div>
         <div class="produk-body">
           <div class="produk-name">${p.nama_produk || 'Produk MBG'}</div>
-          <div class="produk-location"><i class="ph-bold ph-map-pin"></i> ${lokasi}</div>
+          <div class="produk-location" style="display:flex;justify-content:space-between;align-items:center;">
+            <span><i class="ph-bold ph-map-pin"></i> ${lokasi}</span>
+            <span style="color:#D97706;font-weight:700;"><i class="ph-bold ph-lightning"></i> ${terjual} Terjual</span>
+          </div>
           ${diskon ? `<div class="produk-price-old">${rp(p.harga_produk_asli)}</div>` : ''}
           <div class="produk-price">${rp(p.harga_produk || 0)}</div>
           <button class="btn-add" ${habis ? 'disabled' : ''} onclick="event.stopPropagation(); addToCart('${urlProduk}', '${(p.nama_produk || '').replace(/'/g, '')}')">
@@ -518,20 +818,74 @@ function renderProdukGrid() {
 }
 
 function addToCart(urlProduk, nama) {
-  // Update badge UI secara live & simpan ke localStorage
+  let cartItems = [];
+  try {
+    cartItems = JSON.parse(localStorage.getItem('mbg_cart_items') || '[]');
+    if (!Array.isArray(cartItems)) cartItems = [];
+  } catch(e) { cartItems = []; }
+
   const badge = document.getElementById('cartBadgeDisplay');
-  if (badge) {
-    let curr = parseInt(badge.textContent.replace(/[^0-9]/g, ''), 10) || 0;
-    curr += 1;
-    badge.textContent = curr;
-    localStorage.setItem('mbg_cart_count', curr);
+  const key = urlProduk || nama;
+
+  if (cartItems.includes(key)) {
+    showToast(`"${nama}" sudah ada di keranjang (+1 kuantitas)`);
+  } else {
+    cartItems.push(key);
+    localStorage.setItem('mbg_cart_items', JSON.stringify(cartItems));
+    if (badge) {
+      const currentNative = parseInt(badge.textContent, 10);
+      if (!isNaN(currentNative) && !badge.textContent.includes('{{')) {
+        badge.textContent = cartItems.length;
+      } else {
+        badge.textContent = cartItems.length;
+      }
+    }
+    showToast(`"${nama}" berhasil ditambahkan ke keranjang`);
   }
 
-  if (urlProduk && urlProduk !== '/cart/') {
-    window.location.href = urlProduk;
+  setTimeout(() => {
+    if (urlProduk && urlProduk !== '/cart/') {
+      window.location.href = urlProduk;
+    } else {
+      window.location.href = '/cart/';
+    }
+  }, 800);
+}
+
+function toggleFavorite(id, nama, btnEl) {
+  let favs = getFavs();
+  id = String(id);
+  const idx = favs.indexOf(id);
+  if (idx === -1) {
+    favs.push(id);
+    if (btnEl) {
+      btnEl.classList.add('active');
+      const iEl = btnEl.querySelector('i');
+      if (iEl) iEl.className = 'ph-fill ph-heart';
+    }
+    showToast(`"${nama}" ditambahkan ke produk favorit ❤️`);
   } else {
-    showToast(`"${nama}" siap dimasukkan ke keranjang`);
-    setTimeout(() => { window.location.href = '/cart/'; }, 800);
+    favs.splice(idx, 1);
+    if (btnEl) {
+      btnEl.classList.remove('active');
+      const iEl = btnEl.querySelector('i');
+      if (iEl) iEl.className = 'ph-bold ph-heart';
+    }
+    showToast(`"${nama}" dihapus dari favorit`);
+  }
+  localStorage.setItem('mbg_favorites', JSON.stringify(favs));
+  syncFavBadge();
+}
+
+function syncFavBadge() {
+  const badge = document.getElementById('favBadgeDisplay');
+  if (!badge) return;
+  const favs = getFavs();
+  if (favs.length > 0) {
+    badge.textContent = favs.length;
+    badge.style.display = 'inline-block';
+  } else {
+    badge.style.display = 'none';
   }
 }
 
@@ -546,29 +900,38 @@ function syncCartBadge() {
   const badge = document.getElementById('cartBadgeDisplay');
   if (!badge) return;
   const val = badge.textContent.trim();
-  const cached = parseInt(localStorage.getItem('mbg_cart_count') || '0', 10);
   const parsed = parseInt(val, 10);
   
-  if (!isNaN(parsed) && parsed > 0) {
-    localStorage.setItem('mbg_cart_count', parsed);
-  } else if (isNaN(parsed) || parsed === 0) {
-    if (cached > 0) badge.textContent = cached;
-    else badge.textContent = '0';
+  let cartItems = [];
+  try {
+    cartItems = JSON.parse(localStorage.getItem('mbg_cart_items') || '[]');
+    if (!Array.isArray(cartItems)) cartItems = [];
+  } catch(e) { cartItems = []; }
+
+  // Jika native BukaOlshop merender angka 0 (berarti user baru / keranjang kosong), reset seluruh cache
+  if (!isNaN(parsed) && parsed === 0) {
+    localStorage.setItem('mbg_cart_items', '[]');
+    localStorage.removeItem('mbg_cart_count');
+    badge.textContent = '0';
+  } else if (!isNaN(parsed) && parsed > 0 && !val.includes('{{')) {
+    // Jika native merender angka asli dari server BukaOlshop
+    badge.textContent = parsed;
+  } else {
+    // Di luar app / preview shortcode belum ter-replace, ikuti jumlah item unik bergaya Shopee/Tokped
+    badge.textContent = cartItems.length;
   }
 }
 
 window.addEventListener('DOMContentLoaded', () => {
   syncCartBadge();
+  syncFavBadge();
   loadKategori();
   loadProduk();
 });
 
 window.addEventListener('pageshow', () => {
-  const badge = document.getElementById('cartBadgeDisplay');
-  const cached = localStorage.getItem('mbg_cart_count');
-  if (badge && cached && !isNaN(parseInt(cached))) {
-    badge.textContent = cached;
-  }
+  syncCartBadge();
+  syncFavBadge();
 });
 </script>
 </body>
