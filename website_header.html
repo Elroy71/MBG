@@ -141,11 +141,9 @@
 
     /* USER & CART AREA */
     .user-pill-box {
-      background: rgba(255, 255, 255, 0.1);
-      border: 1px solid var(--mbg-border);
-      border-radius: 16px;
-      padding: 10px 16px;
-      backdrop-filter: blur(8px);
+      display: flex;
+      align-items: center;
+      gap: 12px;
     }
     .btn-auth {
       border-radius: 20px;
@@ -175,22 +173,18 @@
 
     /* MEMBER LOGGED IN ICONS */
     .member-icon-btn {
-      width: 42px;
-      height: 42px;
-      border-radius: 12px;
-      background: rgba(255, 255, 255, 0.15);
-      border: 1px solid var(--mbg-border);
+      width: 38px;
+      height: 38px;
       color: #FFFFFF;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.15rem;
+      font-size: 1.25rem;
       text-decoration: none;
-      transition: background 0.2s ease, color 0.2s ease;
+      transition: color 0.2s ease;
     }
     .member-icon-btn:hover {
-      background: rgba(255, 255, 255, 0.28);
-      color: #FFFFFF;
+      color: #93C5FD;
     }
     .cart-badge-pill {
       font-size: 0.72rem;
@@ -246,21 +240,15 @@
       <div class="row d-flex align-items-center g-3">
 
         <!-- LOGO & BRAND -->
-        <div class="col-12 col-md-3 col-lg-3">
-          <a href="/" class="brand-group">
-            <div class="brand-icon-box">
-              <i class="fa-solid fa-layer-group"></i>
-            </div>
-            <div>
-              <h3 class="brand-text">{{nama_toko}}</h3>
-              <span class="brand-subtext">Makan Bergizi Gratis</span>
-            </div>
+        <div class="col-7 col-md-3 col-lg-3 order-1">
+          <a href="/" class="brand-group text-decoration-none">
+            <img src="https://images.bukaolshop.com/hosting/186503/9765959e9f48316663.png" alt="My MBG" style="height: 48px; width: auto; max-width: 100%; object-fit: contain;">
           </a>
         </div>
 
         <!-- SEARCH BAR -->
-        <div class="col-12 col-md-5 col-lg-5">
-          <form action="/search" class="search-container m-0" method="GET">
+        <div class="col-12 col-md-5 col-lg-5 order-3 order-md-2 mt-2 mt-md-0 d-flex align-items-center">
+          <form action="/search" class="search-container m-0 w-100" method="GET">
             <div class="input-group">
               <input type="search" class="form-control" id="form-cari" maxlength="150" name="q" placeholder="{{teks_cari}}">
               <button class="btn btn-search-icon" type="submit">
@@ -272,14 +260,12 @@
         </div>
 
         <!-- USER & CART SECTION -->
-        <div class="col-12 col-md-4 col-lg-4 d-flex justify-content-md-end justify-content-between align-items-center">
-          <div class="user-pill-box w-100 d-flex justify-content-between align-items-center" id="user-data">
+        <div class="col-5 col-md-4 col-lg-4 order-2 order-md-3 d-flex justify-content-end align-items-center">
+          <div class="user-pill-box w-100 d-flex justify-content-end align-items-center" id="user-data">
             
-            <div class="d-flex flex-column">
-              <small class="text-white-50 font-weight-bold" style="font-size: 0.72rem; letter-spacing: 0.3px;">STATUS MEMBER</small>
-              
+            <div class="d-flex align-items-center me-2">
               <!-- BELUM LOGIN -->
-              <div class="d-none mt-1" id="belum_login">
+              <div class="d-none" id="belum_login">
                 <a class="btn btn-auth btn-login me-1" href="/akun/login">Masuk</a>
                 <a class="btn btn-auth btn-register" href="/akun/daftar">Daftar</a>
               </div>
@@ -289,13 +275,13 @@
             </div>
 
             <!-- IKON PROFIL & KERANJANG -->
-            <div class="d-flex align-items-center gap-2 d-none" id="logo_member">
-              <a href="/akun/?page=profil" class="member-icon-btn" title="Akun Saya">
-                <i class="fa-solid fa-user-shield"></i>
-              </a>
+            <div class="d-flex align-items-center gap-2" id="logo_member">
               <a href="/akun/?page=cart" class="member-icon-btn position-relative" title="Keranjang Belanja">
                 <i class="fa-solid fa-cart-shopping"></i>
                 <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger cart-badge-pill" id="total_cart">0</span>
+              </a>
+              <a href="/akun/?page=profil" class="member-icon-btn" title="Akun Saya" id="btn_profil_icon">
+                <i class="fa-solid fa-user-shield"></i>
               </a>
             </div>
 

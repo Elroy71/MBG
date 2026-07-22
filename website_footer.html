@@ -67,36 +67,15 @@
       
       <!-- KOLOM 1: IDENTITAS TOKO / PROGRAM -->
       <div class="col-12 col-lg-5">
-        <h5 class="footer-brand-title">
-          <i class="fa-solid fa-layer-group text-primary"></i>
-          <span>{{nama_toko}}</span>
-        </h5>
+        <div class="mb-3">
+          <img src="https://images.bukaolshop.com/hosting/186503/9765959e9f48316663.png" alt="My MBG" style="height: 52px; width: auto; max-width: 100%; object-fit: contain;">
+        </div>
         <p class="footer-desc">
           Platform digital terintegrasi penyedia &amp; pengelolaan rantai pasok bahan pangan untuk <b>Program Makan Bergizi Gratis (MBG)</b> terstandarisasi SPPG.
         </p>
       </div>
 
-      <!-- KOLOM 2: TAUTAN CEPAT & INFORMASI -->
-      <div class="col-12 col-lg-6">
-        <h6 class="footer-heading">Navigasi &amp; Kebijakan Layanan</h6>
-        <div class="footer-link-group">
-          <a href="/pages?privacy-policy" class="btn-footer-link"><i class="fa-solid fa-shield-halal me-1"></i> Privacy Policy</a>
-          <a href="/pages?kebijakan-layanan" class="btn-footer-link"><i class="fa-solid fa-file-contract me-1"></i> Kebijakan Layanan</a>
-          <a href="/pages?informasi" class="btn-footer-link"><i class="fa-solid fa-circle-info me-1"></i> Informasi MBG</a>
-          <a href="/pages?kontak" class="btn-footer-link"><i class="fa-solid fa-headset me-1"></i> Pusat Bantuan / Kontak</a>
-        </div>
 
-        <div class="mt-4 pt-2">
-          <h6 class="footer-heading" style="font-size: 0.82rem;">MITRA OPERASIONAL</h6>
-          <div class="d-flex align-items-center gap-3" style="font-size: 0.85rem; color: #FFFFFF !important; font-weight: 600;">
-            <span><i class="fa-solid fa-store text-primary me-1"></i> Satuan Pelayanan (SPPG)</span>
-            <span>•</span>
-            <span><i class="fa-solid fa-truck-fast text-primary me-1"></i> Ekspedisi &amp; Dropship</span>
-            <span>•</span>
-            <span><i class="fa-solid fa-seedling text-primary me-1"></i> Supplier Lokal</span>
-          </div>
-        </div>
-      </div>
 
     </div>
   </div>
@@ -132,6 +111,11 @@ $(document).ready(function() {
     $("#logo_member").removeClass("d-none").addClass("d-flex");
     $("#user-data").removeClass("mb-3").addClass("mb-1");
     $("#total_cart").text(data_akun.data.total_cart || 0);
+    
+    // Ganti icon profil dengan foto user jika ada dari API
+    if (data_akun.data.link_gambar_user && data_akun.data.link_gambar_user.trim() !== "") {
+      $("#btn_profil_icon").html(`<img src="${data_akun.data.link_gambar_user}" alt="Profil" style="width: 32px; height: 32px; object-fit: cover; border-radius: 50%; border: 1.5px solid #FFFFFF;">`);
+    }
   } else {
     $("#belum_login").removeClass("d-none");
   }
