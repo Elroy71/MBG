@@ -803,6 +803,7 @@
       flex-direction: column;
       height: max-content;
       transition: all 0.2s ease;
+      cursor: pointer;
     }
 
     .produk-card:hover {
@@ -903,7 +904,34 @@
       font-size: 18px;
       font-weight: 800;
       color: var(--primary-blue);
+      margin-bottom: 6px;
+    }
+
+    .produk-meta {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
       margin-bottom: 10px;
+    }
+
+    .meta-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 6px;
+      font-size: 11px;
+      color: var(--text-muted);
+      line-height: 1.3;
+    }
+
+    .meta-item i {
+      font-size: 13px;
+      margin-top: 1px;
+      color: #94A3B8;
+    }
+
+    .meta-item span {
+      flex: 1;
+      word-break: break-word;
     }
 
     .btn-add {
@@ -1266,6 +1294,14 @@
             <span><i class="ph-bold ph-map-pin"></i> ${lokasi}</span>
           </div>
           <div class="terlaris-price">${rp(p.harga_produk || 0)}</div>
+          <div class="produk-meta">
+            ${(p.kondisi_produk || p.kondisi_barang || p.kondisi) ? `<div class="meta-item"><i class="ph-bold ph-tag"></i><span>Kondisi: ${p.kondisi_produk || p.kondisi_barang || p.kondisi}</span></div>` : ''}
+            ${p.merek ? `<div class="meta-item"><i class="ph-bold ph-copyright"></i><span>Merek: ${p.merek}</span></div>` : ''}
+            ${p.berat ? `<div class="meta-item"><i class="ph-bold ph-scales"></i><span>Berat: ${p.berat} gr</span></div>` : ''}
+            ${p.sku ? `<div class="meta-item"><i class="ph-bold ph-barcode"></i><span>SKU: ${p.sku}</span></div>` : ''}
+            ${p.garansi ? `<div class="meta-item"><i class="ph-bold ph-shield-check"></i><span>Garansi: ${p.garansi}</span></div>` : ''}
+            ${p.dalam_kotak ? `<div class="meta-item"><i class="ph-bold ph-package"></i><span>Isi: ${p.dalam_kotak}</span></div>` : ''}
+          </div>
           <button class="btn-terlaris-add" onclick="event.stopPropagation(); addToCart('${urlProduk}', '${(p.nama_produk || '').replace(/'/g, '')}')">
             <i class="ph-bold ph-shopping-cart-plus"></i> + Pesan Cepat
           </button>
@@ -1334,10 +1370,14 @@
           </div>
           ${diskon ? `<div class="produk-price-old">${rp(p.harga_produk_asli)}</div>` : ''}
           <div class="produk-price">${rp(p.harga_produk || 0)}</div>
-          <button class="btn-add" ${habis ? 'disabled' : ''} onclick="event.stopPropagation(); addToCart('${urlProduk}', '${(p.nama_produk || '').replace(/'/g, '')}')">
-            <i class="ph-bold ph-${habis ? 'prohibit' : 'shopping-cart-plus'}"></i>
-            <span>${habis ? 'Stok Habis' : '+ Tambah Pesanan'}</span>
-          </button>
+          <div class="produk-meta">
+            ${(p.kondisi_produk || p.kondisi_barang || p.kondisi) ? `<div class="meta-item"><i class="ph-bold ph-tag"></i><span>Kondisi: ${p.kondisi_produk || p.kondisi_barang || p.kondisi}</span></div>` : ''}
+            ${p.merek ? `<div class="meta-item"><i class="ph-bold ph-copyright"></i><span>Merek: ${p.merek}</span></div>` : ''}
+            ${p.berat ? `<div class="meta-item"><i class="ph-bold ph-scales"></i><span>Berat: ${p.berat} gr</span></div>` : ''}
+            ${p.sku ? `<div class="meta-item"><i class="ph-bold ph-barcode"></i><span>SKU: ${p.sku}</span></div>` : ''}
+            ${p.garansi ? `<div class="meta-item"><i class="ph-bold ph-shield-check"></i><span>Garansi: ${p.garansi}</span></div>` : ''}
+            ${p.dalam_kotak ? `<div class="meta-item"><i class="ph-bold ph-package"></i><span>Isi: ${p.dalam_kotak}</span></div>` : ''}
+          </div>
         </div>
       </div>`;
       }).join('');
